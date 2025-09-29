@@ -58,7 +58,7 @@ def display_pie_chart(df):
     pie_data = (
         latest_df.groupby(["Account", "Owner"])["Value"].sum().reset_index()
     )
-    print(pie_data)
+
     fig = px.pie(
         pie_data,
         names="Account",

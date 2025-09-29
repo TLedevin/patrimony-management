@@ -1,7 +1,11 @@
 import streamlit as st
 from settings import conf
 
-st.logo("images/logo.svg", size="large", icon_image="images/icone.svg")
+st.logo(
+    f"{conf['paths']['images']}logo.svg",
+    size="large",
+    icon_image=f"{conf['paths']['images']}icone.svg",
+)
 
 st.set_page_config(page_title="Patrimony Management Dashboard", layout="wide")
 st.markdown(

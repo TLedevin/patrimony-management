@@ -4,8 +4,6 @@ from pages.utils.patrimony_graph import (
     display_area_stack_chart,
     display_pie_chart,
 )
-from settings import conf
-import plotly
 from pages.utils.data_management import load_patrimony_history
 
 
@@ -28,14 +26,6 @@ def main():
         display_area_stack_chart(filtered_df)
     with col22:
         display_pie_chart(filtered_df)
-
-    palettes = conf["theme_bis"]["palettes"]
-    for owner, palette_name in palettes.items():
-        color = getattr(plotly.colors.sequential, palette_name)[4]
-        st.markdown(
-            f'<span style="color:{color};font-weight:bold;">&#9632;</span> {owner}',
-            unsafe_allow_html=True,
-        )
 
 
 if __name__ == "__main__":
