@@ -43,7 +43,11 @@ def add_scenario(name: str):
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        scenarios[scenario_id] = {"id": scenario_id, "name": name}
+        scenarios[scenario_id] = {
+            "id": scenario_id,
+            "name": name,
+            "investments": {},
+        }
         f.seek(0)
         json.dump(scenarios, f)
         f.truncate()
