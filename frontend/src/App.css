@@ -1,0 +1,26 @@
+@import './colors.css';
+
+.App {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  position: relative;
+  background-color: white;
+}
+
+.main-content {
+  transition: width 0.3s ease;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.main-content.with-sidebar {
+  width: calc(100% - 150px);
+}
+
+.main-content.full-width {
+  width: 100%;
+}
