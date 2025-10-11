@@ -2,13 +2,17 @@
 
 .header {
   background-color: var(--background-color2);
-  padding: 10px 20px;
-  border-bottom: 1px solid #eee;
+  height: 80px;
+  display: flex;
+  align-items: center;
 }
 
 .header h1 {
   margin: 0;
-  margin-left: 40px;
+  margin-left: 80px;
   font-size: 24px;
   color: #333;
+  display: flex;
+  align-items: center;
 }
+  

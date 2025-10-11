@@ -2,10 +2,8 @@ import Header from "./../components/header.js";
 
 function PatrimonyPage() {
   return (
-    <div className="page-content">
+    <div className="patrimony-page">
       <Header HeaderTitle="Patrimony" />
-      <p>This is the patrimony page content...</p>
-      {/* Add your patrimony-specific content here */}
     </div>
   );
 }

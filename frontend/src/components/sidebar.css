@@ -27,8 +27,15 @@
   background-color: var(--theme-background-color-hover);
 }
 
+.separator-line {
+  margin-top: 80px; /* Space for toggle button */
+  border-top: 1px solid var(--light-text-color);
+  width: 100%;
+}
+
+
 .menu {
-  margin-top: 60px; /* Space for toggle button */
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -13,6 +13,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         ☰
       </button>
       <div className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
+        <div className="separator-line"></div>
         <div className="menu">
           <Link
             to="/patrimony"
