@@ -17,7 +17,7 @@ function App() {
             sidebarOpen ? "with-sidebar" : "full-width"
           }`}
         >
-          <div className="header">
+          <div className="routes">
             <Routes>
               <Route path="/patrimony" element={<PatrimonyPage />} />
               <Route path="/scenario" element={<ScenarioPage />} />

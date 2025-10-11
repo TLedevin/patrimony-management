@@ -1,10 +1,13 @@
 import Header from "./../components/header.js";
+import "./ScenarioPage.css";
 
 function ScenarioPage() {
   return (
     <div className="scenario-page">
       <Header HeaderTitle="Scenario" />
-      {/* <p>This is the scenario page content...</p> */}
+      <div className="scenario-main-content">
+        <div className="scenario-header"></div>
+      </div>
     </div>
   );
 }
