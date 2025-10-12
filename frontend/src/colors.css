@@ -8,6 +8,7 @@
   /* Border colors */
   --light-border-color: #ddd;
   --dark-border-color: #ababab;
+  --theme-border-color-hover: #007bff;
 
   /* Text colors */
   --dark-text-color: #333;

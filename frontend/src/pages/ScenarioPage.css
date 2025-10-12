@@ -1,22 +1,147 @@
 @import './../colors.css';
 
 .scenario-page {
-    height: 100vh;
-    width: 100%;
+  height: 100vh;
+  width: 100%;
 }
 
 .scenario-main-content {
-    height: calc(100vh - 80px);
-    width: 100%;
-    background-color: var(--background-color);
-    display: flex;
+  height: calc(100vh - 80px);
+  width: 100%;
+  background-color: var(--background-color);
+  display: flex;
 }
 
 .scenario-header {
-    height: 80px;
-    margin-top: 10px;
-    margin-left: 10px;
-    width: calc(100% - 20px);
-    border: 1px solid var(--dark-border-color);
-    border-radius: 10px;
+  height: 80px;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: calc(100% - 20px);
+  border: 1px solid var(--dark-border-color);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.scenario-dropdown {
+  height: 30px;
+  min-width: 200px;
+  margin-left: 20px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: var(--background-color2);
+  cursor: pointer;
+}
+
+.scenario-dropdown:hover {
+  border-color: var(--theme-border-color-hover);
+}
+
+/* Scenario controls container */
+.scenario-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Add scenario button */
+.add-scenario-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.add-scenario-btn:hover {
+  background-color: #0056b3;
+}
+
+.add-scenario-btn:active {
+  background-color: #004085;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.scenario-name-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.scenario-name-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-confirm, .btn-cancel {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirm {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #218838;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
 }
