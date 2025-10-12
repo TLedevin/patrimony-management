@@ -38,6 +38,14 @@ def api_load_scenarios():
     return jsonify(scenarios)
 
 
+@app.route("/api/delete_scenario/<string:id>", methods=["GET"])
+def api_delete_scenarios(id):
+    delete_scenario(int(id))
+    scenarios = load_scenarios()
+    logger.info("Deleted scenarios successfully")
+    return jsonify(scenarios)
+
+
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",

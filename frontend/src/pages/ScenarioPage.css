@@ -47,7 +47,7 @@
 
 /* Add scenario button */
 .add-scenario-btn {
-  background-color: #007bff;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 4px;
@@ -63,11 +63,7 @@
 }
 
 .add-scenario-btn:hover {
-  background-color: #0056b3;
-}
-
-.add-scenario-btn:active {
-  background-color: #004085;
+  background-color: #218838;
 }
 
 /* Modal styles */
@@ -101,7 +97,7 @@
 
 .scenario-name-input {
   width: 100%;
-  padding: 8px 12px;
+  height: 35px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
@@ -144,4 +140,29 @@
 
 .btn-cancel:hover {
   background-color: #5a6268;
+}
+
+
+.delete-scenario-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.delete-scenario-btn:hover {
+  background-color: #c82333;
+}
+
+.delete-scenario-btn:active {
+  background-color: #bd2130;
 }

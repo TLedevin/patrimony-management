@@ -51,6 +51,30 @@ function ScenarioPage() {
     setNewScenarioName("");
   };
 
+  const handleDeleteScenario = async () => {
+    if (!selectedScenario) {
+      alert("Please select a scenario to delete");
+      return;
+    }
+
+    alert("Are you sure you want to delete this scenario?");
+    const response = await fetch(
+      `http://localhost:5000/api/delete_scenario/${encodeURIComponent(
+        selectedScenario
+      )}`,
+      { method: "GET" }
+    );
+
+    const scenariosResponse = await fetch(
+      "http://localhost:5000/api/load_scenarios/"
+    );
+    const scenariosData = await scenariosResponse.json();
+    setScenarios(Object.values(scenariosData));
+
+    const result = await response.json();
+    console.log("Scenario deleted:", result);
+  };
+
   const handleModalClose = () => {
     setShowAddModal(false);
     setNewScenarioName("");
@@ -72,7 +96,7 @@ function ScenarioPage() {
               {scenarios.length > 0 ? (
                 scenarios.map((scenario) => (
                   <option key={scenario.id} value={scenario.id}>
-                    {`${scenario.id}: ${scenario.name}`}
+                    {`${scenario.name}`}
                   </option>
                 ))
               ) : (
@@ -85,6 +109,12 @@ function ScenarioPage() {
               title="Add new scenario"
             >
               +
+            </button>
+            <button
+              className="delete-scenario-btn"
+              onClick={handleDeleteScenario}
+            >
+              X
             </button>
           </div>
         </div>
