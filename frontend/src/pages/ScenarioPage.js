@@ -55,24 +55,29 @@ function ScenarioPage() {
     if (!selectedScenario) {
       alert("Please select a scenario to delete");
       return;
+    } else {
+      let response = null;
+      if (window.confirm("Are you sure you want to delete this scenario?")) {
+        response = await fetch(
+          `http://localhost:5000/api/delete_scenario/${encodeURIComponent(
+            selectedScenario
+          )}`,
+          { method: "GET" }
+        );
+        setSelectedScenario("");
+      }
+
+      const scenariosResponse = await fetch(
+        "http://localhost:5000/api/load_scenarios/"
+      );
+      const scenariosData = await scenariosResponse.json();
+      setScenarios(Object.values(scenariosData));
+
+      if (response && response.ok) {
+        const result = await response.json();
+        console.log("Scenario deleted:", result);
+      }
     }
-
-    alert("Are you sure you want to delete this scenario?");
-    const response = await fetch(
-      `http://localhost:5000/api/delete_scenario/${encodeURIComponent(
-        selectedScenario
-      )}`,
-      { method: "GET" }
-    );
-
-    const scenariosResponse = await fetch(
-      "http://localhost:5000/api/load_scenarios/"
-    );
-    const scenariosData = await scenariosResponse.json();
-    setScenarios(Object.values(scenariosData));
-
-    const result = await response.json();
-    console.log("Scenario deleted:", result);
   };
 
   const handleModalClose = () => {
@@ -114,7 +119,7 @@ function ScenarioPage() {
               className="delete-scenario-btn"
               onClick={handleDeleteScenario}
             >
-              X
+              🗑️
             </button>
           </div>
         </div>
