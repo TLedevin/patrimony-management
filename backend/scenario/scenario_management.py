@@ -51,6 +51,7 @@ def add_scenario(name: str):
         f.seek(0)
         json.dump(scenarios, f)
         f.truncate()
+    return scenario_id
 
 
 def delete_scenario(scenario_id: int):

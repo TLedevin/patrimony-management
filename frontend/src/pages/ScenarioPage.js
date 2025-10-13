@@ -49,6 +49,7 @@ function ScenarioPage() {
     // Reset modal state
     setShowAddModal(false);
     setNewScenarioName("");
+    setSelectedScenario(result);
   };
 
   const handleDeleteScenario = async () => {
