@@ -11,7 +11,7 @@
 
 .sidebar-toggle {
   position: fixed;
-  top: 20px;
+  top: 10px;
   left: 20px;
   width: 40px;
   height: 40px;
@@ -28,7 +28,7 @@
 }
 
 .separator-line {
-  margin-top: 80px; /* Space for toggle button */
+  margin-top: 60px; /* Space for toggle button */
   border-top: 1px solid var(--light-text-color);
   width: 100%;
 }

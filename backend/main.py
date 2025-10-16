@@ -46,6 +46,28 @@ def api_delete_scenarios(id):
     return jsonify(scenarios)
 
 
+@app.route(
+    "/api/add_investment/<string:scenario_id>/<string:name>",
+    methods=["GET", "POST"],
+)
+def api_add_investment(scenario_id, name):
+    result = add_investment(scenario_id, name)
+    logger.info(f"Added investment: {name} to scenario {scenario_id}")
+    return jsonify(result)
+
+
+@app.route(
+    "/api/delete_investment/<string:scenario_id>/<string:investment_id>",
+    methods=["GET"],
+)
+def api_delete_investment(scenario_id, investment_id):
+    delete_investment(scenario_id, investment_id)
+    logger.info(
+        f"Deleted investment: {investment_id} from scenario {scenario_id}"
+    )
+    return jsonify({"status": "success"})
+
+
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",

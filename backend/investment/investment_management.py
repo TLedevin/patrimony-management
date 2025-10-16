@@ -34,6 +34,7 @@ def add_investment(scenario_id: int, name: str):
         f.seek(0)
         json.dump(scenarios, f)
         f.truncate()
+    return investment_id
 
 
 def delete_investment(scenario_id: int, investment_id: int):
