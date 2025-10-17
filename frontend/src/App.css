@@ -5,7 +5,7 @@
   flex-direction: row;
   min-height: 100vh;
   position: relative;
-  background-color: white;
+  background-color: var(--background-color);
 }
 
 .main-content {
