@@ -1,5 +1,7 @@
-- Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné
-- Commencer par un seul type: compte épargne
+X Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné
+X Commencer par un seul type: compte épargne
+- Corriger le bug de la ligne totale et savings sur le graph
+- Tester la fonction du code qui génère les data du savings account
 - Rationnaliser le code
 - Tracer un graphique avec l'évolution du patrimoine
 - Rationnalisr le code

@@ -2,6 +2,27 @@ import React, { useState, useEffect } from "react";
 import Header from "./../components/header.js";
 import "./ScenarioPage.css";
 import { investmentTypes } from "../config/investmentTypes.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function ScenarioPage() {
   const [scenarios, setScenarios] = useState([]);
@@ -13,8 +34,10 @@ function ScenarioPage() {
   const [selectedInvestment, setSelectedInvestment] = useState("");
   const [showAddInvestmentModal, setShowAddInvestmentModal] = useState(false);
   const [newInvestmentName, setNewInvestmentName] = useState("");
-  const [investmentType, setInvestmentType] = useState("saving_account");
+  const [investmentType, setInvestmentType] = useState("");
   const [investmentParams, setInvestmentParams] = useState({});
+  const [selectedInvestmentsForGraph, setSelectedInvestmentsForGraph] =
+    useState({});
 
   // Fetch scenarios on component mount
   useEffect(() => {
@@ -101,10 +124,6 @@ function ScenarioPage() {
   };
 
   const handleAddInvestment = async () => {
-    if (!selectedScenario) {
-      alert("Please select a scenario to add an investment");
-      return;
-    }
     if (newInvestmentName.trim() === "") {
       alert("Please enter an investment name");
       return;
@@ -156,12 +175,14 @@ function ScenarioPage() {
     setShowAddInvestmentModal(false);
     setNewInvestmentName("");
     setSelectedInvestment(result);
+    setInvestmentType("");
   };
 
   const handleInvestmentModalClose = () => {
     setShowAddInvestmentModal(false);
     setNewInvestmentName("");
     setInvestmentParams({});
+    setInvestmentType("");
   };
 
   const handleParamChange = (paramId, value) => {
@@ -238,12 +259,149 @@ function ScenarioPage() {
           </div>
         </div>
         <div className="investments-main-content">
-          <div className="investments-graph"></div>
+          <div className="investments-graph">
+            {selectedScenario && investments.length > 0 && (
+              <>
+                <div className="graph-filters">
+                  {investments.map((investment) => (
+                    <label key={investment.id} className="graph-filter-item">
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedInvestmentsForGraph[investment.id] || false
+                        }
+                        onChange={(e) => {
+                          setSelectedInvestmentsForGraph((prev) => ({
+                            ...prev,
+                            [investment.id]: e.target.checked,
+                          }));
+                        }}
+                      />
+                      {investment.name}
+                    </label>
+                  ))}
+                </div>
+                <div className="graph-container">
+                  <Line
+                    data={{
+                      labels: investments[0]?.data?.dates || [],
+                      datasets: [
+                        {
+                          label: "Savings",
+                          data: investments[0]?.data?.dates.map((_, index) => {
+                            return Object.entries(selectedInvestmentsForGraph)
+                              .filter(([_, isSelected]) => isSelected)
+                              .reduce((sum, [investmentId]) => {
+                                const investment = investments.find(
+                                  (inv) => inv.id.toString() === investmentId
+                                );
+                                return (
+                                  sum +
+                                  (investment?.data?.patrimony?.savings[
+                                    index
+                                  ] || 0)
+                                );
+                              }, 0);
+                          }),
+                          borderColor: "rgba(75, 192, 192, 1)",
+                          backgroundColor: "rgba(75, 192, 192, 0.6)",
+                          fill: true,
+                          tension: 0.4,
+                          order: 2,
+                        },
+                        {
+                          label: "Cash",
+                          data: investments[0]?.data?.dates.map((_, index) => {
+                            return Object.entries(selectedInvestmentsForGraph)
+                              .filter(([_, isSelected]) => isSelected)
+                              .reduce((sum, [investmentId]) => {
+                                const investment = investments.find(
+                                  (inv) => inv.id.toString() === investmentId
+                                );
+                                return (
+                                  sum +
+                                  (investment?.data?.patrimony?.cash[index] ||
+                                    0)
+                                );
+                              }, 0);
+                          }),
+                          borderColor: "rgba(255, 99, 132, 1)",
+                          backgroundColor: "rgba(255, 99, 132, 0.6)",
+                          fill: true,
+                          tension: 0.4,
+                          order: 1,
+                        },
+                      ],
+                    }}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      interaction: {
+                        mode: "index",
+                        intersect: false,
+                      },
+                      plugins: {
+                        title: {
+                          display: true,
+                          text: "Total Patrimony Evolution",
+                        },
+                        tooltip: {
+                          mode: "index",
+                          callbacks: {
+                            label: function (context) {
+                              return `${
+                                context.dataset.label
+                              }: ${context.parsed.y.toFixed(2)} €`;
+                            },
+                            footer: function (tooltipItems) {
+                              const total = tooltipItems.reduce(
+                                (sum, item) => sum + item.parsed.y,
+                                0
+                              );
+                              return `Total: ${total.toFixed(2)} €`;
+                            },
+                          },
+                        },
+                        legend: {
+                          position: "bottom",
+                        },
+                      },
+                      scales: {
+                        y: {
+                          stacked: true,
+                          title: {
+                            display: true,
+                            text: "Amount (€)",
+                          },
+                          ticks: {
+                            callback: function (value) {
+                              return value.toFixed(2) + " €";
+                            },
+                          },
+                        },
+                        x: {
+                          stacked: true,
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
           <div className="investments-list">
             <div className="investments-header">
               <button
                 className="add-investment-btn"
-                onClick={() => setShowAddInvestmentModal(true)}
+                onClick={() => {
+                  if (!selectedScenario) {
+                    alert(
+                      "Please select a scenario before adding an investment"
+                    );
+                    return;
+                  }
+                  setShowAddInvestmentModal(true);
+                }}
               >
                 <span>+</span> Add Investment
               </button>

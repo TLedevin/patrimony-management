@@ -206,14 +206,14 @@
 }
 
 .investments-graph {
-  width: calc(80% - 20px);
+  width: calc(100% - 320px);
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 10px;
 }
 
 .investments-list {
-  width: calc(20% - 10px);
+  width: calc(300px - 10px);
   background-color: var(--background-color2);
   border-radius: 10px;
   border: 1px solid var(--light-border-color);
@@ -316,4 +316,17 @@
   color: var(--dark-text-color);
   padding: 20px;
   font-style: italic;
+}
+
+.investments-graph {
+  background: var(--background-color2);
+  border: 1px solid var(--light-border-color);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.34);
+}
+
+.graph-container {
+  height: 100%;
+  position: relative;
 }

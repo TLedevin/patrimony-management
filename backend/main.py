@@ -54,10 +54,13 @@ def api_delete_scenarios():
 
 @app.route("/api/add_investment/", methods=["GET"])
 def api_add_investment():
-    scenario_id = request.args.get("scenario_id")
-    name = request.args.get("name")
-    investment_type = request.args.get("investment_type")
-    result = add_investment(scenario_id, name, investment_type)
+    params = request.args.to_dict()
+    # Extract required parameters
+    scenario_id = params.pop("scenario_id", None)
+    name = params.pop("name", None)
+    investment_type = params.pop("investment_type", None)
+    # All remaining parameters are investment parameters
+    result = add_investment(scenario_id, name, investment_type, params)
     logger.info(f"Added investment: {name} to scenario {scenario_id}")
     return jsonify(result)
 
