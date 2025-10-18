@@ -1,8 +1,12 @@
 import logging
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
-from investment.investment_management import add_investment, delete_investment
+from investment.investment_management import (
+    add_investment,
+    delete_investment,
+    generate_investment_data,
+)
 from scenario.scenario_management import (
     add_scenario,
     delete_scenario,
@@ -24,8 +28,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-@app.route("/api/add_scenario/<string:name>", methods=["GET", "POST"])
-def api_add_scenario(name):
+@app.route("/api/add_scenario/", methods=["GET"])
+def api_add_scenario():
+    name = request.args.get("name")
     result = add_scenario(name)
     logger.info(f"Added scenario: {name}")
     return jsonify(result)
@@ -38,20 +43,21 @@ def api_load_scenarios():
     return jsonify(scenarios)
 
 
-@app.route("/api/delete_scenario/<string:id>", methods=["GET"])
-def api_delete_scenarios(id):
+@app.route("/api/delete_scenario/", methods=["GET"])
+def api_delete_scenarios():
+    id = request.args.get("id")
     delete_scenario(int(id))
     scenarios = load_scenarios()
     logger.info("Deleted scenarios successfully")
     return jsonify(scenarios)
 
 
-@app.route(
-    "/api/add_investment/<string:scenario_id>/<string:name>",
-    methods=["GET", "POST"],
-)
-def api_add_investment(scenario_id, name):
-    result = add_investment(scenario_id, name)
+@app.route("/api/add_investment/", methods=["GET"])
+def api_add_investment():
+    scenario_id = request.args.get("scenario_id")
+    name = request.args.get("name")
+    investment_type = request.args.get("investment_type")
+    result = add_investment(scenario_id, name, investment_type)
     logger.info(f"Added investment: {name} to scenario {scenario_id}")
     return jsonify(result)
 
@@ -66,6 +72,19 @@ def api_delete_investment(scenario_id, investment_id):
         f"Deleted investment: {investment_id} from scenario {scenario_id}"
     )
     return jsonify({"status": "success"})
+
+
+@app.route(
+    "/api/generate_investment_data/<string:scenario_id>",
+    methods=["POST"],
+)
+def api_generate_investment_data(scenario_id):
+    parameters = request.json
+    result = generate_investment_data(scenario_id, parameters)
+    logger.info(
+        f"Generated investment data: {parameters} for scenario {scenario_id}"
+    )
+    return jsonify(result)
 
 
 if __name__ == "__main__":

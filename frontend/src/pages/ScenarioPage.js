@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./../components/header.js";
 import "./ScenarioPage.css";
+import { investmentTypes } from "../config/investmentTypes.js";
 
 function ScenarioPage() {
   const [scenarios, setScenarios] = useState([]);
@@ -12,6 +13,8 @@ function ScenarioPage() {
   const [selectedInvestment, setSelectedInvestment] = useState("");
   const [showAddInvestmentModal, setShowAddInvestmentModal] = useState(false);
   const [newInvestmentName, setNewInvestmentName] = useState("");
+  const [investmentType, setInvestmentType] = useState("saving_account");
+  const [investmentParams, setInvestmentParams] = useState({});
 
   // Fetch scenarios on component mount
   useEffect(() => {
@@ -44,10 +47,8 @@ function ScenarioPage() {
     }
 
     const response = await fetch(
-      `http://localhost:5000/api/add_scenario/${encodeURIComponent(
-        newScenarioName
-      )}`,
-      { method: "POST" }
+      `http://localhost:5000/api/add_scenario?name=${newScenarioName}`,
+      { method: "GET" }
     );
 
     const result = await response.json();
@@ -75,9 +76,7 @@ function ScenarioPage() {
       let response = null;
       if (window.confirm("Are you sure you want to delete this scenario?")) {
         response = await fetch(
-          `http://localhost:5000/api/delete_scenario/${encodeURIComponent(
-            selectedScenario
-          )}`,
+          `http://localhost:5000/api/delete_scenario?id=${selectedScenario}`,
           { method: "GET" }
         );
         setSelectedScenario("");
@@ -111,11 +110,31 @@ function ScenarioPage() {
       return;
     }
 
+    // Validate required parameters
+    const currentType = investmentTypes[investmentType];
+    const missingParams = currentType.parameters.filter(
+      (param) => param.required && !investmentParams[param.id]
+    );
+
+    if (missingParams.length > 0) {
+      alert(
+        `Please fill in the following required fields: ${missingParams
+          .map((p) => p.label)
+          .join(", ")}`
+      );
+      return;
+    }
+
+    const queryParams = new URLSearchParams({
+      scenario_id: selectedScenario,
+      name: newInvestmentName,
+      investment_type: investmentType,
+      ...investmentParams,
+    });
+
     const response = await fetch(
-      `http://localhost:5000/api/add_investment/${selectedScenario}/${encodeURIComponent(
-        newInvestmentName
-      )}`,
-      { method: "POST" }
+      `http://localhost:5000/api/add_investment?${queryParams.toString()}`,
+      { method: "GET" }
     );
 
     const result = await response.json();
@@ -142,6 +161,14 @@ function ScenarioPage() {
   const handleInvestmentModalClose = () => {
     setShowAddInvestmentModal(false);
     setNewInvestmentName("");
+    setInvestmentParams({});
+  };
+
+  const handleParamChange = (paramId, value) => {
+    setInvestmentParams((prev) => ({
+      ...prev,
+      [paramId]: value,
+    }));
   };
 
   const handleDeleteInvestment = async (investmentId) => {
@@ -286,6 +313,18 @@ function ScenarioPage() {
           <div className="modal-overlay">
             <div className="modal-content">
               <h3>Add New Investment</h3>
+              <select
+                id="investment-type-select"
+                onChange={(e) => setInvestmentType(e.target.value)}
+                className="investment-type-dropdown"
+              >
+                <option value="">-- Select an investment type --</option>
+                {Object.entries(investmentTypes).map(([value, type]) => (
+                  <option key={value} value={value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
               <input
                 type="text"
                 value={newInvestmentName}
@@ -294,6 +333,25 @@ function ScenarioPage() {
                 className="investment-name-input"
                 autoFocus
               />
+              {investmentType &&
+                investmentTypes[investmentType]?.parameters.map((param) => (
+                  <div key={param.id} className="investment-parameter">
+                    <label htmlFor={param.id}>{param.label}</label>
+                    <input
+                      id={param.id}
+                      type={param.type}
+                      value={investmentParams[param.id] || param.default || ""}
+                      onChange={(e) =>
+                        handleParamChange(param.id, e.target.value)
+                      }
+                      min={param.min}
+                      max={param.max}
+                      step={param.step}
+                      required={param.required}
+                      className="investment-parameter-input"
+                    />
+                  </div>
+                ))}
               <div className="modal-buttons">
                 <button onClick={handleAddInvestment} className="btn-confirm">
                   Add

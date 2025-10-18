@@ -1,5 +1,6 @@
 import json
 
+from investment.generate_data_investments import generate_saving_account_data
 from settings import conf
 
 
@@ -21,15 +22,44 @@ def generate_investment_id(scenario_id: int):
     return 1
 
 
-def add_investment(scenario_id: int, name: str):
+def generate_investment_data(type, parameters) -> dict:
+    mapping_investment_types = {
+        "saving_account": generate_saving_account_data,
+        # "stock_investment": generate_stock_investment_data,
+    }
+
+    data = mapping_investment_types[type](parameters)
+    keys = data["patrimony"].keys()
+
+    total = []
+
+    for i in range(len(data["patrimony"]["cash"])):
+        s = 0
+        for key in keys:
+            s += data["patrimony"][key][i]
+        total.append(s)
+    data["patrimony"]["total"] = total
+    return data
+
+
+def add_investment(
+    scenario_id: int,
+    name: str,
+    type: str,
+    parameters: dict,
+) -> int:
     data_path = conf["paths"]["data"]
     investment_id = generate_investment_id(scenario_id)
+    data = generate_investment_data(type, parameters)
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
         scenarios[scenario_id]["investments"][investment_id] = {
             "id": investment_id,
             "name": name,
+            "type": type,
+            "parameters": parameters,
+            "data": data,
         }
         f.seek(0)
         json.dump(scenarios, f)
