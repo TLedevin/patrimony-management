@@ -213,11 +213,9 @@
 }
 
 .investments-list {
-  width: calc(300px - 10px);
+  width: calc(300px - 50px);
   background-color: var(--background-color2);
   border-radius: 10px;
-  border: 1px solid var(--light-border-color);
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.34);
   display: flex;
   flex-direction: column;
 }
@@ -320,10 +318,8 @@
 
 .investments-graph {
   background: var(--background-color2);
-  border: 1px solid var(--light-border-color);
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.34);
 }
 
 .graph-container {

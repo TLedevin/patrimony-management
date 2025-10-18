@@ -11,6 +11,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -21,7 +22,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 function ScenarioPage() {
@@ -303,11 +305,14 @@ function ScenarioPage() {
                                 );
                               }, 0);
                           }),
-                          borderColor: "rgba(75, 192, 192, 1)",
-                          backgroundColor: "rgba(75, 192, 192, 0.6)",
-                          fill: true,
-                          tension: 0.4,
-                          order: 2,
+                          borderWidth: 2,
+                          borderColor: "rgba(64, 164, 164, 1)",
+                          backgroundColor: "rgba(64, 164, 164, 0.3)",
+                          fill: "stack",
+                          tension: 0,
+                          order: 1,
+                          pointRadius: 2,
+                          pointHoverRadius: 6,
                         },
                         {
                           label: "Cash",
@@ -325,11 +330,14 @@ function ScenarioPage() {
                                 );
                               }, 0);
                           }),
-                          borderColor: "rgba(255, 99, 132, 1)",
-                          backgroundColor: "rgba(255, 99, 132, 0.6)",
-                          fill: true,
-                          tension: 0.4,
+                          borderWidth: 2,
+                          borderColor: "rgba(223, 81, 112, 1)",
+                          backgroundColor: "rgba(223, 81, 112, 0.3)",
+                          fill: "stack",
+                          tension: 0,
                           order: 1,
+                          pointRadius: 2,
+                          pointHoverRadius: 6,
                         },
                       ],
                     }}
@@ -341,6 +349,9 @@ function ScenarioPage() {
                         intersect: false,
                       },
                       plugins: {
+                        filler: {
+                          propagate: true,
+                        },
                         title: {
                           display: true,
                           text: "Total Patrimony Evolution",
@@ -369,6 +380,7 @@ function ScenarioPage() {
                       scales: {
                         y: {
                           stacked: true,
+                          beginAtZero: true,
                           title: {
                             display: true,
                             text: "Amount (€)",
