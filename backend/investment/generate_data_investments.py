@@ -56,7 +56,7 @@ def generate_saving_account_data(parameters: dict) -> dict:
             )
 
         elif month == start_month + investment_duration:
-            cash_flows.append(patrimony["savings"][-1] * (1 + monthly_rate))
+            cash_flows.append(patrimony["savings"][-1])
             patrimony["cash"].append(cash_flows[-1])
             patrimony["savings"].append(0)
 
@@ -66,7 +66,7 @@ def generate_saving_account_data(parameters: dict) -> dict:
             cash_flows.append(0)
 
     dates = [
-        f"{conf['simulation_start_year'] + (month // 12)}-{(month % 12) + 1:02d}-01"
+        f"{conf['simulation_start_year'] + (month // 12)}-{(month % 12) + 1:02d}"
         for month in range(simulation_duration)
     ]
 

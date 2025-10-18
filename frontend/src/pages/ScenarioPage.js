@@ -311,8 +311,9 @@ function ScenarioPage() {
                           fill: "stack",
                           tension: 0,
                           order: 1,
-                          pointRadius: 2,
-                          pointHoverRadius: 6,
+                          pointRadius: 0,
+                          pointHoverRadius: 5,
+                          pointBackgroundColor: "rgba(64, 164, 164, 1)",
                         },
                         {
                           label: "Cash",
@@ -336,8 +337,9 @@ function ScenarioPage() {
                           fill: "stack",
                           tension: 0,
                           order: 1,
-                          pointRadius: 2,
-                          pointHoverRadius: 6,
+                          pointRadius: 0,
+                          pointHoverRadius: 5,
+                          pointBackgroundColor: "rgba(223, 81, 112, 1)",
                         },
                       ],
                     }}
@@ -393,6 +395,9 @@ function ScenarioPage() {
                         },
                         x: {
                           stacked: true,
+                          grid: {
+                            display: false, // This will remove vertical gridlines
+                          },
                         },
                       },
                     }}
