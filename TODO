@@ -1,9 +1,16 @@
-X Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné
-X Commencer par un seul type: compte épargne
-X Corriger le bug de la ligne totale et savings sur le graph
-- Rationnaliser le code
-- Tester la fonction du code qui génère les data du savings account
-- Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel
-- Ajouter d'autres types d'investissement
-- Affiner le visuel du graphique (filtres, etc.)
-- Ajouter un tableau récapitulatif du scénario sous le graphique
+// DONE: Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné
+// DONE: Commencer par un seul type: compte épargne
+// DONE: Corriger le bug de la ligne totale et savings sur le graph
+// DONE: Rationnaliser le code
+
+// TODO: Tester la fonction du code qui génère les data du savings account
+// TODO: Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel
+// TODO: Ajouter d'autres types d'investissement
+// TODO: Affiner le visuel du graphique (filtres, etc.)
+// TODO: Ajouter un tableau récapitulatif du scénario sous le graphique
+
+// FIXME:
+
+// BUG:
+
+// NOTE: 
