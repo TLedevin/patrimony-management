@@ -23,6 +23,7 @@ function ScenarioGraph({ scenarioData }) {
                     order: 2,
                     pointRadius: 0,
                     pointHoverRadius: 5,
+                    pointBackgroundColor: "rgba(223, 81, 112, 1)",
                   },
                   {
                     label: "Savings",
