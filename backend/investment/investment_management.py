@@ -10,7 +10,7 @@ def generate_investment_id(scenario_id: int):
         scenarios = json.load(f)
     if scenarios:
         existing_id = [
-            int(i) for i in scenarios[scenario_id]["investments"].keys()
+            int(i) for i in scenarios[str(scenario_id)]["investments"].keys()
         ]
         if len(existing_id) > 0:
 
@@ -28,18 +28,7 @@ def generate_investment_data(type, parameters) -> dict:
         # "stock_investment": generate_stock_investment_data,
     }
 
-    data = mapping_investment_types[type](parameters)
-    keys = data["patrimony"].keys()
-
-    total = []
-
-    for i in range(len(data["patrimony"]["cash"])):
-        s = 0
-        for key in keys:
-            s += data["patrimony"][key][i]
-        total.append(s)
-    data["patrimony"]["total"] = total
-    return data
+    return mapping_investment_types[type](parameters)
 
 
 def add_investment(
@@ -54,7 +43,7 @@ def add_investment(
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        scenarios[scenario_id]["investments"][investment_id] = {
+        scenarios[str(scenario_id)]["investments"][investment_id] = {
             "id": investment_id,
             "name": name,
             "type": type,

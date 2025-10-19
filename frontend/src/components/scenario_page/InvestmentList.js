@@ -6,6 +6,7 @@ function InvestmentList({
   setShowAddInvestmentModal,
   setScenarios,
   setInvestments,
+  setScenarioData,
 }) {
   const handleDeleteInvestment = async (investmentId) => {
     if (!selectedScenario) {
@@ -32,6 +33,15 @@ function InvestmentList({
       } else {
         alert("Failed to delete investment");
       }
+      const scenarioData = await fetch(
+        `http://localhost:5000/api/get_scenario_data/?scenario_id=${selectedScenario}`
+      );
+      if (!scenarioData.ok) {
+        throw new Error(`HTTP error! status: ${scenarioData.status}`);
+      }
+      const data = await scenarioData.json();
+      console.log("Fetched scenario data:", data);
+      setScenarioData(data);
     }
   };
 

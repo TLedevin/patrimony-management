@@ -13,6 +13,7 @@ function AddInvestmentModal({
   setScenarios,
   setInvestments,
   setSelectedInvestment,
+  setScenarioData,
 }) {
   const handleAddInvestment = async () => {
     if (newInvestmentName.trim() === "") {
@@ -61,6 +62,16 @@ function AddInvestmentModal({
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
     console.log("New scenario:", scenario);
     setInvestments(Object.values(scenario.investments));
+
+    const scenarioData = await fetch(
+      `http://localhost:5000/api/get_scenario_data/?scenario_id=${selectedScenario}`
+    );
+    if (!scenarioData.ok) {
+      throw new Error(`HTTP error! status: ${scenarioData.status}`);
+    }
+    const data = await scenarioData.json();
+    console.log("Fetched scenario data:", data);
+    setScenarioData(data);
 
     // Reset modal state
     setShowAddInvestmentModal(false);

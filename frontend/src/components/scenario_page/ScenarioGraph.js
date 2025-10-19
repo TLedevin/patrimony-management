@@ -1,87 +1,42 @@
 import { Line } from "react-chartjs-2";
 import "./ScenarioGraph.css";
 
-function ScenarioGraph({
-  selectedScenario,
-  investments,
-  selectedInvestmentsForGraph,
-  setSelectedInvestmentsForGraph,
-}) {
+function ScenarioGraph({ scenarioData }) {
   return (
     <div className="investments-graph">
-      {selectedScenario && investments.length > 0 && (
+      {scenarioData && (
         <>
-          <div className="graph-filters">
-            {investments.map((investment) => (
-              <label key={investment.id} className="graph-filter-item">
-                <input
-                  type="checkbox"
-                  checked={selectedInvestmentsForGraph[investment.id] || false}
-                  onChange={(e) => {
-                    setSelectedInvestmentsForGraph((prev) => ({
-                      ...prev,
-                      [investment.id]: e.target.checked,
-                    }));
-                  }}
-                />
-                {investment.name}
-              </label>
-            ))}
-          </div>
           <div className="graph-container">
             <Line
               data={{
-                labels: investments[0]?.data?.dates || [],
+                labels: scenarioData.dates,
                 datasets: [
                   {
+                    label: "Cash",
+                    data: scenarioData.patrimony.cash,
+                    borderWidth: 2,
+                    borderColor: "rgba(223, 81, 112, 1)",
+                    backgroundColor: "rgba(223, 81, 112, 0.3)",
+                    fill: true,
+                    tension: 0.1,
+                    stack: "stack1",
+                    order: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                  },
+                  {
                     label: "Savings",
-                    data: investments[0]?.data?.dates.map((_, index) => {
-                      return Object.entries(selectedInvestmentsForGraph)
-                        .filter(([_, isSelected]) => isSelected)
-                        .reduce((sum, [investmentId]) => {
-                          const investment = investments.find(
-                            (inv) => inv.id.toString() === investmentId
-                          );
-                          return (
-                            sum +
-                            (investment?.data?.patrimony?.savings[index] || 0)
-                          );
-                        }, 0);
-                    }),
+                    data: scenarioData.patrimony.savings,
                     borderWidth: 2,
                     borderColor: "rgba(64, 164, 164, 1)",
                     backgroundColor: "rgba(64, 164, 164, 0.3)",
-                    fill: "stack",
-                    tension: 0,
+                    fill: true,
+                    tension: 0.1,
+                    stack: "stack1",
                     order: 1,
                     pointRadius: 0,
                     pointHoverRadius: 5,
                     pointBackgroundColor: "rgba(64, 164, 164, 1)",
-                  },
-                  {
-                    label: "Cash",
-                    data: investments[0]?.data?.dates.map((_, index) => {
-                      return Object.entries(selectedInvestmentsForGraph)
-                        .filter(([_, isSelected]) => isSelected)
-                        .reduce((sum, [investmentId]) => {
-                          const investment = investments.find(
-                            (inv) => inv.id.toString() === investmentId
-                          );
-                          return (
-                            sum +
-                            (investment?.data?.patrimony?.cash[index] || 0)
-                          );
-                        }, 0);
-                    }),
-                    borderWidth: 2,
-                    borderColor: "rgba(223, 81, 112, 1)",
-                    backgroundColor: "rgba(223, 81, 112, 0.3)",
-                    fill: "stack",
-                    tension: 0,
-                    order: 1,
-                    pointRadius: 0,
-                    pointHoverRadius: 5,
-                    pointBackgroundColor: "rgba(223, 81, 112, 1)",
                   },
                 ],
               }}

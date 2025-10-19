@@ -39,7 +39,7 @@ export const investmentTypes = {
         type: "number",
         required: true,
         min: currentYear + 1,
-        max: currentYear + 50,
+        max: currentYear + 5,
         step: 1,
         validate: (formData) => {
           if (formData.start_year >= formData.end_year) {

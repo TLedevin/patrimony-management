@@ -10,6 +10,7 @@ from investment.investment_management import (
 from scenario.scenario_management import (
     add_scenario,
     delete_scenario,
+    get_scenario_data,
     load_scenarios,
 )
 
@@ -41,6 +42,14 @@ def api_load_scenarios():
     scenarios = load_scenarios()
     logger.info("Loaded scenarios successfully")
     return jsonify(scenarios)
+
+
+@app.route("/api/get_scenario_data/", methods=["GET"])
+def api_get_scenario_data():
+    scenario_id = request.args.get("scenario_id")
+    data = get_scenario_data(scenario_id)
+    logger.info(f"Retrieved data for scenario: {scenario_id}")
+    return jsonify(data)
 
 
 @app.route("/api/delete_scenario/", methods=["GET"])
