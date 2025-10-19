@@ -1,0 +1,81 @@
+@import './../colors.css';
+
+.scenario-page {
+  height: 100vh;
+  width: 100%;
+}
+
+.scenario-main-content {
+  height: calc(100vh - 60px);
+  width: 100%;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.investments-main-content {
+  margin-top: 10px;
+  height: calc(100vh - 150px);
+  display: flex;
+  flex-direction: row;
+}
+
+/* Modal components */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--modal-overlay-background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--modal-background-color);
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--dark-text-color);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-confirm, .btn-cancel {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirm {
+  background-color: var(--button-background-color);
+  color: var(--button-font-color);
+}
+
+.btn-confirm:hover {
+  background-color: var(--button-hover-background-color);
+}
+
+.btn-cancel {
+  background-color: var(--button-cancel-background-color);
+  color: var(--button-font-color);
+}
+
+.btn-cancel:hover {
+  background-color: var(--button-hover-cancel-background-color);
+}

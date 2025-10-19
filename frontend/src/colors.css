@@ -1,0 +1,31 @@
+:root {
+  /* Background colors */
+  --background-color: #e7e6ec;
+  --background-color2: #fafafa;
+  --theme-background-color: #2c3e50;
+  --theme-background-color-hover: #34495e;
+
+  /* Border colors */
+  --light-border-color: #d6d5d5;
+  --dark-border-color: #ababab;
+  --theme-border-color-hover: #007bff;
+
+  /* Text colors */
+  --dark-text-color: #333;
+  --light-text-color: #bdc3c7;
+
+  /* Button colors */
+  --button-background-color: #28a745;
+  --button-hover-background-color: #218838;
+  --button-cancel-background-color: #6c757d;
+  --button-hover-cancel-background-color: #5a6268;
+  --button-hover-delete-background-color: #c82333;
+  --button-font-color: white;
+
+  /* Modal colors */
+  --modal-background-color: white;
+  --modal-overlay-background-color: rgba(0, 0, 0, 0.5);
+
+  /* Shadow colors */
+  --box-shadow-color: rgba(0, 0, 0, 0.2);
+}
