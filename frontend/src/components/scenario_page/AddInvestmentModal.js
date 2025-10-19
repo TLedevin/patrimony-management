@@ -98,6 +98,14 @@ function AddInvestmentModal({
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Add New Investment</h3>
+        <input
+          type="text"
+          value={newInvestmentName}
+          onChange={(e) => setNewInvestmentName(e.target.value)}
+          placeholder="Enter investment name"
+          className="name-input"
+          autoFocus
+        />
         <select
           id="investment-type-select"
           onChange={(e) => setInvestmentType(e.target.value)}
@@ -110,14 +118,7 @@ function AddInvestmentModal({
             </option>
           ))}
         </select>
-        <input
-          type="text"
-          value={newInvestmentName}
-          onChange={(e) => setNewInvestmentName(e.target.value)}
-          placeholder="Enter investment name"
-          className="investment-name-input"
-          autoFocus
-        />
+        <hr className="dropdown-separator" />
         {investmentType &&
           investmentTypes[investmentType]?.parameters.map((param) => (
             <div key={param.id} className="investment-parameter">

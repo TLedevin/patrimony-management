@@ -1,5 +1,3 @@
-import "./AddScenarioModal.css";
-
 function AddScenarioModal({
   newScenarioName,
   setNewScenarioName,
@@ -50,7 +48,7 @@ function AddScenarioModal({
           value={newScenarioName}
           onChange={(e) => setNewScenarioName(e.target.value)}
           placeholder="Enter scenario name"
-          className="scenario-name-input"
+          className="name-input"
           autoFocus
         />
         <div className="modal-buttons">

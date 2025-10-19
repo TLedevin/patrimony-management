@@ -77,11 +77,20 @@ function ScenarioGraph({ scenarioData }) {
                     },
                     ticks: {
                       callback: function (value) {
-                        return value.toFixed(2) + " €";
+                        return value.toFixed(0) + " €";
                       },
                     },
                   },
-                  x: { stacked: true, grid: { display: false } },
+                  x: {
+                    stacked: true,
+                    grid: { display: false },
+                    ticks: {
+                      maxTicksLimit: 10, // Limits the number of ticks displayed
+                      autoSkip: true, // Automatically skips labels to prevent overlap
+                      maxRotation: 0, // Keeps labels horizontal (0 degrees)
+                      minRotation: 0, // Prevents rotation
+                    },
+                  },
                 },
               }}
             />
