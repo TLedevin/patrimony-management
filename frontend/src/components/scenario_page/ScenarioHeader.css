@@ -1,0 +1,73 @@
+@import './../../colors.css';
+
+.scenario-header {
+  height: 60px;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: calc(100% - 20px);
+  border: 1px solid var(--dark-border-color);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.scenario-dropdown {
+  height: 30px;
+  min-width: 200px;
+  margin-left: 20px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: var(--background-color2);
+  cursor: pointer;
+}
+
+.scenario-dropdown:hover {
+  border-color: var(--theme-border-color-hover);
+}
+
+.scenario-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-scenario-btn {
+  background-color: var(--button-background-color);
+  color: var(--button-font-color);
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.add-scenario-btn:hover {
+  background-color: var(--button-hover-background-color);
+}
+
+.delete-scenario-btn {
+  background-color: var(--button-cancel-background-color);
+  color: var(--button-font-color);
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.delete-scenario-btn:hover {
+  background-color: var(--button-hover-delete-background-color);
+}
