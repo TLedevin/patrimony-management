@@ -37,9 +37,7 @@ def generate_scenario_id():
     return 1
 
 
-def add_scenario(
-    name: str, initial_cash: float = 1000, monthly_cash: float = 10
-):
+def add_scenario(name: str, initial_cash: float, monthly_cash: float):
     data_path = conf["paths"]["data"]
     scenario_id = generate_scenario_id()
 

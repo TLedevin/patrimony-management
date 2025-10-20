@@ -32,7 +32,9 @@ logger = logging.getLogger(__name__)
 @app.route("/api/add_scenario/", methods=["GET"])
 def api_add_scenario():
     name = request.args.get("name")
-    result = add_scenario(name)
+    initial_deposit = request.args.get("initial_deposit")
+    monthly_deposit = request.args.get("monthly_deposit")
+    result = add_scenario(name, float(initial_deposit), float(monthly_deposit))
     logger.info(f"Added scenario: {name}")
     return jsonify(result)
 

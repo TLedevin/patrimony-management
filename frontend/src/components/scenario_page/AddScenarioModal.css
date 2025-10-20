@@ -1,0 +1,13 @@
+.scenario-parameter {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.scenario-parameter-input {
+  margin-left: 20px;
+  height: 25px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--background-color2);
+}

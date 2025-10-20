@@ -21,6 +21,7 @@ export const investmentTypes = {
         type: "number",
         required: true,
         min: currentYear,
+        max: currentYear + 5,
         step: 1,
       },
 
@@ -63,7 +64,7 @@ export const investmentTypes = {
         type: "number",
         required: false,
         min: 0,
-        step: 10,
+        step: 100,
         default: 0,
       },
     ],

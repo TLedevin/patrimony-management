@@ -54,14 +54,14 @@ function ScenarioGraph({ scenarioData }) {
                       label: function (context) {
                         return `${
                           context.dataset.label
-                        }: ${context.parsed.y.toFixed(2)} €`;
+                        }: ${context.parsed.y.toLocaleString("fr-FR")} €`;
                       },
                       footer: function (tooltipItems) {
                         const total = tooltipItems.reduce(
                           (sum, item) => sum + item.parsed.y,
                           0
                         );
-                        return `Total: ${total.toFixed(2)} €`;
+                        return `Total: ${total.toLocaleString("fr-FR")} €`;
                       },
                     },
                   },
@@ -77,7 +77,7 @@ function ScenarioGraph({ scenarioData }) {
                     },
                     ticks: {
                       callback: function (value) {
-                        return value.toFixed(0) + " €";
+                        return value.toLocaleString("fr-FR") + " €";
                       },
                     },
                   },

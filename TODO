@@ -4,8 +4,6 @@ DONE: "Corriger le bug de la ligne totale et savings sur le graph"
 DONE: "Rationnaliser le code"
 DONE: "Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel"
 
-TODO: "Tester la fonction du code qui génère les data du savings account"
-"(tester tous les cas limites possibles et mettre des contraintes UX si besoin)"
 TODO: "faire en sorte de pouvoir modifier les paramètre initiaux du scénario"
 "(cash de départ, cash mensuel, date de début, date de fin)"
 TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
@@ -13,6 +11,9 @@ TODO: "Ajouter d'autres types d'investissement"
 TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
 TODO: "Implémenter la page patrimoine"
 TODO: "Adapter le page scénario pour utiliser les informations utilisateur"
+TODO: "Ajouter la possibilité de modifier les investissements créés"
+TODO: "Ajouter des vérifications de cash disponible lors d'un nouvel investissement"
+TODO: "Ajouter des options de retrait pour les investissements"
 
 FIXME:
 

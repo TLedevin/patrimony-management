@@ -35,7 +35,7 @@ function ScenarioPage() {
   const [selectedScenario, setSelectedScenario] = useState("");
   const [scenarioData, setScenarioData] = useState(null);
   const [showAddScenarioModal, setShowAddScenarioModal] = useState(false);
-  const [newScenarioName, setNewScenarioName] = useState("");
+  const [scenarioParams, setScenarioParams] = useState({});
 
   const [investments, setInvestments] = useState([]);
   const [selectedInvestment, setSelectedInvestment] = useState("");
@@ -43,8 +43,6 @@ function ScenarioPage() {
   const [newInvestmentName, setNewInvestmentName] = useState("");
   const [investmentType, setInvestmentType] = useState("");
   const [investmentParams, setInvestmentParams] = useState({});
-  const [selectedInvestmentsForGraph, setSelectedInvestmentsForGraph] =
-    useState({});
 
   // Fetch scenarios on component mount
   useEffect(() => {
@@ -104,8 +102,8 @@ function ScenarioPage() {
         {/* Modal for adding new scenario */}
         {showAddScenarioModal && (
           <AddScenarioModal
-            newScenarioName={newScenarioName}
-            setNewScenarioName={setNewScenarioName}
+            scenarioParams={scenarioParams}
+            setScenarioParams={setScenarioParams}
             setShowAddScenarioModal={setShowAddScenarioModal}
             setScenarios={setScenarios}
             setInvestments={setInvestments}

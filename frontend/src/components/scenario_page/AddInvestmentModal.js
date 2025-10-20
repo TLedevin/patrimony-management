@@ -27,6 +27,16 @@ function AddInvestmentModal({
       (param) => param.required && !investmentParams[param.id]
     );
 
+    if (
+      investmentTypes[investmentType].parameters.find(
+        (p) => p.id === "end_year"
+      ) &&
+      investmentParams.end_year <= investmentParams.start_year
+    ) {
+      alert("End year must be greater than start year");
+      return;
+    }
+
     if (missingParams.length > 0) {
       alert(
         `Please fill in the following required fields: ${missingParams
