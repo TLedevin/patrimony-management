@@ -1,4 +1,5 @@
 import "./AddScenarioModal.css";
+import scenarioParamsConfig from "../../config/scenarioParams";
 
 function AddScenarioModal({
   scenarioParams,
@@ -63,34 +64,21 @@ function AddScenarioModal({
           autoFocus
         />
         <hr className="dropdown-separator" />
-        <div className="scenario-parameter">
-          <label htmlFor="initial_deposit">Initial Deposit (€)</label>
-          <input
-            id="initial_deposit"
-            type="number"
-            value={scenarioParams.initial_deposit || 0}
-            onChange={(e) =>
-              handleParamChange("initial_deposit", e.target.value)
-            }
-            min={0}
-            step={1000}
-            className="scenario-parameter-input"
-          />
-        </div>
-        <div className="scenario-parameter">
-          <label htmlFor="monthly_deposit">Monthly Deposit (€)</label>
-          <input
-            id="monthly_deposit"
-            type="number"
-            value={scenarioParams.monthly_deposit || 0}
-            onChange={(e) =>
-              handleParamChange("monthly_deposit", e.target.value)
-            }
-            min={0}
-            step={100}
-            className="scenario-parameter-input"
-          />
-        </div>
+        {scenarioParamsConfig.map((param) => (
+          <div key={param.id} className="scenario-parameter">
+            <label htmlFor={param.id}>{param.label}</label>
+            <input
+              id={param.id}
+              type={param.type}
+              value={scenarioParams[param.id] ?? param.default}
+              onChange={(e) => handleParamChange(param.id, e.target.value)}
+              min={param.min}
+              max={param.max}
+              step={param.step}
+              className={param.className || "scenario-parameter-input"}
+            />
+          </div>
+        ))}
         <div className="modal-buttons">
           <button onClick={handleAddScenario} className="btn-confirm">
             Add

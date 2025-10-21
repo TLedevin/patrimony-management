@@ -37,14 +37,29 @@ def generate_scenario_id():
     return 1
 
 
-def add_scenario(name: str, initial_cash: float, monthly_cash: float):
+def add_scenario(
+    name: str,
+    initial_cash: float,
+    monthly_cash: float,
+    start_year: int = None,
+    start_month: int = None,
+    end_year: int = None,
+    end_month: int = None,
+) -> int:
+    print(
+        name,
+        initial_cash,
+        monthly_cash,
+        start_year,
+        start_month,
+        end_year,
+        end_month,
+    )
     data_path = conf["paths"]["data"]
     scenario_id = generate_scenario_id()
 
     simulation_duration = (
-        (conf["simulation_end_year"] - conf["simulation_start_year"]) * 12
-        + conf["simulation_end_month"]
-        - conf["simulation_start_month"]
+        (end_year - start_year) * 12 + end_month - start_month
     )
 
     cash_baseline = [
@@ -52,7 +67,7 @@ def add_scenario(name: str, initial_cash: float, monthly_cash: float):
     ]
 
     dates = [
-        f"{conf['simulation_start_year'] + (month // 12)}-{(month % 12) + 1:02d}"
+        f"{start_year + (month // 12)}-{(month % 12) + 1:02d}"
         for month in range(simulation_duration)
     ]
 
@@ -63,11 +78,16 @@ def add_scenario(name: str, initial_cash: float, monthly_cash: float):
             "name": name,
             "dates": dates,
             "cash_baseline": cash_baseline,
+            "start_year": start_year,
+            "start_month": start_month,
+            "end_year": end_year,
+            "end_month": end_month,
             "investments": {},
         }
         f.seek(0)
         json.dump(scenarios, f)
         f.truncate()
+    print(cash_baseline)
     return scenario_id
 
 

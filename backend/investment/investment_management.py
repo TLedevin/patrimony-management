@@ -22,13 +22,15 @@ def generate_investment_id(scenario_id: int):
     return 1
 
 
-def generate_investment_data(type, parameters) -> dict:
+def generate_investment_data(
+    scenario_id: int, type: str, parameters: dict
+) -> dict:
     mapping_investment_types = {
         "saving_account": generate_saving_account_data,
         # "stock_investment": generate_stock_investment_data,
     }
 
-    return mapping_investment_types[type](parameters)
+    return mapping_investment_types[type](scenario_id, parameters)
 
 
 def add_investment(
@@ -39,7 +41,7 @@ def add_investment(
 ) -> int:
     data_path = conf["paths"]["data"]
     investment_id = generate_investment_id(scenario_id)
-    data = generate_investment_data(type, parameters)
+    data = generate_investment_data(scenario_id, type, parameters)
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)

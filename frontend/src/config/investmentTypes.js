@@ -1,6 +1,5 @@
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
 
 export const investmentTypes = {
   saving_account: {
@@ -21,7 +20,6 @@ export const investmentTypes = {
         type: "number",
         required: true,
         min: currentYear,
-        max: currentYear + 5,
         step: 1,
       },
 
@@ -40,7 +38,6 @@ export const investmentTypes = {
         type: "number",
         required: true,
         min: currentYear + 1,
-        max: currentYear + 5,
         step: 1,
         validate: (formData) => {
           if (formData.start_year >= formData.end_year) {

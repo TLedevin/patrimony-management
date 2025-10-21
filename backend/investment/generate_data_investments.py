@@ -1,8 +1,15 @@
 import numpy as np
-from settings import conf
+from scenario.scenario_management import load_scenarios
 
 
-def generate_saving_account_data(parameters: dict) -> dict:
+def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
+    scenario = load_scenarios()[str(scenario_id)]
+    print(scenario.keys())
+    end_year = int(scenario["end_year"])
+    start_year = int(scenario["start_year"])
+    end_month = int(scenario["end_month"])
+    start_month = int(scenario["start_month"])
+
     monthly_rate = (
         np.exp(
             1
@@ -13,10 +20,10 @@ def generate_saving_account_data(parameters: dict) -> dict:
     )
 
     simulation_duration = (
-        (conf["simulation_end_year"] - conf["simulation_start_year"]) * 12
-        + conf["simulation_end_month"]
-        - conf["simulation_start_month"]
+        (end_year - start_year) * 12 + end_month - start_month
     )
+
+    print(simulation_duration)
 
     investment_duration = (
         (int(parameters["end_year"]) - int(parameters["start_year"])) * 12
@@ -25,9 +32,9 @@ def generate_saving_account_data(parameters: dict) -> dict:
     )
 
     start_month = (
-        (int(parameters["start_year"]) - conf["simulation_start_year"]) * 12
+        (int(parameters["start_year"]) - start_year) * 12
         + int(parameters["start_month"])
-        - conf["simulation_start_month"]
+        - start_month
     )
 
     cash_flows = []
