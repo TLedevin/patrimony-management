@@ -39,6 +39,20 @@ function ScenarioGraph({ scenarioData }) {
                     pointHoverRadius: 5,
                     pointBackgroundColor: "rgba(64, 164, 164, 1)",
                   },
+                  {
+                    label: "Stock exchange",
+                    data: scenarioData.patrimony.stock_exchange,
+                    borderWidth: 2,
+                    borderColor: "rgba(66, 164, 64, 1)",
+                    backgroundColor: "rgba(66, 164, 64, 0.3)",
+                    fill: true,
+                    tension: 0.1,
+                    stack: "stack1",
+                    order: 1,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: "rgba(66, 164, 64, 1)",
+                  },
                 ],
               }}
               options={{

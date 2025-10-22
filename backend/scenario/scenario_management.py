@@ -135,9 +135,15 @@ def get_scenario_data(scenario_id: int) -> dict:
             patrimony = 0
             for investment_id in scenario["investments"].keys():
                 if key in data["patrimony"]:
-                    patrimony += scenario["investments"][investment_id][
-                        "data"
-                    ]["patrimony"][key][i]
+                    if (
+                        key
+                        in scenario["investments"][investment_id]["data"][
+                            "patrimony"
+                        ]
+                    ):
+                        patrimony += scenario["investments"][investment_id][
+                            "data"
+                        ]["patrimony"][key][i]
             data["patrimony"][key].append(patrimony)
 
     return data
