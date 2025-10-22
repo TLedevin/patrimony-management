@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./AddInvestmentModal.css";
 
 function AddInvestmentModal({
@@ -23,18 +24,35 @@ function AddInvestmentModal({
 
     // Validate required parameters
     const currentType = investmentTypes[investmentType];
-    const missingParams = currentType.parameters.filter(
-      (param) => param.required && !investmentParams[param.id]
-    );
+    const missingParams = currentType.parameters.filter((param) => {
+      if (!param.required) return false;
+      const effectiveValue =
+        investmentParams[param.id] !== undefined
+          ? investmentParams[param.id]
+          : param.default;
+      // Treat undefined or empty string as missing. 0 is valid.
+      return effectiveValue === undefined || effectiveValue === "";
+    });
 
-    if (
-      investmentTypes[investmentType].parameters.find(
-        (p) => p.id === "end_year"
-      ) &&
-      investmentParams.end_year <= investmentParams.start_year
-    ) {
-      alert("End year must be greater than start year");
-      return;
+    // Validate end_year > start_year when both values are present (consider defaults)
+    const hasEndYear = currentType.parameters.some((p) => p.id === "end_year");
+    if (hasEndYear) {
+      const endYear =
+        investmentParams.end_year !== undefined
+          ? investmentParams.end_year
+          : currentType.parameters.find((p) => p.id === "end_year")?.default;
+      const startYear =
+        investmentParams.start_year !== undefined
+          ? investmentParams.start_year
+          : currentType.parameters.find((p) => p.id === "start_year")?.default;
+      if (
+        endYear !== undefined &&
+        startYear !== undefined &&
+        endYear <= startYear
+      ) {
+        alert("End year must be greater than start year");
+        return;
+      }
     }
 
     if (missingParams.length > 0) {
@@ -97,6 +115,23 @@ function AddInvestmentModal({
     }));
   };
 
+  // When investmentType changes, initialize investmentParams with defaults so the
+  // UI shows defaults and validation treats them as present.
+  useEffect(() => {
+    if (investmentType) {
+      const paramsInit = {};
+      const paramsConfig = investmentTypes[investmentType]?.parameters || [];
+      paramsConfig.forEach((p) => {
+        // Use default if provided, otherwise empty string so inputs are controlled
+        paramsInit[p.id] = p.default !== undefined ? p.default : "";
+      });
+      setInvestmentParams(paramsInit);
+    } else {
+      setInvestmentParams({});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [investmentType]);
+
   const handleInvestmentModalClose = () => {
     setShowAddInvestmentModal(false);
     setNewInvestmentName("");
@@ -136,8 +171,17 @@ function AddInvestmentModal({
               <input
                 id={param.id}
                 type={param.type}
-                value={investmentParams[param.id] || param.default || ""}
-                onChange={(e) => handleParamChange(param.id, e.target.value)}
+                value={investmentParams[param.id] ?? param.default ?? ""}
+                onChange={(e) =>
+                  handleParamChange(
+                    param.id,
+                    param.type === "number"
+                      ? e.target.value === ""
+                        ? ""
+                        : Number(e.target.value)
+                      : e.target.value
+                  )
+                }
                 min={param.min}
                 max={param.max}
                 step={param.step}

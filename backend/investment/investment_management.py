@@ -1,6 +1,9 @@
 import json
 
-from investment.generate_data_investments import generate_saving_account_data
+from investment.generate_data_investments import (
+    generate_saving_account_data,
+    generate_stock_exchange_data,
+)
 from settings import conf
 
 
@@ -27,7 +30,7 @@ def generate_investment_data(
 ) -> dict:
     mapping_investment_types = {
         "saving_account": generate_saving_account_data,
-        # "stock_investment": generate_stock_investment_data,
+        "stock_exchange": generate_stock_exchange_data,
     }
 
     return mapping_investment_types[type](scenario_id, parameters)
@@ -64,6 +67,9 @@ def delete_investment(scenario_id: int, investment_id: int):
         scenarios = json.load(f)
         if str(investment_id) in scenarios[scenario_id]["investments"]:
             del scenarios[scenario_id]["investments"][str(investment_id)]
+            f.seek(0)
+            json.dump(scenarios, f)
+            f.truncate()
             f.seek(0)
             json.dump(scenarios, f)
             f.truncate()
