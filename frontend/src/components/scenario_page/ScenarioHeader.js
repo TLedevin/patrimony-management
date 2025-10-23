@@ -1,4 +1,5 @@
 import "./ScenarioHeader.css";
+import scenarioParams from "../../config/scenarioParams";
 
 function ScenarioHeader({
   selectedScenario,
@@ -8,6 +9,7 @@ function ScenarioHeader({
   setScenarios,
   setInvestments,
 }) {
+  const currentScenario = scenarios.find((s) => s.id === selectedScenario);
   const handleScenarioChange = async (event) => {
     const scenarioId = parseInt(event.target.value);
     setSelectedScenario(scenarioId);
@@ -80,6 +82,24 @@ function ScenarioHeader({
           🗑️
         </button>
       </div>
+      {currentScenario && (
+        <div className="scenario-parameters-display">
+          {scenarioParams.map((param) => (
+            <div key={param.id} className="parameter-group">
+              <label>{param.label}:</label>
+              <input
+                type={param.type}
+                value={currentScenario[param.id] || param.default}
+                min={param.min}
+                max={param.max}
+                step={param.step}
+                readOnly
+                className={param.className}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

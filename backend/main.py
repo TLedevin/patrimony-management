@@ -10,6 +10,7 @@ from investment.investment_management import (
 from scenario.scenario_management import (
     add_scenario,
     delete_scenario,
+    get_scenario_data,
     load_scenarios,
 )
 
@@ -31,7 +32,21 @@ logger = logging.getLogger(__name__)
 @app.route("/api/add_scenario/", methods=["GET"])
 def api_add_scenario():
     name = request.args.get("name")
-    result = add_scenario(name)
+    initial_deposit = request.args.get("initial_deposit")
+    monthly_deposit = request.args.get("monthly_deposit")
+    start_year = request.args.get("start_year")
+    start_month = request.args.get("start_month")
+    end_year = request.args.get("end_year")
+    end_month = request.args.get("end_month")
+    result = add_scenario(
+        name,
+        float(initial_deposit),
+        float(monthly_deposit),
+        int(start_year),
+        int(start_month),
+        int(end_year),
+        int(end_month),
+    )
     logger.info(f"Added scenario: {name}")
     return jsonify(result)
 
@@ -41,6 +56,14 @@ def api_load_scenarios():
     scenarios = load_scenarios()
     logger.info("Loaded scenarios successfully")
     return jsonify(scenarios)
+
+
+@app.route("/api/get_scenario_data/", methods=["GET"])
+def api_get_scenario_data():
+    scenario_id = request.args.get("scenario_id")
+    data = get_scenario_data(scenario_id)
+    logger.info(f"Retrieved data for scenario: {scenario_id}")
+    return jsonify(data)
 
 
 @app.route("/api/delete_scenario/", methods=["GET"])

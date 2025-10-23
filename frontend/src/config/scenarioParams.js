@@ -1,0 +1,61 @@
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+
+export default [
+  {
+    id: "initial_deposit",
+    label: "Initial Deposit (€)",
+    type: "number",
+    min: 0,
+    step: 1000,
+    default: 0,
+    className: "scenario-parameter-input",
+  },
+  {
+    id: "monthly_deposit",
+    label: "Monthly Deposit (€)",
+    type: "number",
+    min: 0,
+    step: 100,
+    default: 0,
+    className: "scenario-parameter-input",
+  },
+  {
+    id: "start_year",
+    label: "Start Year",
+    type: "number",
+    min: currentYear,
+    step: 1,
+    default: 0,
+    className: "scenario-parameter-input",
+  },
+  {
+    id: "start_month",
+    label: "Start Month",
+    type: "number",
+    min: 1,
+    max: 12,
+    step: 1,
+    default: 0,
+    className: "scenario-parameter-input",
+  },
+  {
+    id: "end_year",
+    label: "End Year",
+    type: "number",
+    min: currentYear,
+    step: 1,
+    default: 0,
+    className: "scenario-parameter-input",
+  },
+  {
+    id: "end_month",
+    label: "End Month",
+    type: "number",
+    min: 0,
+    max: 12,
+    step: 1,
+    default: 0,
+    className: "scenario-parameter-input",
+  },
+];

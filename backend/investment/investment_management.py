@@ -1,6 +1,9 @@
 import json
 
-from investment.generate_data_investments import generate_saving_account_data
+from investment.generate_data_investments import (
+    generate_saving_account_data,
+    generate_stock_exchange_data,
+)
 from settings import conf
 
 
@@ -10,7 +13,7 @@ def generate_investment_id(scenario_id: int):
         scenarios = json.load(f)
     if scenarios:
         existing_id = [
-            int(i) for i in scenarios[scenario_id]["investments"].keys()
+            int(i) for i in scenarios[str(scenario_id)]["investments"].keys()
         ]
         if len(existing_id) > 0:
 
@@ -22,24 +25,15 @@ def generate_investment_id(scenario_id: int):
     return 1
 
 
-def generate_investment_data(type, parameters) -> dict:
+def generate_investment_data(
+    scenario_id: int, type: str, parameters: dict
+) -> dict:
     mapping_investment_types = {
         "saving_account": generate_saving_account_data,
-        # "stock_investment": generate_stock_investment_data,
+        "stock_exchange": generate_stock_exchange_data,
     }
 
-    data = mapping_investment_types[type](parameters)
-    keys = data["patrimony"].keys()
-
-    total = []
-
-    for i in range(len(data["patrimony"]["cash"])):
-        s = 0
-        for key in keys:
-            s += data["patrimony"][key][i]
-        total.append(s)
-    data["patrimony"]["total"] = total
-    return data
+    return mapping_investment_types[type](scenario_id, parameters)
 
 
 def add_investment(
@@ -50,11 +44,11 @@ def add_investment(
 ) -> int:
     data_path = conf["paths"]["data"]
     investment_id = generate_investment_id(scenario_id)
-    data = generate_investment_data(type, parameters)
+    data = generate_investment_data(scenario_id, type, parameters)
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        scenarios[scenario_id]["investments"][investment_id] = {
+        scenarios[str(scenario_id)]["investments"][investment_id] = {
             "id": investment_id,
             "name": name,
             "type": type,
@@ -73,6 +67,9 @@ def delete_investment(scenario_id: int, investment_id: int):
         scenarios = json.load(f)
         if str(investment_id) in scenarios[scenario_id]["investments"]:
             del scenarios[scenario_id]["investments"][str(investment_id)]
+            f.seek(0)
+            json.dump(scenarios, f)
+            f.truncate()
             f.seek(0)
             json.dump(scenarios, f)
             f.truncate()

@@ -1,87 +1,57 @@
 import { Line } from "react-chartjs-2";
 import "./ScenarioGraph.css";
 
-function ScenarioGraph({
-  selectedScenario,
-  investments,
-  selectedInvestmentsForGraph,
-  setSelectedInvestmentsForGraph,
-}) {
+function ScenarioGraph({ scenarioData }) {
   return (
     <div className="investments-graph">
-      {selectedScenario && investments.length > 0 && (
+      {scenarioData && (
         <>
-          <div className="graph-filters">
-            {investments.map((investment) => (
-              <label key={investment.id} className="graph-filter-item">
-                <input
-                  type="checkbox"
-                  checked={selectedInvestmentsForGraph[investment.id] || false}
-                  onChange={(e) => {
-                    setSelectedInvestmentsForGraph((prev) => ({
-                      ...prev,
-                      [investment.id]: e.target.checked,
-                    }));
-                  }}
-                />
-                {investment.name}
-              </label>
-            ))}
-          </div>
           <div className="graph-container">
             <Line
               data={{
-                labels: investments[0]?.data?.dates || [],
+                labels: scenarioData.dates,
                 datasets: [
                   {
+                    label: "Cash",
+                    data: scenarioData.patrimony.cash,
+                    borderWidth: 2,
+                    borderColor: "rgba(223, 81, 112, 1)",
+                    backgroundColor: "rgba(223, 81, 112, 0.3)",
+                    fill: true,
+                    tension: 0.1,
+                    stack: "stack1",
+                    order: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointBackgroundColor: "rgba(223, 81, 112, 1)",
+                  },
+                  {
                     label: "Savings",
-                    data: investments[0]?.data?.dates.map((_, index) => {
-                      return Object.entries(selectedInvestmentsForGraph)
-                        .filter(([_, isSelected]) => isSelected)
-                        .reduce((sum, [investmentId]) => {
-                          const investment = investments.find(
-                            (inv) => inv.id.toString() === investmentId
-                          );
-                          return (
-                            sum +
-                            (investment?.data?.patrimony?.savings[index] || 0)
-                          );
-                        }, 0);
-                    }),
+                    data: scenarioData.patrimony.savings,
                     borderWidth: 2,
                     borderColor: "rgba(64, 164, 164, 1)",
                     backgroundColor: "rgba(64, 164, 164, 0.3)",
-                    fill: "stack",
-                    tension: 0,
+                    fill: true,
+                    tension: 0.1,
+                    stack: "stack1",
                     order: 1,
                     pointRadius: 0,
                     pointHoverRadius: 5,
                     pointBackgroundColor: "rgba(64, 164, 164, 1)",
                   },
                   {
-                    label: "Cash",
-                    data: investments[0]?.data?.dates.map((_, index) => {
-                      return Object.entries(selectedInvestmentsForGraph)
-                        .filter(([_, isSelected]) => isSelected)
-                        .reduce((sum, [investmentId]) => {
-                          const investment = investments.find(
-                            (inv) => inv.id.toString() === investmentId
-                          );
-                          return (
-                            sum +
-                            (investment?.data?.patrimony?.cash[index] || 0)
-                          );
-                        }, 0);
-                    }),
+                    label: "Stock exchange",
+                    data: scenarioData.patrimony.stock_exchange,
                     borderWidth: 2,
-                    borderColor: "rgba(223, 81, 112, 1)",
-                    backgroundColor: "rgba(223, 81, 112, 0.3)",
-                    fill: "stack",
-                    tension: 0,
+                    borderColor: "rgba(66, 164, 64, 1)",
+                    backgroundColor: "rgba(66, 164, 64, 0.3)",
+                    fill: true,
+                    tension: 0.1,
+                    stack: "stack1",
                     order: 1,
                     pointRadius: 0,
                     pointHoverRadius: 5,
-                    pointBackgroundColor: "rgba(223, 81, 112, 1)",
+                    pointBackgroundColor: "rgba(66, 164, 64, 1)",
                   },
                 ],
               }}
@@ -98,14 +68,14 @@ function ScenarioGraph({
                       label: function (context) {
                         return `${
                           context.dataset.label
-                        }: ${context.parsed.y.toFixed(2)} €`;
+                        }: ${context.parsed.y.toLocaleString("fr-FR")} €`;
                       },
                       footer: function (tooltipItems) {
                         const total = tooltipItems.reduce(
                           (sum, item) => sum + item.parsed.y,
                           0
                         );
-                        return `Total: ${total.toFixed(2)} €`;
+                        return `Total: ${total.toLocaleString("fr-FR")} €`;
                       },
                     },
                   },
@@ -121,11 +91,20 @@ function ScenarioGraph({
                     },
                     ticks: {
                       callback: function (value) {
-                        return value.toFixed(2) + " €";
+                        return value.toLocaleString("fr-FR") + " €";
                       },
                     },
                   },
-                  x: { stacked: true, grid: { display: false } },
+                  x: {
+                    stacked: true,
+                    grid: { display: false },
+                    ticks: {
+                      maxTicksLimit: 10, // Limits the number of ticks displayed
+                      autoSkip: true, // Automatically skips labels to prevent overlap
+                      maxRotation: 0, // Keeps labels horizontal (0 degrees)
+                      minRotation: 0, // Prevents rotation
+                    },
+                  },
                 },
               }}
             />

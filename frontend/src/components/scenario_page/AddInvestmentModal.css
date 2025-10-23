@@ -1,14 +1,30 @@
-.investment-name-input {
-  width: 100%;
-  height: 35px;
-  border: 1px solid var(--light-border-color);
-  border-radius: 4px;
+.investment-type-dropdown {
+  height: 30px;
+  min-width: 200px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
   font-size: 14px;
-  margin-bottom: 15px;
-  box-sizing: border-box;
+  background-color: var(--background-color2);
+  cursor: pointer;
 }
 
-.investment-name-input:focus {
-  outline: none;
-  border-color: var(--theme-border-color-hover);
+.dropdown-separator {
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.investment-parameter {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.investment-parameter-input {
+  margin-left: 20px;
+  height: 25px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--background-color2);
 }

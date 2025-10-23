@@ -1,16 +1,24 @@
-// DONE: Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné
-// DONE: Commencer par un seul type: compte épargne
-// DONE: Corriger le bug de la ligne totale et savings sur le graph
-// DONE: Rationnaliser le code
+DONE: "Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné"
+DONE: "Commencer par un seul type: compte épargne"
+DONE: "Corriger le bug de la ligne totale et savings sur le graph"
+DONE: "Rationnaliser le code"
+DONE: "Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel"
+DONE: "Ajouter la possibilité d'investir mensuellement sur des placements"
 
-// TODO: Tester la fonction du code qui génère les data du savings account
-// TODO: Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel
-// TODO: Ajouter d'autres types d'investissement
-// TODO: Affiner le visuel du graphique (filtres, etc.)
-// TODO: Ajouter un tableau récapitulatif du scénario sous le graphique
+TODO: "faire en sorte de pouvoir modifier les paramètre initiaux du scénario après création"
+      "(cash de départ, cash mensuel, date de début, date de fin)"
+TODO: "Add a drop down list to choose the patrimony to display"
+TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
+TODO: "Ajouter d'autres types d'investissement"
+TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
+TODO: "Implémenter la page patrimoine"
+TODO: "Adapter le page scénario pour utiliser les informations utilisateur"
+TODO: "Ajouter la possibilité de modifier les investissements créés"
+TODO: "Ajouter des vérifications de cash disponible lors d'un nouvel investissement"
+TODO: "Ajouter des options de retrait pour les investissements"
 
-// FIXME:
+FIXME:
 
-// BUG:
+BUG:
 
-// NOTE: 
+NOTE:

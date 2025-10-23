@@ -33,8 +33,9 @@ ChartJS.register(
 function ScenarioPage() {
   const [scenarios, setScenarios] = useState([]);
   const [selectedScenario, setSelectedScenario] = useState("");
+  const [scenarioData, setScenarioData] = useState(null);
   const [showAddScenarioModal, setShowAddScenarioModal] = useState(false);
-  const [newScenarioName, setNewScenarioName] = useState("");
+  const [scenarioParams, setScenarioParams] = useState({});
 
   const [investments, setInvestments] = useState([]);
   const [selectedInvestment, setSelectedInvestment] = useState("");
@@ -42,8 +43,6 @@ function ScenarioPage() {
   const [newInvestmentName, setNewInvestmentName] = useState("");
   const [investmentType, setInvestmentType] = useState("");
   const [investmentParams, setInvestmentParams] = useState({});
-  const [selectedInvestmentsForGraph, setSelectedInvestmentsForGraph] =
-    useState({});
 
   // Fetch scenarios on component mount
   useEffect(() => {
@@ -53,7 +52,29 @@ function ScenarioPage() {
       setScenarios(Object.values(data));
     };
     fetchScenarios();
-  }, []); // Added dependency array to prevent infinite re-renders
+    const fetchScenarioData = async () => {
+      if (selectedScenario) {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/get_scenario_data/?scenario_id=${selectedScenario}`
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log("Fetched scenario data:", data);
+          setScenarioData(data);
+        } catch (error) {
+          console.error("Error fetching scenario data:", error);
+          setScenarioData(null);
+        }
+      } else {
+        setScenarioData(null);
+      }
+    };
+
+    fetchScenarioData();
+  }, [selectedScenario]); // Added dependency array to prevent infinite re-renders
 
   return (
     <div className="scenario-page">
@@ -68,25 +89,21 @@ function ScenarioPage() {
           setInvestments={setInvestments}
         />
         <div className="investments-main-content">
-          <ScenarioGraph
-            selectedScenario={selectedScenario}
-            investments={investments}
-            selectedInvestmentsForGraph={selectedInvestmentsForGraph}
-            setSelectedInvestmentsForGraph={setSelectedInvestmentsForGraph}
-          />
+          <ScenarioGraph scenarioData={scenarioData} />
           <InvestmentList
             selectedScenario={selectedScenario}
             investments={investments}
             setShowAddInvestmentModal={setShowAddInvestmentModal}
             setScenarios={setScenarios}
             setInvestments={setInvestments}
+            setScenarioData={setScenarioData}
           />
         </div>
         {/* Modal for adding new scenario */}
         {showAddScenarioModal && (
           <AddScenarioModal
-            newScenarioName={newScenarioName}
-            setNewScenarioName={setNewScenarioName}
+            scenarioParams={scenarioParams}
+            setScenarioParams={setScenarioParams}
             setShowAddScenarioModal={setShowAddScenarioModal}
             setScenarios={setScenarios}
             setInvestments={setInvestments}
@@ -107,6 +124,7 @@ function ScenarioPage() {
             setScenarios={setScenarios}
             setInvestments={setInvestments}
             setSelectedInvestment={setSelectedInvestment}
+            setScenarioData={setScenarioData}
           />
         )}
       </div>

@@ -1,7 +1,7 @@
 @import './../../colors.css';
 
 .scenario-header {
-  height: 60px;
+  min-height: 60px;
   margin-top: 10px;
   margin-left: 10px;
   width: calc(100% - 20px);
@@ -9,6 +9,75 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.scenario-controls {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.scenario-parameters-display {
+  display: flex;
+  margin-right: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  max-width: calc(100% - 300px); /* Leave space for the controls */
+  scrollbar-width: thin;  /* For Firefox */
+  -ms-overflow-style: -ms-autohiding-scrollbar;  /* For IE and Edge */
+}
+
+/* For Webkit browsers like Chrome/Safari */
+.scenario-parameters-display::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scenario-parameters-display::-webkit-scrollbar-track {
+  background: var(--background-color2);
+  border-radius: 3px;
+}
+
+.scenario-parameters-display::-webkit-scrollbar-thumb {
+  background: var(--light-border-color);
+  border-radius: 3px;
+}
+
+.scenario-parameters-display::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-border-color);
+}
+
+.parameter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.parameter-group label {
+  font-size: 13px;
+  color: var(--text-color);
+  min-width: 50px;
+}
+
+.scenario-parameters-display label {
+  margin-left: 15px;
+}
+
+.scenario-parameters-display input {
+  width: auto;
+  max-width: 60px;
+  height: 25px;
+  border: 1px solid var(--light-border-color);
+  border-radius: 4px;
+  background-color: var(--background-color2);
+  color: var(--text-color);
+  font-size: 13px;
+  cursor: not-allowed;
+  margin-left: 5px;
 }
 
 .scenario-dropdown {
