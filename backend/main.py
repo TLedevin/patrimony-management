@@ -12,6 +12,7 @@ from scenario.scenario_management import (
     delete_scenario,
     get_scenario_data,
     load_scenarios,
+    modify_scenario,
 )
 
 # Create Flask app
@@ -48,6 +49,30 @@ def api_add_scenario():
         int(end_month),
     )
     logger.info(f"Added scenario: {name}")
+    return jsonify(result)
+
+
+@app.route("/api/modify_scenario/", methods=["GET"])
+def api_modify_scenario():
+    scenario_id = request.args.get("scenario_id")
+    name = request.args.get("name")
+    initial_deposit = request.args.get("initial_deposit")
+    monthly_deposit = request.args.get("monthly_deposit")
+    start_year = request.args.get("start_year")
+    start_month = request.args.get("start_month")
+    end_year = request.args.get("end_year")
+    end_month = request.args.get("end_month")
+    result = modify_scenario(
+        int(scenario_id),
+        name,
+        float(initial_deposit),
+        float(monthly_deposit),
+        int(start_year),
+        int(start_month),
+        int(end_year),
+        int(end_month),
+    )
+    logger.info(f"Modified scenario: {scenario_id}")
     return jsonify(result)
 
 

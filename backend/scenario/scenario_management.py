@@ -1,6 +1,7 @@
 import json
 import os
 
+from investment.investment_management import modify_investment
 from settings import conf
 
 
@@ -46,15 +47,7 @@ def add_scenario(
     end_year: int = None,
     end_month: int = None,
 ) -> int:
-    print(
-        name,
-        initial_deposit,
-        monthly_deposit,
-        start_year,
-        start_month,
-        end_year,
-        end_month,
-    )
+
     data_path = conf["paths"]["data"]
     scenario_id = generate_scenario_id()
 
@@ -90,7 +83,61 @@ def add_scenario(
         f.seek(0)
         json.dump(scenarios, f)
         f.truncate()
-    print(cash_baseline)
+
+    return scenario_id
+
+
+def modify_scenario(
+    scenario_id: int,
+    name: str,
+    initial_deposit: float,
+    monthly_deposit: float,
+    start_year: int = None,
+    start_month: int = None,
+    end_year: int = None,
+    end_month: int = None,
+):
+    data_path = conf["paths"]["data"]
+
+    simulation_duration = (
+        (end_year - start_year) * 12 + end_month - start_month
+    )
+
+    cash_baseline = [
+        initial_deposit + i * monthly_deposit
+        for i in range(simulation_duration)
+    ]
+
+    dates = [
+        f"{start_year + (month // 12)}-{(month % 12) + 1:02d}"
+        for month in range(simulation_duration)
+    ]
+
+    with open(data_path + "scenarios/scenarios.json", "r+") as f:
+        scenarios = json.load(f)
+        scenarios[str(scenario_id)]["name"] = name
+        scenarios[str(scenario_id)]["dates"] = dates
+        scenarios[str(scenario_id)]["initial_deposit"] = initial_deposit
+        scenarios[str(scenario_id)]["monthly_deposit"] = monthly_deposit
+        scenarios[str(scenario_id)]["cash_baseline"] = cash_baseline
+        scenarios[str(scenario_id)]["start_year"] = start_year
+        scenarios[str(scenario_id)]["start_month"] = start_month
+        scenarios[str(scenario_id)]["end_year"] = end_year
+        scenarios[str(scenario_id)]["end_month"] = end_month
+
+        f.seek(0)
+        json.dump(scenarios, f)
+        f.truncate()
+
+        for investment in scenarios[str(scenario_id)]["investments"].values():
+            modify_investment(
+                scenario_id,
+                investment["id"],
+                investment["name"],
+                investment["type"],
+                investment["parameters"],
+            )
+
     return scenario_id
 
 

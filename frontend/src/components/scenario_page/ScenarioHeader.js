@@ -8,6 +8,7 @@ function ScenarioHeader({
   setSelectedScenario,
   setScenarios,
   setInvestments,
+  setShowModifyScenarioModal,
 }) {
   const currentScenario = scenarios.find((s) => s.id === selectedScenario);
   const handleScenarioChange = async (event) => {
@@ -100,6 +101,11 @@ function ScenarioHeader({
           ))}
         </div>
       )}
+      <button
+        className="modify-scenario-btn"
+        onClick={() => setShowModifyScenarioModal(true)}
+        title="Modify scenario"
+      ></button>
     </div>
   );
 }

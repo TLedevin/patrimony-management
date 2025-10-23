@@ -61,6 +61,78 @@ def add_investment(
     return investment_id
 
 
+def modify_investment(
+    scenario_id: int,
+    investment_id: int,
+    name: str,
+    type: str,
+    parameters: dict,
+):
+    data_path = conf["paths"]["data"]
+
+    with open(data_path + "scenarios/scenarios.json", "r+") as f:
+        scenarios = json.load(f)
+
+        # Check if investment's start year is after scenario's end year
+        if (
+            int(parameters["start_year"])
+            > scenarios[str(scenario_id)]["end_year"]
+        ):
+            parameters = {}
+
+        # Check if investment's end year is before scenario's start year
+        if (
+            int(parameters["end_year"])
+            < scenarios[str(scenario_id)]["start_year"]
+        ):
+            parameters = {}
+
+        # Adjusting the indentation and line lengths for existing conditions
+        if int(parameters["start_year"]) < scenarios[str(scenario_id)][
+            "start_year"
+        ] or (
+            int(parameters["start_year"])
+            == scenarios[str(scenario_id)]["start_year"]
+            and int(parameters["start_month"])
+            <= scenarios[str(scenario_id)]["start_month"]
+        ):
+            parameters["start_year"] == scenarios[str(scenario_id)][
+                "start_year"
+            ]
+            parameters["start_month"] == (
+                scenarios[str(scenario_id)]["start_month"] + 1
+            )
+
+        if int(parameters["end_year"]) > scenarios[str(scenario_id)][
+            "end_year"
+        ] or (
+            int(parameters["end_year"])
+            == scenarios[str(scenario_id)]["end_year"]
+            and int(parameters["end_month"])
+            >= scenarios[str(scenario_id)]["end_month"]
+        ):
+            parameters["end_year"] = scenarios[str(scenario_id)]["end_year"]
+            parameters["end_month"] = scenarios[str(scenario_id)]["end_month"]
+
+        data = generate_investment_data(scenario_id, type, parameters)
+
+        scenarios[str(scenario_id)]["investments"][str(investment_id)] = {
+            "id": investment_id,
+            "name": name,
+            "type": type,
+            "parameters": parameters,
+            "data": data,
+        }
+
+        print(scenarios)
+        # Close and reopen the file in write mode to ensure proper saving
+        f.close()
+        with open(data_path + "scenarios/scenarios.json", "w") as f:
+            json.dump(scenarios, f, indent=4)
+
+    return investment_id
+
+
 def delete_investment(scenario_id: int, investment_id: int):
     data_path = conf["paths"]["data"]
     with open(data_path + "scenarios/scenarios.json", "r+") as f:

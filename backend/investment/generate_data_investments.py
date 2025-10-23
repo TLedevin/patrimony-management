@@ -1,9 +1,13 @@
+import json
+
 import numpy as np
-from scenario.scenario_management import load_scenarios
+from settings import conf
 
 
 def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
-    scenario = load_scenarios()[str(scenario_id)]
+    data_path = conf["paths"]["data"]
+    with open(data_path + "scenarios/scenarios.json", "r") as f:
+        scenario = json.load(f)[str(scenario_id)]
 
     end_year = int(scenario["end_year"])
     start_year = int(scenario["start_year"])
@@ -78,7 +82,9 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
 
 
 def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
-    scenario = load_scenarios()[str(scenario_id)]
+    data_path = conf["paths"]["data"]
+    with open(data_path + "scenarios/scenarios.json", "r") as f:
+        scenario = json.load(f)[str(scenario_id)]
 
     end_year = int(scenario["end_year"])
     start_year = int(scenario["start_year"])

@@ -4,6 +4,7 @@ import ScenarioHeader from "../components/scenario_page/ScenarioHeader.js";
 import ScenarioGraph from "../components/scenario_page/ScenarioGraph.js";
 import InvestmentList from "../components/scenario_page/InvestmentList.js";
 import AddScenarioModal from "../components/scenario_page/AddScenarioModal.js";
+import ModifyScenarioModal from "../components/scenario_page/ModifyScenarioModal.js";
 import AddInvestmentModal from "../components/scenario_page/AddInvestmentModal.js";
 import "./ScenarioPage.css";
 import { investmentTypes } from "../config/investmentTypes.js";
@@ -40,6 +41,7 @@ function ScenarioPage() {
   const [investments, setInvestments] = useState([]);
   const [selectedInvestment, setSelectedInvestment] = useState("");
   const [showAddInvestmentModal, setShowAddInvestmentModal] = useState(false);
+  const [showModifyScenarioModal, setShowModifyScenarioModal] = useState(false);
   const [newInvestmentName, setNewInvestmentName] = useState("");
   const [investmentType, setInvestmentType] = useState("");
   const [investmentParams, setInvestmentParams] = useState({});
@@ -54,20 +56,12 @@ function ScenarioPage() {
     fetchScenarios();
     const fetchScenarioData = async () => {
       if (selectedScenario) {
-        try {
-          const response = await fetch(
-            `http://localhost:5000/api/get_scenario_data/?scenario_id=${selectedScenario}`
-          );
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          console.log("Fetched scenario data:", data);
-          setScenarioData(data);
-        } catch (error) {
-          console.error("Error fetching scenario data:", error);
-          setScenarioData(null);
-        }
+        const response = await fetch(
+          `http://localhost:5000/api/get_scenario_data/?scenario_id=${selectedScenario}`
+        );
+        const data = await response.json();
+        console.log("Fetched scenario data:", data);
+        setScenarioData(data);
       } else {
         setScenarioData(null);
       }
@@ -87,6 +81,7 @@ function ScenarioPage() {
           setSelectedScenario={setSelectedScenario}
           setScenarios={setScenarios}
           setInvestments={setInvestments}
+          setShowModifyScenarioModal={setShowModifyScenarioModal}
         />
         <div className="investments-main-content">
           <ScenarioGraph scenarioData={scenarioData} />
@@ -124,6 +119,16 @@ function ScenarioPage() {
             setScenarios={setScenarios}
             setInvestments={setInvestments}
             setSelectedInvestment={setSelectedInvestment}
+            setScenarioData={setScenarioData}
+          />
+        )}
+        {showModifyScenarioModal && (
+          <ModifyScenarioModal
+            scenarioParams={scenarioParams}
+            setScenarioParams={setScenarioParams}
+            setShowModifyScenarioModal={setShowModifyScenarioModal}
+            selectedScenario={selectedScenario}
+            setScenarios={setScenarios}
             setScenarioData={setScenarioData}
           />
         )}
