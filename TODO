@@ -7,6 +7,7 @@ DONE: "Ajouter la possibilité d'investir mensuellement sur des placements"
 
 TODO: "faire en sorte de pouvoir modifier les paramètre initiaux du scénario après création"
       "(cash de départ, cash mensuel, date de début, date de fin)"
+TODO: "Add a drop down list to choose the patrimony to display"
 TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
 TODO: "Ajouter d'autres types d'investissement"
 TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
