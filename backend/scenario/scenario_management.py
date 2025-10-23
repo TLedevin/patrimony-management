@@ -39,8 +39,8 @@ def generate_scenario_id():
 
 def add_scenario(
     name: str,
-    initial_cash: float,
-    monthly_cash: float,
+    initial_deposit: float,
+    monthly_deposit: float,
     start_year: int = None,
     start_month: int = None,
     end_year: int = None,
@@ -48,8 +48,8 @@ def add_scenario(
 ) -> int:
     print(
         name,
-        initial_cash,
-        monthly_cash,
+        initial_deposit,
+        monthly_deposit,
         start_year,
         start_month,
         end_year,
@@ -63,7 +63,8 @@ def add_scenario(
     )
 
     cash_baseline = [
-        initial_cash + i * monthly_cash for i in range(simulation_duration)
+        initial_deposit + i * monthly_deposit
+        for i in range(simulation_duration)
     ]
 
     dates = [
@@ -77,6 +78,8 @@ def add_scenario(
             "id": scenario_id,
             "name": name,
             "dates": dates,
+            "initial_deposit": initial_deposit,
+            "monthly_deposit": monthly_deposit,
             "cash_baseline": cash_baseline,
             "start_year": start_year,
             "start_month": start_month,
