@@ -12,12 +12,28 @@ function ScenarioGraph({ scenarioData }) {
     <div className="investments-graph">
       {scenarioData && (
         <>
-          <div className="filter-container">
-            <PatrimonyTypeDropdown
-              options={Object.values(investmentStyles)}
-              selectedTypes={selectedTypes}
-              onChange={setSelectedTypes}
-            />
+          <div className="graph-header">
+            <div className="filter-container">
+              <PatrimonyTypeDropdown
+                options={Object.values(investmentStyles)}
+                selectedTypes={selectedTypes}
+                onChange={setSelectedTypes}
+              />
+            </div>
+            <div className="total-value">
+              Total :{" "}
+              {Object.values(investmentStyles)
+                .filter((style) => selectedTypes.includes(style.key))
+                .reduce((sum, style) => {
+                  const values = scenarioData.patrimony?.[style.key];
+                  if (!values || !Array.isArray(values)) {
+                    return sum;
+                  }
+                  return sum + (values[values.length - 1] || 0);
+                }, 0)
+                .toLocaleString("fr-FR")}{" "}
+              €
+            </div>
           </div>
           <div className="graph-container">
             <Line
@@ -36,7 +52,6 @@ function ScenarioGraph({ scenarioData }) {
                 interaction: { mode: "index", intersect: false },
                 plugins: {
                   filler: { propagate: true },
-                  title: { display: true, text: "Total Patrimony Evolution" },
                   tooltip: {
                     mode: "index",
                     callbacks: {

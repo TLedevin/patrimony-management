@@ -61,7 +61,7 @@ function ModifyScenarioModal({
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>Add New Scenario</h3>
+        <h3>Modify Scenario</h3>
         <input
           type="text"
           value={scenarioParams.name || ""}

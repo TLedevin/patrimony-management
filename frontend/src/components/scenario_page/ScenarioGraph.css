@@ -1,5 +1,5 @@
 .investments-graph {
-  width: calc(100% - 280px);
+  width: calc(100% - 320px);
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 10px;
@@ -7,8 +7,21 @@
   padding: 20px;
 }
 
-.filter-container {
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.total-value {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.filter-container {
+  margin-bottom: 0;
 }
 
 .patrimony-filter {
