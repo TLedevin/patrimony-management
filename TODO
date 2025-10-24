@@ -10,12 +10,13 @@ DONE: "Add a drop down list to choose the patrimony to display"
 
 TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
 TODO: "Ajouter d'autres types d'investissement"
-TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
 TODO: "Implémenter la page patrimoine"
-TODO: "Adapter le page scénario pour utiliser les informations utilisateur"
+TODO: "Adapter la page scénario pour utiliser les informations utilisateur"
 TODO: "Ajouter la possibilité de modifier les investissements créés"
 TODO: "Ajouter des vérifications de cash disponible lors d'un nouvel investissement"
 TODO: "Ajouter des options de retrait pour les investissements"
+TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
+TODO: "Ajouter une option pour exporter les données en excel"
 
 FIXME:
 
