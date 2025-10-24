@@ -92,36 +92,34 @@ def modify_scenario(
     name: str,
     initial_deposit: float,
     monthly_deposit: float,
-    start_year: int = None,
-    start_month: int = None,
     end_year: int = None,
     end_month: int = None,
 ):
     data_path = conf["paths"]["data"]
 
-    simulation_duration = (
-        (end_year - start_year) * 12 + end_month - start_month
-    )
-
-    cash_baseline = [
-        initial_deposit + i * monthly_deposit
-        for i in range(simulation_duration)
-    ]
-
-    dates = [
-        f"{start_year + (month // 12)}-{(month % 12) + 1:02d}"
-        for month in range(simulation_duration)
-    ]
-
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
+        simulation_duration = (
+            (end_year - scenarios[str(scenario_id)]["start_year"]) * 12
+            + end_month
+            - scenarios[str(scenario_id)]["start_month"]
+        )
+
+        cash_baseline = [
+            initial_deposit + i * monthly_deposit
+            for i in range(simulation_duration)
+        ]
+
+        dates = [
+            f"{scenarios[str(scenario_id)]['start_year'] + (month // 12)}-{(month % 12) + 1:02d}"
+            for month in range(simulation_duration)
+        ]
+
         scenarios[str(scenario_id)]["name"] = name
         scenarios[str(scenario_id)]["dates"] = dates
         scenarios[str(scenario_id)]["initial_deposit"] = initial_deposit
         scenarios[str(scenario_id)]["monthly_deposit"] = monthly_deposit
         scenarios[str(scenario_id)]["cash_baseline"] = cash_baseline
-        scenarios[str(scenario_id)]["start_year"] = start_year
-        scenarios[str(scenario_id)]["start_month"] = start_month
         scenarios[str(scenario_id)]["end_year"] = end_year
         scenarios[str(scenario_id)]["end_month"] = end_month
 

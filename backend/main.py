@@ -58,8 +58,6 @@ def api_modify_scenario():
     name = request.args.get("name")
     initial_deposit = request.args.get("initial_deposit")
     monthly_deposit = request.args.get("monthly_deposit")
-    start_year = request.args.get("start_year")
-    start_month = request.args.get("start_month")
     end_year = request.args.get("end_year")
     end_month = request.args.get("end_month")
     result = modify_scenario(
@@ -67,8 +65,6 @@ def api_modify_scenario():
         name,
         float(initial_deposit),
         float(monthly_deposit),
-        int(start_year),
-        int(start_month),
         int(end_year),
         int(end_month),
     )

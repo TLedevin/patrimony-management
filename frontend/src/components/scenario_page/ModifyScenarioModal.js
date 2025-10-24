@@ -71,21 +71,23 @@ function ModifyScenarioModal({
           autoFocus
         />
         <hr className="dropdown-separator" />
-        {scenarioParamsConfig.map((param) => (
-          <div key={param.id} className="scenario-parameter">
-            <label htmlFor={param.id}>{param.label}</label>
-            <input
-              id={param.id}
-              type={param.type}
-              value={scenarioParams[param.id] ?? param.default}
-              onChange={(e) => handleParamChange(param.id, e.target.value)}
-              min={param.min}
-              max={param.max}
-              step={param.step}
-              className={param.className || "scenario-parameter-input"}
-            />
-          </div>
-        ))}
+        {scenarioParamsConfig.map((param) =>
+          param.id !== "start_year" && param.id !== "start_month" ? (
+            <div key={param.id} className="scenario-parameter">
+              <label htmlFor={param.id}>{param.label}</label>
+              <input
+                id={param.id}
+                type={param.type}
+                value={scenarioParams[param.id] ?? param.default}
+                onChange={(e) => handleParamChange(param.id, e.target.value)}
+                min={param.min}
+                max={param.max}
+                step={param.step}
+                className={param.className || "scenario-parameter-input"}
+              />
+            </div>
+          ) : null
+        )}
         <div className="modal-buttons">
           <button onClick={handleModifyScenario} className="btn-confirm">
             Modify
