@@ -1,59 +1,34 @@
 import { Line } from "react-chartjs-2";
+import { useState } from "react";
 import "./ScenarioGraph.css";
+import investmentStyles from "../../config/investmentGraphConfig";
+import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
 
 function ScenarioGraph({ scenarioData }) {
+  const [selectedTypes, setSelectedTypes] = useState(
+    Object.keys(investmentStyles)
+  );
   return (
     <div className="investments-graph">
       {scenarioData && (
         <>
+          <div className="filter-container">
+            <PatrimonyTypeDropdown
+              options={Object.values(investmentStyles)}
+              selectedTypes={selectedTypes}
+              onChange={setSelectedTypes}
+            />
+          </div>
           <div className="graph-container">
             <Line
               data={{
                 labels: scenarioData.dates,
-                datasets: [
-                  {
-                    label: "Cash",
-                    data: scenarioData.patrimony.cash,
-                    borderWidth: 2,
-                    borderColor: "rgba(223, 81, 112, 1)",
-                    backgroundColor: "rgba(223, 81, 112, 0.3)",
-                    fill: true,
-                    tension: 0.1,
-                    stack: "stack1",
-                    order: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 5,
-                    pointBackgroundColor: "rgba(223, 81, 112, 1)",
-                  },
-                  {
-                    label: "Savings",
-                    data: scenarioData.patrimony.savings,
-                    borderWidth: 2,
-                    borderColor: "rgba(64, 164, 164, 1)",
-                    backgroundColor: "rgba(64, 164, 164, 0.3)",
-                    fill: true,
-                    tension: 0.1,
-                    stack: "stack1",
-                    order: 1,
-                    pointRadius: 0,
-                    pointHoverRadius: 5,
-                    pointBackgroundColor: "rgba(64, 164, 164, 1)",
-                  },
-                  {
-                    label: "Stock exchange",
-                    data: scenarioData.patrimony.stock_exchange,
-                    borderWidth: 2,
-                    borderColor: "rgba(66, 164, 64, 1)",
-                    backgroundColor: "rgba(66, 164, 64, 0.3)",
-                    fill: true,
-                    tension: 0.1,
-                    stack: "stack1",
-                    order: 1,
-                    pointRadius: 0,
-                    pointHoverRadius: 5,
-                    pointBackgroundColor: "rgba(66, 164, 64, 1)",
-                  },
-                ],
+                datasets: Object.values(investmentStyles)
+                  .filter((style) => selectedTypes.includes(style.key))
+                  .map((style) => ({
+                    ...style,
+                    data: scenarioData.patrimony[style.key],
+                  })),
               }}
               options={{
                 responsive: true,

@@ -4,10 +4,29 @@
   margin-right: 10px;
   border-radius: 10px;
   background: var(--background-color2);
+  padding: 20px;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.patrimony-filter {
+  width: 200px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--background-color1);
+  color: var(--text-color);
+}
+
+.patrimony-filter option {
+  padding: 4px;
+  background: var(--background-color1);
 }
 
 .graph-container {
-  height: calc(100% - 20px);
+  height: calc(100% - 60px);
   width: calc(100% - 20px);
   position: relative;
 }
