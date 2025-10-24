@@ -99,13 +99,15 @@ function ScenarioHeader({
               />
             </div>
           ))}
+          <button
+            className="modify-scenario-btn"
+            onClick={() => setShowModifyScenarioModal(true)}
+            title="Modify scenario"
+          >
+            🖋️
+          </button>
         </div>
       )}
-      <button
-        className="modify-scenario-btn"
-        onClick={() => setShowModifyScenarioModal(true)}
-        title="Modify scenario"
-      ></button>
     </div>
   );
 }

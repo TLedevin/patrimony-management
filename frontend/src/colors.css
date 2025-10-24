@@ -21,6 +21,8 @@
   --button-hover-cancel-background-color: #5a6268;
   --button-hover-delete-background-color: #c82333;
   --button-font-color: white;
+  --button-modify-background-color: #ffffff;
+  --button-hover-modify-background-color: #b0b0b0;
 
   /* Modal colors */
   --modal-background-color: white;
