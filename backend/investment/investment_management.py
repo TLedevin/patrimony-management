@@ -1,6 +1,7 @@
 import json
 
 from investment.generate_data_investments import (
+    generate_real_estate_data,
     generate_saving_account_data,
     generate_stock_exchange_data,
 )
@@ -31,6 +32,7 @@ def generate_investment_data(
     mapping_investment_types = {
         "saving_account": generate_saving_account_data,
         "stock_exchange": generate_stock_exchange_data,
+        "real_estate": generate_real_estate_data,
     }
 
     return mapping_investment_types[type](scenario_id, parameters)

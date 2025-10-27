@@ -4,7 +4,7 @@ import numpy as np
 from settings import conf
 
 
-def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
+def load_scenario_data(scenario_id: int) -> dict:
     data_path = conf["paths"]["data"]
     with open(data_path + "scenarios/scenarios.json", "r") as f:
         scenario = json.load(f)[str(scenario_id)]
@@ -13,6 +13,14 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
     start_year = int(scenario["start_year"])
     end_month = int(scenario["end_month"])
     start_month = int(scenario["start_month"])
+
+    return end_year, start_year, end_month, start_month
+
+
+def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
+    end_year, start_year, end_month, start_month = load_scenario_data(
+        scenario_id
+    )
 
     simulation_duration = (
         (end_year - start_year) * 12 + end_month - start_month
@@ -82,14 +90,9 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
 
 
 def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
-    data_path = conf["paths"]["data"]
-    with open(data_path + "scenarios/scenarios.json", "r") as f:
-        scenario = json.load(f)[str(scenario_id)]
-
-    end_year = int(scenario["end_year"])
-    start_year = int(scenario["start_year"])
-    end_month = int(scenario["end_month"])
-    start_month = int(scenario["start_month"])
+    end_year, start_year, end_month, start_month = load_scenario_data(
+        scenario_id
+    )
 
     monthly_rate = (
         np.exp(
@@ -146,4 +149,106 @@ def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
             patrimony["stock_exchange"].append(0)
             cash_flows.append(0)
 
+    return {"cash_flows": cash_flows, "patrimony": patrimony}
+
+
+def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
+    for key in parameters.keys():
+        try:
+            parameters[key] = float(parameters[key])
+        except (ValueError, TypeError):
+            pass
+    end_year, start_year, end_month, start_month = load_scenario_data(
+        scenario_id
+    )
+
+    simulation_duration = (
+        (end_year - start_year) * 12 + end_month - start_month
+    )
+
+    investment_duration = (
+        (parameters["end_year"] - parameters["start_year"]) * 12
+        + parameters["end_month"]
+        - parameters["start_month"]
+    )
+
+    start_month = (
+        (parameters["start_year"] - start_year) * 12
+        + parameters["start_month"]
+        - start_month
+    )
+
+    cash_flows = []
+    patrimony = {}
+    patrimony["real_estate"] = []
+    patrimony["debt"] = []
+
+    total_rate = (parameters["loan_rate"] + parameters["insurance_rate"]) / 100
+
+    monthly_rate = np.exp(1 / 12 * np.log(1 + total_rate)) - 1
+
+    mensuality = (
+        total_rate
+        * parameters["loan_amount"]
+        / 12
+        / (1 - (1 + total_rate / 12) ** (-12 * parameters["loan_duration"]))
+    )
+
+    monthly_index = (
+        np.exp(1 / 12 * np.log(1 + parameters["yearly_index"] / 100)) - 1
+    )
+
+    for month in range(simulation_duration):
+        if month < start_month:
+            cash_flows.append(0)
+            patrimony["real_estate"].append(0)
+            patrimony["debt"].append(0)
+
+        elif month == start_month:
+            cash_flows.append(
+                -parameters["personal_contribution"]
+                - mensuality
+                - parameters["monthly_charges"]
+            )
+            patrimony["real_estate"].append(parameters["property_value"])
+            patrimony["debt"].append(-parameters["loan_amount"])
+
+        elif month < start_month + investment_duration:
+            patrimony["real_estate"].append(
+                patrimony["real_estate"][-1] * (1 + monthly_index)
+            )
+
+            patrimony["debt"].append(
+                min(patrimony["debt"][-1] * (1 - monthly_rate), 0)
+            )
+
+            cash_flows.append(
+                -(
+                    mensuality
+                    if month <= start_month + parameters["loan_duration"]
+                    else 0
+                )
+                - parameters["monthly_charges"]
+                - (parameters["property_tax"] if month % 12 == 10 else 0)
+            )
+
+        elif month == start_month + investment_duration:
+            patrimony["real_estate"].append(0)
+            patrimony["debt"].append(0)
+            cash_flows.append(
+                patrimony["debt"][-2]
+                * (1 + parameters["early_repayment_fees"] / 100)
+                + patrimony["real_estate"][-2] * (1 + monthly_index)
+                - parameters["monthly_charges"]
+                - (parameters["property_tax"] if month % 12 == 10 else 0)
+            )
+
+        else:
+            patrimony["real_estate"].append(0)
+            patrimony["debt"].append(0)
+            cash_flows.append(0)
+    patrimony["net_real_estate"] = [
+        patrimony["real_estate"][i] + patrimony["debt"][i]
+        for i in range(len(patrimony["real_estate"]))
+    ]
     return {"cash_flows": cash_flows, "patrimony": patrimony}
