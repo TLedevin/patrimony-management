@@ -8,11 +8,11 @@ DONE: "faire en sorte de pouvoir modifier les paramètre initiaux du scénario a
       "(cash de départ, cash mensuel, date de début, date de fin)"
 DONE: "Add a drop down list to choose the patrimony to display"
 
-TODO: "Ajouter d'autres types d'investissement"
+TODO: "Ajouter la possibilité de modifier les investissements créés"
+TODO: "Improve real estate investment"
 TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
 TODO: "Implémenter la page patrimoine"
 TODO: "Adapter la page scénario pour utiliser les informations utilisateur"
-TODO: "Ajouter la possibilité de modifier les investissements créés"
 TODO: "Ajouter des vérifications de cash disponible lors d'un nouvel investissement"
 TODO: "Ajouter des options de retrait pour les investissements"
 TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"

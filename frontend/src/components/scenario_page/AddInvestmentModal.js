@@ -125,9 +125,9 @@ function AddInvestmentModal({
         // Use default if provided, otherwise empty string so inputs are controlled
         paramsInit[p.id] = p.default !== undefined ? p.default : "";
       });
-      // setInvestmentParams(paramsInit);
+      setInvestmentParams(paramsInit);
     } else {
-      // setInvestmentParams({});
+      setInvestmentParams({});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [investmentType]);
@@ -135,7 +135,7 @@ function AddInvestmentModal({
   const handleInvestmentModalClose = () => {
     setShowAddInvestmentModal(false);
     setNewInvestmentName("");
-    // setInvestmentParams({});
+    setInvestmentParams({});
     setInvestmentType("");
   };
 
