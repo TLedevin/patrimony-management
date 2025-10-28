@@ -160,12 +160,6 @@ export const investmentTypes = {
         step: 1000,
       },
       {
-        id: "location",
-        label: "Location",
-        type: "text",
-        required: true,
-      },
-      {
         id: "start_year",
         label: "Purchase Year",
         type: "number",
