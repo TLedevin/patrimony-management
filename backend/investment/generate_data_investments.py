@@ -228,18 +228,33 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
             )
 
             patrimony["debt"].append(
-                min(patrimony["debt"][-1] * (1 - monthly_rate), 0)
+                min(
+                    -parameters["loan_amount"]
+                    * (
+                        (1 + total_rate / 12) ** (month - start_month)
+                        - (1 + total_rate / 12)
+                        ** (12 * parameters["loan_duration"])
+                    )
+                    / (
+                        1
+                        - (1 + total_rate / 12)
+                        ** (12 * parameters["loan_duration"])
+                    ),
+                    0,
+                )
             )
 
-            cash_flows.append(
-                -(
-                    mensuality
-                    if month <= start_month + parameters["loan_duration"]
-                    else 0
+            if month <= start_month + 12 * parameters["loan_duration"]:
+                cash_flows.append(
+                    -mensuality
+                    - parameters["monthly_charges"]
+                    - (parameters["property_tax"] if month % 12 == 10 else 0)
                 )
-                - parameters["monthly_charges"]
-                - (parameters["property_tax"] if month % 12 == 10 else 0)
-            )
+            else:
+                cash_flows.append(
+                    -parameters["monthly_charges"]
+                    - (parameters["property_tax"] if month % 12 == 10 else 0)
+                )
 
         elif month == start_month + investment_duration:
             patrimony["real_estate"].append(0)
