@@ -31,7 +31,7 @@ function ScenarioGraph({ scenarioData }) {
                   }
                   return sum + (values[values.length - 1] || 0);
                 }, 0)
-                .toLocaleString("fr-FR")}{" "}
+                .toLocaleString("fr-FR", { maximumFractionDigits: 0 })}{" "}
               €
             </div>
           </div>
@@ -58,14 +58,18 @@ function ScenarioGraph({ scenarioData }) {
                       label: function (context) {
                         return `${
                           context.dataset.label
-                        }: ${context.parsed.y.toLocaleString("fr-FR")} €`;
+                        }: ${context.parsed.y.toLocaleString("fr-FR", {
+                          maximumFractionDigits: 0,
+                        })} €`;
                       },
                       footer: function (tooltipItems) {
                         const total = tooltipItems.reduce(
                           (sum, item) => sum + item.parsed.y,
                           0
                         );
-                        return `Total: ${total.toLocaleString("fr-FR")} €`;
+                        return `Total: ${total.toLocaleString("fr-FR", {
+                          maximumFractionDigits: 0,
+                        })} €`;
                       },
                     },
                   },
