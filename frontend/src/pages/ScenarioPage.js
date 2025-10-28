@@ -82,6 +82,7 @@ function ScenarioPage() {
           setScenarios={setScenarios}
           setInvestments={setInvestments}
           setShowModifyScenarioModal={setShowModifyScenarioModal}
+          setScenarioParams={setScenarioParams}
         />
         <div className="investments-main-content">
           <ScenarioGraph scenarioData={scenarioData} />

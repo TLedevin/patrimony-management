@@ -9,6 +9,7 @@ function ScenarioHeader({
   setScenarios,
   setInvestments,
   setShowModifyScenarioModal,
+  setScenarioParams,
 }) {
   const currentScenario = scenarios.find((s) => s.id === selectedScenario);
   const handleScenarioChange = async (event) => {
@@ -74,7 +75,10 @@ function ScenarioHeader({
         </select>
         <button
           className="add-scenario-btn"
-          onClick={() => setShowAddScenarioModal(true)}
+          onClick={() => {
+            setScenarioParams({}); // Clear scenario params
+            setShowAddScenarioModal(true);
+          }}
           title="Add new scenario"
         >
           +

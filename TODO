@@ -9,7 +9,7 @@ DONE: "faire en sorte de pouvoir modifier les paramètre initiaux du scénario a
 DONE: "Add a drop down list to choose the patrimony to display"
 DONE: "Ajouter la possibilité de modifier les investissements créés"
 
-TODO: "Improve real estate investment"
+TODO: "Improve real estate investment, and add personal situation (with rental)"
 TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
 TODO: "Implémenter la page patrimoine"
 TODO: "Adapter la page scénario pour utiliser les informations utilisateur"
