@@ -1,3 +1,5 @@
+import { useState } from "react";
+import ModifyInvestmentModal from "./ModifyInvestmentModal";
 import "./InvestmentList.css";
 
 function InvestmentList({
@@ -7,7 +9,14 @@ function InvestmentList({
   setScenarios,
   setInvestments,
   setScenarioData,
+  investmentTypes,
 }) {
+  const [showModifyInvestmentModal, setShowModifyInvestmentModal] =
+    useState(false);
+  const [selectedInvestment, setSelectedInvestment] = useState(null);
+  const [investmentName, setInvestmentName] = useState("");
+  const [investmentType, setInvestmentType] = useState("");
+  const [investmentParams, setInvestmentParams] = useState({});
   const handleDeleteInvestment = async (investmentId) => {
     if (!selectedScenario) {
       alert("Please select a scenario first");
@@ -66,7 +75,17 @@ function InvestmentList({
           investments.length > 0 ? (
             <div className="investments-grid">
               {investments.map((investment) => (
-                <div key={investment.id} className="investment-card">
+                <div
+                  key={investment.id}
+                  className="investment-card"
+                  onClick={() => {
+                    setSelectedInvestment(investment);
+                    setInvestmentName(investment.name);
+                    setInvestmentType(investment.type);
+                    setInvestmentParams(investment.parameters);
+                    setShowModifyInvestmentModal(true);
+                  }}
+                >
                   <div className="investment-icon">💰</div>
                   <div className="investment-info">
                     <h3 className="investment-name">{investment.name}</h3>
@@ -75,7 +94,10 @@ function InvestmentList({
                   <button
                     className="delete-investment-btn"
                     title="Delete investment"
-                    onClick={() => handleDeleteInvestment(investment.id)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent card click when clicking delete
+                      handleDeleteInvestment(investment.id);
+                    }}
                   >
                     🗑️
                   </button>
@@ -93,6 +115,23 @@ function InvestmentList({
           </p>
         )}
       </div>
+      {showModifyInvestmentModal && selectedInvestment && (
+        <ModifyInvestmentModal
+          investment={selectedInvestment}
+          setInvestmentType={setInvestmentType}
+          investmentName={investmentName}
+          setInvestmentName={setInvestmentName}
+          investmentParams={investmentParams}
+          investmentType={investmentType}
+          investmentTypes={investmentTypes}
+          setInvestmentParams={setInvestmentParams}
+          setShowModifyInvestmentModal={setShowModifyInvestmentModal}
+          selectedScenario={selectedScenario}
+          setScenarios={setScenarios}
+          setInvestments={setInvestments}
+          setScenarioData={setScenarioData}
+        />
+      )}
     </div>
   );
 }

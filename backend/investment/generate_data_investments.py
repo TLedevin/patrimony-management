@@ -55,7 +55,7 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
 
         elif month < start_month + investment_duration:
             if patrimony["savings"][-1] < 22950 - float(
-                parameters["initial_investment"]
+                float(parameters["monthly_investment"])
             ):
                 cash_flows.append(-float(parameters["monthly_investment"]))
                 if month % 12 == 1:

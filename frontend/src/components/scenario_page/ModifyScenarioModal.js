@@ -1,14 +1,31 @@
+import { useEffect } from "react";
 import "./AddScenarioModal.css";
 import scenarioParamsConfig from "../../config/scenarioParams";
 
 function ModifyScenarioModal({
   selectedScenario,
+  scenarios,
   scenarioParams,
   setScenarioParams,
   setShowModifyScenarioModal,
   setScenarios,
   setScenarioData,
 }) {
+  // Initialize form with current scenario values
+  useEffect(() => {
+    const currentScenario = scenarios.find((s) => s.id === selectedScenario);
+    if (currentScenario) {
+      setScenarioParams({
+        name: currentScenario.name,
+        initial_deposit: currentScenario.initial_deposit,
+        monthly_deposit: currentScenario.monthly_deposit,
+        start_year: currentScenario.start_year,
+        start_month: currentScenario.start_month,
+        end_year: currentScenario.end_year,
+        end_month: currentScenario.end_month,
+      });
+    }
+  }, [selectedScenario, scenarios, setScenarioParams]);
   const handleModifyScenario = async () => {
     if (scenarioParams.name.trim() === "") {
       alert("Please enter a scenario name");

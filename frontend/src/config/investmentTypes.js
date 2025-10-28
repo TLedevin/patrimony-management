@@ -62,7 +62,6 @@ export const investmentTypes = {
         required: false,
         min: 0,
         step: 100,
-        default: 0,
         max: 22950,
       },
       {
@@ -72,7 +71,6 @@ export const investmentTypes = {
         required: false,
         min: 0,
         step: 100,
-        default: 0,
       },
     ],
   },

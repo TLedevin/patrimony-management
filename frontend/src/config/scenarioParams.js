@@ -8,7 +8,6 @@ export default [
     type: "number",
     min: 0,
     step: 1000,
-    default: 0,
     className: "scenario-parameter-input",
   },
   {
@@ -17,7 +16,6 @@ export default [
     type: "number",
     min: 0,
     step: 100,
-    default: 0,
     className: "scenario-parameter-input",
   },
   {
@@ -26,7 +24,6 @@ export default [
     type: "number",
     min: currentYear,
     step: 1,
-    default: currentYear,
     className: "scenario-parameter-input",
   },
   {
@@ -36,7 +33,6 @@ export default [
     min: 1,
     max: 12,
     step: 1,
-    default: 1,
     className: "scenario-parameter-input",
   },
   {
@@ -45,7 +41,6 @@ export default [
     type: "number",
     min: currentYear,
     step: 1,
-    default: 0,
     className: "scenario-parameter-input",
   },
   {
@@ -55,7 +50,6 @@ export default [
     min: 0,
     max: 12,
     step: 1,
-    default: 0,
     className: "scenario-parameter-input",
   },
 ];

@@ -92,6 +92,7 @@ function ScenarioPage() {
             setScenarios={setScenarios}
             setInvestments={setInvestments}
             setScenarioData={setScenarioData}
+            investmentTypes={investmentTypes}
           />
         </div>
         {/* Modal for adding new scenario */}
@@ -124,6 +125,7 @@ function ScenarioPage() {
         )}
         {showModifyScenarioModal && (
           <ModifyScenarioModal
+            scenarios={scenarios}
             scenarioParams={scenarioParams}
             setScenarioParams={setScenarioParams}
             setShowModifyScenarioModal={setShowModifyScenarioModal}

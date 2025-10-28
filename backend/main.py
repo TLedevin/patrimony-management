@@ -6,6 +6,7 @@ from investment.investment_management import (
     add_investment,
     delete_investment,
     generate_investment_data,
+    modify_investment,
 )
 from scenario.scenario_management import (
     add_scenario,
@@ -106,6 +107,24 @@ def api_add_investment():
     # All remaining parameters are investment parameters
     result = add_investment(scenario_id, name, investment_type, params)
     logger.info(f"Added investment: {name} to scenario {scenario_id}")
+    return jsonify(result)
+
+
+@app.route("/api/modify_investment/", methods=["GET"])
+def api_modify_investment():
+    params = request.args.to_dict()
+    # Extract required parameters
+    scenario_id = params.pop("scenario_id", None)
+    investment_id = params.pop("investment_id", None)
+    name = params.pop("name", None)
+    investment_type = params.pop("investment_type", None)
+    # All remaining parameters are investment parameters
+    result = modify_investment(
+        scenario_id, investment_id, name, investment_type, params
+    )
+    logger.info(
+        f"Modified investment: {investment_id} in scenario {scenario_id}"
+    )
     return jsonify(result)
 
 
