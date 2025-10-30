@@ -194,8 +194,6 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
 
     total_rate = (parameters["loan_rate"] + parameters["insurance_rate"]) / 100
 
-    monthly_rate = np.exp(1 / 12 * np.log(1 + total_rate)) - 1
-
     mensuality = (
         total_rate
         * parameters["loan_amount"]
@@ -219,7 +217,9 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
                 - mensuality
                 - parameters["monthly_charges"]
             )
-            patrimony["real_estate"].append(parameters["property_value"])
+            patrimony["real_estate"].append(
+                parameters["property_value"] + parameters["work_renovation"]
+            )
             patrimony["debt"].append(-parameters["loan_amount"])
 
         elif month < start_month + investment_duration:
@@ -276,3 +276,39 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
         for i in range(len(patrimony["real_estate"]))
     ]
     return {"cash_flows": cash_flows, "patrimony": patrimony}
+
+
+def generate_personal_use_rental_data(scenario_id: int, parameters: dict):
+    end_year, start_year, end_month, start_month = load_scenario_data(
+        scenario_id
+    )
+
+    simulation_duration = (
+        (end_year - start_year) * 12 + end_month - start_month
+    )
+
+    investment_duration = (
+        (int(parameters["end_year"]) - int(parameters["start_year"])) * 12
+        + int(parameters["end_month"])
+        - int(parameters["start_month"])
+    )
+
+    start_month = (
+        (int(parameters["start_year"]) - start_year) * 12
+        + int(parameters["start_month"])
+        - start_month
+    )
+
+    cash_flows = []
+
+    for month in range(simulation_duration):
+        if month < start_month:
+            cash_flows.append(0)
+
+        elif month <= start_month + investment_duration:
+            cash_flows.append(-float(parameters["rent_including_charges"]))
+
+        else:
+            cash_flows.append(0)
+
+    return {"cash_flows": cash_flows, "patrimony": {}}
