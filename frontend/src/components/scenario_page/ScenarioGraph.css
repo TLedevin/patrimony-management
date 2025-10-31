@@ -4,6 +4,7 @@
   margin-right: 10px;
   border-radius: 10px;
   background: var(--background-color2);
+  padding: 20px;
 }
 
 .graph-header {
