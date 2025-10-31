@@ -3,11 +3,14 @@ import Header from "./../components/header.js";
 import ScenarioHeader from "../components/scenario_page/ScenarioHeader.js";
 import ScenarioGraph from "../components/scenario_page/ScenarioGraph.js";
 import InvestmentList from "../components/scenario_page/InvestmentList.js";
+import ChargeList from "../components/scenario_page/ChargeList.js";
 import AddScenarioModal from "../components/scenario_page/AddScenarioModal.js";
 import ModifyScenarioModal from "../components/scenario_page/ModifyScenarioModal.js";
 import AddInvestmentModal from "../components/scenario_page/AddInvestmentModal.js";
+import AddChargeModal from "../components/scenario_page/AddChargeModal.js";
 import "./ScenarioPage.css";
 import { investmentTypes } from "../config/investmentTypes.js";
+import { chargeTypes } from "../config/chargeTypes.js";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -46,6 +49,13 @@ function ScenarioPage() {
   const [investmentType, setInvestmentType] = useState("");
   const [investmentParams, setInvestmentParams] = useState({});
 
+  const [charges, setCharges] = useState([]);
+  const [selectedCharge, setSelectedCharge] = useState("");
+  const [showAddChargeModal, setShowAddChargeModal] = useState(false);
+  const [newChargeName, setNewChargeName] = useState("");
+  const [chargeType, setChargeType] = useState("");
+  const [chargeParams, setChargeParams] = useState({});
+
   // Fetch scenarios on component mount
   useEffect(() => {
     const fetchScenarios = async () => {
@@ -81,20 +91,32 @@ function ScenarioPage() {
           setSelectedScenario={setSelectedScenario}
           setScenarios={setScenarios}
           setInvestments={setInvestments}
+          setCharges={setCharges}
           setShowModifyScenarioModal={setShowModifyScenarioModal}
           setScenarioParams={setScenarioParams}
         />
         <div className="investments-main-content">
           <ScenarioGraph scenarioData={scenarioData} />
-          <InvestmentList
-            selectedScenario={selectedScenario}
-            investments={investments}
-            setShowAddInvestmentModal={setShowAddInvestmentModal}
-            setScenarios={setScenarios}
-            setInvestments={setInvestments}
-            setScenarioData={setScenarioData}
-            investmentTypes={investmentTypes}
-          />
+          <div className="lists-container">
+            <InvestmentList
+              selectedScenario={selectedScenario}
+              investments={investments}
+              setShowAddInvestmentModal={setShowAddInvestmentModal}
+              setScenarios={setScenarios}
+              setInvestments={setInvestments}
+              setScenarioData={setScenarioData}
+              investmentTypes={investmentTypes}
+            />
+            <ChargeList
+              selectedScenario={selectedScenario}
+              charges={charges}
+              setShowAddChargeModal={setShowAddChargeModal}
+              setScenarios={setScenarios}
+              setCharges={setCharges}
+              setScenarioData={setScenarioData}
+              chargeTypes={chargeTypes}
+            />
+          </div>
         </div>
         {/* Modal for adding new scenario */}
         {showAddScenarioModal && (
@@ -104,7 +126,19 @@ function ScenarioPage() {
             setShowAddScenarioModal={setShowAddScenarioModal}
             setScenarios={setScenarios}
             setInvestments={setInvestments}
+            setCharges={setCharges}
             setSelectedScenario={setSelectedScenario}
+          />
+        )}
+        {showModifyScenarioModal && (
+          <ModifyScenarioModal
+            scenarios={scenarios}
+            scenarioParams={scenarioParams}
+            setScenarioParams={setScenarioParams}
+            setShowModifyScenarioModal={setShowModifyScenarioModal}
+            selectedScenario={selectedScenario}
+            setScenarios={setScenarios}
+            setScenarioData={setScenarioData}
           />
         )}
         {showAddInvestmentModal && (
@@ -124,14 +158,20 @@ function ScenarioPage() {
             setScenarioData={setScenarioData}
           />
         )}
-        {showModifyScenarioModal && (
-          <ModifyScenarioModal
-            scenarios={scenarios}
-            scenarioParams={scenarioParams}
-            setScenarioParams={setScenarioParams}
-            setShowModifyScenarioModal={setShowModifyScenarioModal}
+        {showAddChargeModal && (
+          <AddChargeModal
+            setChargeType={setChargeType}
+            newChargeName={newChargeName}
+            setNewChargeName={setNewChargeName}
+            chargeParams={chargeParams}
+            chargeType={chargeType}
+            chargeTypes={chargeTypes}
+            setChargeParams={setChargeParams}
+            setShowAddChargeModal={setShowAddChargeModal}
             selectedScenario={selectedScenario}
             setScenarios={setScenarios}
+            setCharges={setCharges}
+            setSelectedCharge={setSelectedCharge}
             setScenarioData={setScenarioData}
           />
         )}

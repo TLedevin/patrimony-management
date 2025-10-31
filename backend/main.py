@@ -1,5 +1,11 @@
 import logging
 
+from charge.charge_management import (
+    add_charge,
+    delete_charge,
+    generate_charge_data,
+    modify_charge,
+)
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from investment.investment_management import (
@@ -149,6 +155,56 @@ def api_generate_investment_data(scenario_id):
     result = generate_investment_data(scenario_id, parameters)
     logger.info(
         f"Generated investment data: {parameters} for scenario {scenario_id}"
+    )
+    return jsonify(result)
+
+
+@app.route("/api/add_charge/", methods=["GET"])
+def api_add_charge():
+    params = request.args.to_dict()
+    # Extract required parameters
+    scenario_id = params.pop("scenario_id", None)
+    name = params.pop("name", None)
+    charge_type = params.pop("charge_type", None)
+    # All remaining parameters are charge parameters
+    result = add_charge(scenario_id, name, charge_type, params)
+    logger.info(f"Added charge: {name} to scenario {scenario_id}")
+    return jsonify(result)
+
+
+@app.route("/api/modify_charge/", methods=["GET"])
+def api_modify_charge():
+    params = request.args.to_dict()
+    # Extract required parameters
+    scenario_id = params.pop("scenario_id", None)
+    charge_id = params.pop("charge_id", None)
+    name = params.pop("name", None)
+    charge_type = params.pop("charge_type", None)
+    # All remaining parameters are charge parameters
+    result = modify_charge(scenario_id, charge_id, name, charge_type, params)
+    logger.info(f"Modified charge: {charge_id} in scenario {scenario_id}")
+    return jsonify(result)
+
+
+@app.route(
+    "/api/delete_charge/<string:scenario_id>/<string:charge_id>",
+    methods=["GET"],
+)
+def api_delete_charge(scenario_id, charge_id):
+    delete_charge(scenario_id, charge_id)
+    logger.info(f"Deleted charge: {charge_id} from scenario {scenario_id}")
+    return jsonify({"status": "success"})
+
+
+@app.route(
+    "/api/generate_charge_data/<string:scenario_id>",
+    methods=["POST"],
+)
+def api_generate_charge_data(scenario_id):
+    parameters = request.json
+    result = generate_charge_data(scenario_id, parameters)
+    logger.info(
+        f"Generated charge data: {parameters} for scenario {scenario_id}"
     )
     return jsonify(result)
 

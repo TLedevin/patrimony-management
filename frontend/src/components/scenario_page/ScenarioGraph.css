@@ -1,10 +1,9 @@
 .investments-graph {
-  width: calc(100% - 320px);
+  width: calc(100% - 280px);
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 10px;
   background: var(--background-color2);
-  padding: 20px;
 }
 
 .graph-header {

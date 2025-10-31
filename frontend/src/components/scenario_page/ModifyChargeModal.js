@@ -1,33 +1,33 @@
-import "./AddInvestmentModal.css";
+import "./AddChargeModal.css";
 
-function ModifyInvestmentModal({
-  investment,
-  setInvestmentType,
-  investmentName,
-  setInvestmentName,
-  investmentParams,
-  investmentType,
-  investmentTypes,
-  setInvestmentParams,
-  setShowModifyInvestmentModal,
+function ModifyChargeModal({
+  charge,
+  setChargeType,
+  chargeName,
+  setChargeName,
+  chargeParams,
+  chargeType,
+  chargeTypes,
+  setChargeParams,
+  setShowModifyChargeModal,
   selectedScenario,
   setScenarios,
-  setInvestments,
+  setCharges,
   setScenarioData,
 }) {
-  const handleModifyInvestment = async () => {
-    if (investmentName.trim() === "") {
-      alert("Please enter an investment name");
+  const handleModifyCharge = async () => {
+    if (chargeName.trim() === "") {
+      alert("Please enter a charge name");
       return;
     }
 
     // Validate required parameters
-    const currentType = investmentTypes[investmentType];
+    const currentType = chargeTypes[chargeType];
     const missingParams = currentType.parameters.filter((param) => {
       if (!param.required) return false;
       const effectiveValue =
-        investmentParams[param.id] !== undefined
-          ? investmentParams[param.id]
+        chargeParams[param.id] !== undefined
+          ? chargeParams[param.id]
           : param.default;
       // Treat undefined or empty string as missing. 0 is valid.
       return effectiveValue === undefined || effectiveValue === "";
@@ -37,12 +37,12 @@ function ModifyInvestmentModal({
     const hasEndYear = currentType.parameters.some((p) => p.id === "end_year");
     if (hasEndYear) {
       const endYear =
-        investmentParams.end_year !== undefined
-          ? investmentParams.end_year
+        chargeParams.end_year !== undefined
+          ? chargeParams.end_year
           : currentType.parameters.find((p) => p.id === "end_year")?.default;
       const startYear =
-        investmentParams.start_year !== undefined
-          ? investmentParams.start_year
+        chargeParams.start_year !== undefined
+          ? chargeParams.start_year
           : currentType.parameters.find((p) => p.id === "start_year")?.default;
       if (
         endYear !== undefined &&
@@ -65,23 +65,23 @@ function ModifyInvestmentModal({
 
     const queryParams = new URLSearchParams({
       scenario_id: selectedScenario,
-      investment_id: investment.id,
-      name: investmentName,
-      investment_type: investmentType,
-      ...investmentParams,
+      charge_id: charge.id,
+      name: chargeName,
+      charge_type: chargeType,
+      ...chargeParams,
     });
 
     const response = await fetch(
-      `http://localhost:5000/api/modify_investment/?${queryParams.toString()}`,
+      `http://localhost:5000/api/modify_charge/?${queryParams.toString()}`,
       { method: "GET" }
     );
 
     if (!response.ok) {
-      alert("Failed to modify investment");
+      alert("Failed to modify charge");
       return;
     }
 
-    // Refresh investments list
+    // Refresh charges list
     const scenariosResponse = await fetch(
       "http://localhost:5000/api/load_scenarios/"
     );
@@ -89,7 +89,7 @@ function ModifyInvestmentModal({
     const newScenarios = Object.values(scenariosData);
     setScenarios(newScenarios);
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
-    setInvestments(Object.values(scenario.investments));
+    setCharges(Object.values(scenario.charges));
 
     // Update scenario data
     const scenarioData = await fetch(
@@ -102,69 +102,69 @@ function ModifyInvestmentModal({
     setScenarioData(data);
 
     // Reset modal state
-    setShowModifyInvestmentModal(false);
+    setShowModifyChargeModal(false);
   };
 
   const handleParamChange = (paramId, value) => {
-    setInvestmentParams((prev) => ({
+    setChargeParams((prev) => ({
       ...prev,
       [paramId]: value,
     }));
   };
 
-  const handleInvestmentModalClose = () => {
-    setShowModifyInvestmentModal(false);
+  const handleChargeModalClose = () => {
+    setShowModifyChargeModal(false);
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>Modify Investment</h3>
+        <h3>Modify Charge</h3>
         <input
           type="text"
-          value={investmentName}
-          onChange={(e) => setInvestmentName(e.target.value)}
-          placeholder="Enter investment name"
+          value={chargeName}
+          onChange={(e) => setChargeName(e.target.value)}
+          placeholder="Enter charge name"
           className="name-input"
           autoFocus
         />
         <select
-          id="investment-type-select"
-          value={investmentType}
-          onChange={(e) => setInvestmentType(e.target.value)}
-          className="investment-type-dropdown"
+          id="charge-type-select"
+          value={chargeType}
+          onChange={(e) => setChargeType(e.target.value)}
+          className="charge-type-dropdown"
           disabled
         >
-          <option value="">-- Select an investment type --</option>
-          {Object.entries(investmentTypes).map(([value, type]) => (
+          <option value="">-- Select a charge type --</option>
+          {Object.entries(chargeTypes).map(([value, type]) => (
             <option key={value} value={value}>
               {type.label}
             </option>
           ))}
         </select>
         <hr className="dropdown-separator" />
-        {investmentType &&
-          investmentTypes[investmentType]?.parameters.map((param) => (
-            <div key={param.id} className="investment-parameter">
+        {chargeType &&
+          chargeTypes[chargeType]?.parameters.map((param) => (
+            <div key={param.id} className="charge-parameter">
               <label htmlFor={param.id}>{param.label}</label>
               <input
                 id={param.id}
                 type={param.type}
-                value={investmentParams[param.id] ?? param.default ?? ""}
+                value={chargeParams[param.id] ?? param.default ?? ""}
                 onChange={(e) => handleParamChange(param.id, e.target.value)}
                 min={param.min}
                 max={param.max}
                 step={param.step}
                 required={param.required}
-                className="investment-parameter-input"
+                className="charge-parameter-input"
               />
             </div>
           ))}
         <div className="modal-buttons">
-          <button onClick={handleModifyInvestment} className="btn-confirm">
+          <button onClick={handleModifyCharge} className="btn-confirm">
             Modify
           </button>
-          <button onClick={handleInvestmentModalClose} className="btn-cancel">
+          <button onClick={handleChargeModalClose} className="btn-cancel">
             Cancel
           </button>
         </div>
@@ -173,4 +173,4 @@ function ModifyInvestmentModal({
   );
 }
 
-export default ModifyInvestmentModal;
+export default ModifyChargeModal;

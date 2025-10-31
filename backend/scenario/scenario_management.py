@@ -1,6 +1,7 @@
 import json
 import os
 
+from charge.charge_management import modify_charge
 from investment.investment_management import modify_investment
 from settings import conf
 
@@ -79,6 +80,7 @@ def add_scenario(
             "end_year": end_year,
             "end_month": end_month,
             "investments": {},
+            "charges": {},
         }
         f.seek(0)
         json.dump(scenarios, f)
@@ -136,6 +138,15 @@ def modify_scenario(
                 investment["parameters"],
             )
 
+        for charge in scenarios[str(scenario_id)]["charges"].values():
+            modify_charge(
+                scenario_id,
+                charge["id"],
+                charge["name"],
+                charge["type"],
+                charge["parameters"],
+            )
+
     return scenario_id
 
 
@@ -157,6 +168,11 @@ def get_scenario_data(scenario_id: int) -> dict:
             if key not in patrimony_keys:
                 patrimony_keys.append(key)
 
+    for charge_id in scenario["charges"].keys():
+        for key in scenario["charges"][charge_id]["data"]["patrimony"]:
+            if key not in patrimony_keys:
+                patrimony_keys.append(key)
+
     for key in patrimony_keys:
         data["patrimony"][key] = []
 
@@ -166,6 +182,10 @@ def get_scenario_data(scenario_id: int) -> dict:
             cash_flow += scenario["investments"][investment_id]["data"][
                 "cash_flows"
             ][i]
+        for charge_id in scenario["charges"].keys():
+            cash_flow += scenario["charges"][charge_id]["data"]["cash_flows"][
+                i
+            ]
 
         if i > 0:
             data["patrimony"]["cash"].append(
@@ -192,6 +212,15 @@ def get_scenario_data(scenario_id: int) -> dict:
                         patrimony += scenario["investments"][investment_id][
                             "data"
                         ]["patrimony"][key][i]
+            for charge_id in scenario["charges"].keys():
+                if key in data["patrimony"]:
+                    if (
+                        key
+                        in scenario["charges"][charge_id]["data"]["patrimony"]
+                    ):
+                        patrimony += scenario["charges"][charge_id]["data"][
+                            "patrimony"
+                        ][key][i]
             data["patrimony"][key].append(patrimony)
 
     return data

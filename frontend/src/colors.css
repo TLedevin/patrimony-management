@@ -18,6 +18,8 @@
   /* Button colors */
   --button-background-color: #28a745;
   --button-hover-background-color: #218838;
+  --button-danger-background-color: #dc3545;
+  --button-hover-danger-background-color: #c82333;
   --button-cancel-background-color: #6c757d;
   --button-hover-cancel-background-color: #5a6268;
   --button-hover-delete-background-color: #c82333;

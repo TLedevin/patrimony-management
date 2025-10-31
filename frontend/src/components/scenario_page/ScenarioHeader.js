@@ -8,6 +8,7 @@ function ScenarioHeader({
   setSelectedScenario,
   setScenarios,
   setInvestments,
+  setCharges,
   setShowModifyScenarioModal,
   setScenarioParams,
 }) {
@@ -21,8 +22,10 @@ function ScenarioHeader({
     if (scenarioId) {
       const scenario = scenarios.find((s) => s.id === scenarioId);
       setInvestments(Object.values(scenario.investments));
+      setCharges(Object.values(scenario.charges));
     } else {
       setInvestments([]);
+      setCharges([]);
     }
   };
 

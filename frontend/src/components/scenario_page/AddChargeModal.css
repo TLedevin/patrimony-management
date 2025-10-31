@@ -1,0 +1,25 @@
+.charge-type-dropdown {
+  height: 30px;
+  min-width: 200px;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--background-color2);
+  cursor: pointer;
+}
+
+.charge-parameter {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.charge-parameter-input {
+  margin-left: 20px;
+  height: 25px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--background-color2);
+}

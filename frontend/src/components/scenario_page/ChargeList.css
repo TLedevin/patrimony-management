@@ -1,16 +1,15 @@
-.investments-list {
+.charges-list {
   width: 250px;
   background-color: var(--background-color2);
   border-radius: 10px;
   height: calc(50vh - 80px);
   min-height: calc(50vh - 80px);
   max-height: calc(50vh - 80px);
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
 }
 
-.investments-header {
+.charges-header {
   height: 50px;
   margin-top: 10px;
   border-bottom: 1px solid var(--light-border-color);
@@ -18,13 +17,13 @@
   border-radius: 10px 10px 0 0;
 }
 
-.investments-content {
+.charges-content {
   flex: 1;
   overflow-y: auto;
 }
 
-.add-investment-btn {
-  background-color: var(--button-background-color);
+.add-charge-btn {
+  background-color: var(--button-danger-background-color);
   color: var(--button-font-color);
   border: none;
   border-radius: 25px;
@@ -42,16 +41,16 @@
   margin: 0 auto;
 }
 
-.add-investment-btn:hover {
-  background-color: var(--button-hover-background-color);
+.add-charge-btn:hover {
+  background-color: var(--button-hover-danger-background-color);
 }
 
-.investments-grid {
+.charges-grid {
   display: flex;
   flex-direction: column;
 }
 
-.investment-card {
+.charge-card {
   background: var(--background-color2);
   border: 1px solid var(--light-border-color);
   border-radius: 8px;
@@ -66,12 +65,12 @@
   position: relative;
 }
 
-.investment-card:hover {
+.charge-card:hover {
   box-shadow: 0 0px 8px var(--box-shadow-color);
   border-color: var(--theme-border-color-hover);
 }
 
-.investment-card::after {
+.charge-card::after {
   content: '✏️';
   position: absolute;
   top: 10px;
@@ -81,11 +80,11 @@
   transition: opacity 0.2s ease;
 }
 
-.investment-card:hover::after {
+.charge-card:hover::after {
   opacity: 0.7;
 }
 
-.investment-icon {
+.charge-icon {
   background: var(--background-color);
   border-radius: 50%;
   margin-left: 10px;
@@ -98,14 +97,14 @@
   flex-shrink: 0;
 }
 
-.investment-info {
+.charge-info {
   display: flex;
   flex-direction: column;
   margin-left: 15px;
   flex-grow: 1;
 }
 
-.delete-investment-btn {
+.delete-charge-btn {
   background-color: var(--button-cancel-background-color);
   color: var(--button-font-color);
   margin-right: 10px;
@@ -122,24 +121,24 @@
   transition: background-color 0.3s ease;
 }
 
-.delete-investment-btn:hover {
+.delete-charge-btn:hover {
   background-color: var(--button-hover-delete-background-color);
 }
 
-.investment-name {
+.charge-name {
   font-size: 16px;
   font-weight: 500;
   color: var(--dark-text-color);
   margin: 0;
 }
 
-.investment-id {
+.charge-id {
   font-size: 12px;
   color: var(--dark-text-color);
   margin-top: 3px;
 }
 
-.no-investments-message {
+.no-charges-message {
   text-align: center;
   color: var(--dark-text-color);
   margin-top: 20px;
