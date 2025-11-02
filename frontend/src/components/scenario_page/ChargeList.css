@@ -1,5 +1,5 @@
 .charges-list {
-  width: 250px;
+  width: 300px;
   background-color: var(--background-color2);
   border-radius: 10px;
   height: calc(50vh - 80px);
@@ -125,14 +125,14 @@
   background-color: var(--button-hover-delete-background-color);
 }
 
-.charge-name {
+.charge-type {
   font-size: 16px;
   font-weight: 500;
   color: var(--dark-text-color);
   margin: 0;
 }
 
-.charge-id {
+.charge-name {
   font-size: 12px;
   color: var(--dark-text-color);
   margin-top: 3px;

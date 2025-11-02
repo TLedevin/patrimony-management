@@ -4,7 +4,7 @@ const currentYear = currentDate.getFullYear();
 export const chargeTypes = {
   rental_personal_use: {
     id: "rental_personal_use",
-    label: "Rental for Personal Use",
+    label: "Rental (PR)",
     parameters: [
       {
         id: "rent_including_charges",

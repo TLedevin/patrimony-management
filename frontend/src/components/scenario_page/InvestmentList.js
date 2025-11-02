@@ -88,8 +88,10 @@ function InvestmentList({
                 >
                   <div className="investment-icon">💰</div>
                   <div className="investment-info">
-                    <h3 className="investment-name">{investment.name}</h3>
-                    <span className="investment-id">#{investment.id}</span>
+                    <h3 className="investment-type">
+                      {investmentTypes[investment.type]?.label}
+                    </h3>
+                    <span className="investment-name">{investment.name}</span>
                   </div>
                   <button
                     className="delete-investment-btn"

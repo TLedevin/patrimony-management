@@ -120,28 +120,29 @@ function ModifyChargeModal({
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Modify Charge</h3>
-        <input
-          type="text"
-          value={chargeName}
-          onChange={(e) => setChargeName(e.target.value)}
-          placeholder="Enter charge name"
-          className="name-input"
-          autoFocus
-        />
-        <select
-          id="charge-type-select"
-          value={chargeType}
-          onChange={(e) => setChargeType(e.target.value)}
-          className="charge-type-dropdown"
-          disabled
-        >
-          <option value="">-- Select a charge type --</option>
-          {Object.entries(chargeTypes).map(([value, type]) => (
-            <option key={value} value={value}>
-              {type.label}
-            </option>
-          ))}
-        </select>
+        <div className="input-container">
+          <select
+            id="charge-type-select"
+            value={chargeType}
+            onChange={(e) => setChargeType(e.target.value)}
+            className="charge-type-dropdown"
+            disabled
+          >
+            <option value="">-- Select a charge type --</option>
+            {Object.entries(chargeTypes).map(([value, type]) => (
+              <option key={value} value={value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={chargeName}
+            onChange={(e) => setChargeName(e.target.value)}
+            placeholder="Enter charge name"
+            className="name-input"
+          />
+        </div>
         <hr className="dropdown-separator" />
         {chargeType &&
           chargeTypes[chargeType]?.parameters.map((param) => (

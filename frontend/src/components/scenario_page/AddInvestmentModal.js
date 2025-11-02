@@ -17,11 +17,6 @@ function AddInvestmentModal({
   setScenarioData,
 }) {
   const handleAddInvestment = async () => {
-    if (newInvestmentName.trim() === "") {
-      alert("Please enter an investment name");
-      return;
-    }
-
     // Validate required parameters
     const currentType = investmentTypes[investmentType];
     const missingParams = currentType.parameters.filter((param) => {
@@ -143,26 +138,28 @@ function AddInvestmentModal({
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Add New Investment</h3>
-        <input
-          type="text"
-          value={newInvestmentName}
-          onChange={(e) => setNewInvestmentName(e.target.value)}
-          placeholder="Enter investment name"
-          className="name-input"
-          autoFocus
-        />
-        <select
-          id="investment-type-select"
-          onChange={(e) => setInvestmentType(e.target.value)}
-          className="investment-type-dropdown"
-        >
-          <option value="">-- Select an investment type --</option>
-          {Object.entries(investmentTypes).map(([value, type]) => (
-            <option key={value} value={value}>
-              {type.label}
-            </option>
-          ))}
-        </select>
+        <div className="input-container">
+          <select
+            id="investment-type-select"
+            onChange={(e) => setInvestmentType(e.target.value)}
+            className="investment-type-dropdown"
+            autoFocus
+          >
+            <option value="">-- Select an investment type --</option>
+            {Object.entries(investmentTypes).map(([value, type]) => (
+              <option key={value} value={value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={newInvestmentName}
+            onChange={(e) => setNewInvestmentName(e.target.value)}
+            placeholder="Enter investment name"
+            className="name-input"
+          />
+        </div>
         <hr className="dropdown-separator" />
         {investmentType &&
           investmentTypes[investmentType]?.parameters.map((param) => (

@@ -19,16 +19,31 @@
   border-radius: 4px;
 }
 
-.investment-type-dropdown {
-  height: 30px;
-  min-width: 200px;
+.input-container {
+  display: flex;
   margin-left: 20px;
+  align-items: center;
+}
+
+.investment-type-dropdown {
+  height: 35px;
+  min-width: 200px;
   margin-bottom: 10px;
   border: 2px solid var(--light-border-color);
   border-radius: 6px;
   font-size: 14px;
   background-color: var(--background-color2);
   cursor: pointer;
+}
+
+.name-input {
+  height: 30px;
+  min-width: 250px;
+  margin-right: 20px;
+  border: 2px solid var(--light-border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--background-color2);
 }
 
 .dropdown-separator {

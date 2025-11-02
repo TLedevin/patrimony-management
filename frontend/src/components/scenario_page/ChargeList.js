@@ -88,8 +88,10 @@ function ChargeList({
                 >
                   <div className="charge-icon">💸</div>
                   <div className="charge-info">
-                    <h3 className="charge-name">{charge.name}</h3>
-                    <span className="charge-id">#{charge.id}</span>
+                    <h3 className="charge-type">
+                      {chargeTypes[charge.type]?.label}
+                    </h3>
+                    <span className="charge-name">{charge.name}</span>
                   </div>
                   <button
                     className="delete-charge-btn"

@@ -120,28 +120,29 @@ function ModifyInvestmentModal({
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Modify Investment</h3>
-        <input
-          type="text"
-          value={investmentName}
-          onChange={(e) => setInvestmentName(e.target.value)}
-          placeholder="Enter investment name"
-          className="name-input"
-          autoFocus
-        />
-        <select
-          id="investment-type-select"
-          value={investmentType}
-          onChange={(e) => setInvestmentType(e.target.value)}
-          className="investment-type-dropdown"
-          disabled
-        >
-          <option value="">-- Select an investment type --</option>
-          {Object.entries(investmentTypes).map(([value, type]) => (
-            <option key={value} value={value}>
-              {type.label}
-            </option>
-          ))}
-        </select>
+        <div className="input-container">
+          <select
+            id="investment-type-select"
+            value={investmentType}
+            onChange={(e) => setInvestmentType(e.target.value)}
+            className="investment-type-dropdown"
+            disabled
+          >
+            <option value="">-- Select an investment type --</option>
+            {Object.entries(investmentTypes).map(([value, type]) => (
+              <option key={value} value={value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={investmentName}
+            onChange={(e) => setInvestmentName(e.target.value)}
+            placeholder="Enter investment name"
+            className="name-input"
+          />
+        </div>
         <hr className="dropdown-separator" />
         {investmentType &&
           investmentTypes[investmentType]?.parameters.map((param) => (

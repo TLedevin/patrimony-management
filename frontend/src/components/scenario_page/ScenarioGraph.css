@@ -1,10 +1,9 @@
 .investments-graph {
-  width: calc(100% - 280px);
+  width: calc(100% - 330px);
   margin-left: 10px;
   margin-right: 10px;
   border-radius: 10px;
   background: var(--background-color2);
-  padding: 20px;
 }
 
 .graph-header {
@@ -18,6 +17,8 @@
   font-size: 1.2em;
   font-weight: bold;
   color: var(--text-color);
+  margin-right: 20px;
+  margin-top: 20px;
 }
 
 .filter-container {
@@ -39,7 +40,7 @@
 }
 
 .graph-container {
-  height: calc(100% - 50px);
+  height: calc(100% - 70px);
   width: calc(100% - 20px);
   position: relative;
 }

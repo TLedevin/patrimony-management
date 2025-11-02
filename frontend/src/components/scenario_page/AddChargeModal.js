@@ -17,11 +17,6 @@ function AddChargeModal({
   setScenarioData,
 }) {
   const handleAddCharge = async () => {
-    if (newChargeName.trim() === "") {
-      alert("Please enter a charge name");
-      return;
-    }
-
     // Validate required parameters
     const currentType = chargeTypes[chargeType];
     const missingParams = currentType.parameters.filter((param) => {
@@ -143,26 +138,28 @@ function AddChargeModal({
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Add New Charge</h3>
-        <input
-          type="text"
-          value={newChargeName}
-          onChange={(e) => setNewChargeName(e.target.value)}
-          placeholder="Enter charge name"
-          className="name-input"
-          autoFocus
-        />
-        <select
-          id="charge-type-select"
-          onChange={(e) => setChargeType(e.target.value)}
-          className="charge-type-dropdown"
-        >
-          <option value="">-- Select a charge type --</option>
-          {Object.entries(chargeTypes).map(([value, type]) => (
-            <option key={value} value={value}>
-              {type.label}
-            </option>
-          ))}
-        </select>
+        <div className="input-container">
+          <select
+            id="charge-type-select"
+            onChange={(e) => setChargeType(e.target.value)}
+            className="charge-type-dropdown"
+            autoFocus
+          >
+            <option value="">-- Select a charge type --</option>
+            {Object.entries(chargeTypes).map(([value, type]) => (
+              <option key={value} value={value}>
+                {type.label}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            value={newChargeName}
+            onChange={(e) => setNewChargeName(e.target.value)}
+            placeholder="Enter charge name"
+            className="name-input"
+          />
+        </div>
         <hr className="dropdown-separator" />
         {chargeType &&
           chargeTypes[chargeType]?.parameters.map((param) => (
