@@ -1,8 +1,8 @@
 import json
 
 from investment.generate_data_investments import (
-    generate_personal_use_rental_data,
     generate_real_estate_data,
+    generate_rental_investment_data,
     generate_saving_account_data,
     generate_stock_exchange_data,
 )
@@ -34,7 +34,7 @@ def generate_investment_data(
         "saving_account": generate_saving_account_data,
         "stock_exchange": generate_stock_exchange_data,
         "real_estate": generate_real_estate_data,
-        "rental_for_personal_use": generate_personal_use_rental_data,
+        "rental_investment": generate_rental_investment_data,
     }
 
     return mapping_investment_types[type](scenario_id, parameters)
