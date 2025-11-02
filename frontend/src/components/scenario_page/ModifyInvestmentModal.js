@@ -16,11 +16,6 @@ function ModifyInvestmentModal({
   setScenarioData,
 }) {
   const handleModifyInvestment = async () => {
-    if (investmentName.trim() === "") {
-      alert("Please enter an investment name");
-      return;
-    }
-
     // Validate required parameters
     const currentType = investmentTypes[investmentType];
     const missingParams = currentType.parameters.filter((param) => {

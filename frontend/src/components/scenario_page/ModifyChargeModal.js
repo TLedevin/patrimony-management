@@ -16,11 +16,6 @@ function ModifyChargeModal({
   setScenarioData,
 }) {
   const handleModifyCharge = async () => {
-    if (chargeName.trim() === "") {
-      alert("Please enter a charge name");
-      return;
-    }
-
     // Validate required parameters
     const currentType = chargeTypes[chargeType];
     const missingParams = currentType.parameters.filter((param) => {
