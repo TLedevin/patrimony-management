@@ -42,17 +42,11 @@
 }
 
 .modal-content {
-  background: var(--modal-background-color);
+  background-color: var(--theme-background-color-light);
   border-radius: 8px;
   min-width: 400px;
 }
 
-.modal-content h3 {
-  margin-left: 20px;
-  margin-top: 20px;
-  margin-bottom: 15px;
-  color: var(--dark-text-color);
-}
 
 .name-input {
   width: calc(100% - 40px);

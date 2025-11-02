@@ -7,20 +7,13 @@ export const chargeTypes = {
     label: "Rental (PR)",
     parameters: [
       {
-        id: "rent_including_charges",
-        label: "Rent including Charges",
-        type: "number",
-        required: true,
-        min: 0,
-        step: 10,
-      },
-      {
         id: "start_year",
         label: "Start Year",
         type: "number",
         required: true,
         min: currentYear,
         step: 1,
+        group: "dates",
       },
 
       {
@@ -31,6 +24,7 @@ export const chargeTypes = {
         min: 1,
         max: 12,
         step: 1,
+        group: "dates",
       },
       {
         id: "end_year",
@@ -45,6 +39,7 @@ export const chargeTypes = {
           }
           return true;
         },
+        group: "dates",
       },
       {
         id: "end_month",
@@ -54,6 +49,16 @@ export const chargeTypes = {
         min: 1,
         max: 12,
         step: 1,
+        group: "dates",
+      },
+      {
+        id: "rent_including_charges",
+        label: "Rent including Charges",
+        type: "number",
+        required: true,
+        min: 0,
+        step: 10,
+        group: "rental",
       },
     ],
   },

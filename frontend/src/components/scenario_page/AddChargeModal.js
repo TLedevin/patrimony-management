@@ -134,11 +134,26 @@ function AddChargeModal({
     setChargeType("");
   };
 
+  // Grouping logic for all charge types (all must have group property)
+  let groupedParams = {};
+  let groupOrder = [];
+  if (chargeType && chargeTypes[chargeType]?.parameters) {
+    const params = chargeTypes[chargeType].parameters;
+    params.forEach((param) => {
+      const group = param.group || "other";
+      if (!groupedParams[group]) {
+        groupedParams[group] = [];
+        groupOrder.push(group);
+      }
+      groupedParams[group].push(param);
+    });
+  }
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-charge">
+      <div className="modal-content-charge">
         <h3>Add New Charge</h3>
-        <div className="input-container">
+        <div className="input-container-charge">
           <select
             id="charge-type-select"
             onChange={(e) => setChargeType(e.target.value)}
@@ -157,36 +172,46 @@ function AddChargeModal({
             value={newChargeName}
             onChange={(e) => setNewChargeName(e.target.value)}
             placeholder="Enter charge name"
-            className="name-input"
+            className="name-input-charge"
           />
         </div>
-        <hr className="dropdown-separator" />
-        {chargeType &&
-          chargeTypes[chargeType]?.parameters.map((param) => (
-            <div key={param.id} className="charge-parameter">
-              <label htmlFor={param.id}>{param.label}</label>
-              <input
-                id={param.id}
-                type={param.type}
-                value={chargeParams[param.id] ?? param.default ?? ""}
-                onChange={(e) =>
-                  handleParamChange(
-                    param.id,
-                    param.type === "number"
-                      ? e.target.value === ""
-                        ? ""
-                        : Number(e.target.value)
-                      : e.target.value
-                  )
-                }
-                min={param.min}
-                max={param.max}
-                step={param.step}
-                required={param.required}
-                className="charge-parameter-input"
-              />
-            </div>
-          ))}
+        <hr className="dropdown-separator-charge" />
+        {chargeType && (
+          <div className="charge-parameters-columns">
+            {groupOrder.map((group) => (
+              <div key={group} className="charge-parameter-column">
+                <h4 className="charge-parameter-group-title">
+                  {group.charAt(0).toUpperCase() + group.slice(1)}
+                </h4>
+                {groupedParams[group].map((param) => (
+                  <div key={param.id} className="charge-parameter">
+                    <label htmlFor={param.id}>{param.label}</label>
+                    <input
+                      id={param.id}
+                      type={param.type}
+                      value={chargeParams[param.id] ?? param.default ?? ""}
+                      onChange={(e) =>
+                        handleParamChange(
+                          param.id,
+                          param.type === "number"
+                            ? e.target.value === ""
+                              ? ""
+                              : Number(e.target.value)
+                            : e.target.value
+                        )
+                      }
+                      min={param.min}
+                      max={param.max}
+                      step={param.step}
+                      required={param.required}
+                      className="charge-parameter-input"
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="modal-buttons">
           <button onClick={handleAddCharge} className="btn-confirm">
             Add
