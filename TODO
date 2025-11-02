@@ -12,14 +12,15 @@ DONE: "Tester les investissements"
 DONE: "Improve real estate investment, and add personal situation (with rental)"
 DONE: "Ajouter investissement locatif"
 DONE: "Vérifier valeurs investissement locatif"
+DONE: "Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)"
 
-TODO: "Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)"
+TODO: "Ajouter un tableau récapitulatif du scénario (sous forme de pop-up)"
 TODO: "Add possibility to choose which investments to include using checkboxes"
-TODO: "Ajouter un tableau récapitulatif du scénario sous le graphique"
 TODO: "Implémenter la page patrimoine"
 TODO: "Adapter la page scénario pour utiliser les informations utilisateur"
 TODO: "Ajouter des vérifications de cash disponible lors d'un nouvel investissement"
 TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
+TODO: "Sur le graphique scénario, superposer des flèches horizontales pour indiquer les investissements"
 TODO: "Ajouter une option pour exporter les données en excel"
 
 FIXME:
