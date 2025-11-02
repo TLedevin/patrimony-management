@@ -111,11 +111,26 @@ function ModifyInvestmentModal({
     setShowModifyInvestmentModal(false);
   };
 
+  // Grouping logic for all investment types (all must have group property)
+  let groupedParams = {};
+  let groupOrder = [];
+  if (investmentType && investmentTypes[investmentType]?.parameters) {
+    const params = investmentTypes[investmentType].parameters;
+    params.forEach((param) => {
+      const group = param.group || "other";
+      if (!groupedParams[group]) {
+        groupedParams[group] = [];
+        groupOrder.push(group);
+      }
+      groupedParams[group].push(param);
+    });
+  }
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay-investment">
+      <div className="modal-content-investment">
         <h3>Modify Investment</h3>
-        <div className="input-container">
+        <div className="input-container-investment">
           <select
             id="investment-type-select"
             value={investmentType}
@@ -135,27 +150,46 @@ function ModifyInvestmentModal({
             value={investmentName}
             onChange={(e) => setInvestmentName(e.target.value)}
             placeholder="Enter investment name"
-            className="name-input"
+            className="name-input-investment"
           />
         </div>
-        <hr className="dropdown-separator" />
-        {investmentType &&
-          investmentTypes[investmentType]?.parameters.map((param) => (
-            <div key={param.id} className="investment-parameter">
-              <label htmlFor={param.id}>{param.label}</label>
-              <input
-                id={param.id}
-                type={param.type}
-                value={investmentParams[param.id] ?? param.default ?? ""}
-                onChange={(e) => handleParamChange(param.id, e.target.value)}
-                min={param.min}
-                max={param.max}
-                step={param.step}
-                required={param.required}
-                className="investment-parameter-input"
-              />
-            </div>
-          ))}
+        <hr className="dropdown-separator-investment" />
+        {investmentType && (
+          <div className="investment-parameters-columns">
+            {groupOrder.map((group) => (
+              <div key={group} className="investment-parameter-column">
+                <h4 className="investment-parameter-group-title">
+                  {group.charAt(0).toUpperCase() + group.slice(1)}
+                </h4>
+                {groupedParams[group].map((param) => (
+                  <div key={param.id} className="investment-parameter">
+                    <label htmlFor={param.id}>{param.label}</label>
+                    <input
+                      id={param.id}
+                      type={param.type}
+                      value={investmentParams[param.id] ?? param.default ?? ""}
+                      onChange={(e) =>
+                        handleParamChange(
+                          param.id,
+                          param.type === "number"
+                            ? e.target.value === ""
+                              ? ""
+                              : Number(e.target.value)
+                            : e.target.value
+                        )
+                      }
+                      min={param.min}
+                      max={param.max}
+                      step={param.step}
+                      required={param.required}
+                      className="investment-parameter-input"
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         <div className="modal-buttons">
           <button onClick={handleModifyInvestment} className="btn-confirm">
             Modify
