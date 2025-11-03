@@ -3,11 +3,13 @@ import { useState } from "react";
 import "./ScenarioGraph.css";
 import investmentStyles from "../../config/investmentGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
+import ScenarioDataModal from "./ScenarioDataModal";
 
 function ScenarioGraph({ scenarioData }) {
   const [selectedTypes, setSelectedTypes] = useState(
     Object.keys(investmentStyles)
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="investments-graph">
       {scenarioData && (
@@ -19,6 +21,12 @@ function ScenarioGraph({ scenarioData }) {
                 selectedTypes={selectedTypes}
                 onChange={setSelectedTypes}
               />
+              <button
+                className="view-table-button"
+                onClick={() => setIsModalOpen(true)}
+              >
+                View Table
+              </button>
             </div>
             <div className="total-value">
               Total :{" "}
@@ -103,6 +111,13 @@ function ScenarioGraph({ scenarioData }) {
               }}
             />
           </div>
+          <ScenarioDataModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            scenarioData={scenarioData}
+            selectedTypes={selectedTypes}
+            investmentStyles={investmentStyles}
+          />
         </>
       )}
     </div>

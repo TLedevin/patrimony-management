@@ -1,29 +1,30 @@
-DONE: "Ajouter les oprtions de paramétrage en fonction du type d'investissement sélectionné"
-DONE: "Commencer par un seul type: compte épargne"
-DONE: "Corriger le bug de la ligne totale et savings sur le graph"
-DONE: "Rationnaliser le code"
-DONE: "Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel"
-DONE: "Ajouter la possibilité d'investir mensuellement sur des placements"
-DONE: "faire en sorte de pouvoir modifier les paramètre initiaux du scénario après création"
-      "(cash de départ, cash mensuel, date de début, date de fin)"
-DONE: "Add a drop down list to choose the patrimony to display"
-DONE: "Ajouter la possibilité de modifier les investissements créés"
-DONE: "Tester les investissements"
-DONE: "Improve real estate investment, and add personal situation (with rental)"
-DONE: "Ajouter investissement locatif"
-DONE: "Vérifier valeurs investissement locatif"
-DONE: "Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)"
+DONE: Scénario: Ajouter les options de paramétrage en fonction du type d'investissement sélectionné
+DONE: Scénario: Commencer par un seul type: compte épargne
+DONE: Scénario: Corriger le bug de la ligne totale et savings sur le graph
+DONE: Scénario: Rationnaliser le code
+DONE: Scénario: Mettre une base de cash pour les scénarios. Cash de départ + cash mensuel
+DONE: Scénario: Ajouter la possibilité d'investir mensuellement sur des placements
+DONE: Scénario: faire en sorte de pouvoir modifier les paramètre initiaux du scénario après création
+      (cash de départ, cash mensuel, date de début, date de fin)
+DONE: Scénario: Add a drop down list to choose the patrimony to display
+DONE: Scénario: Ajouter la possibilité de modifier les investissements créés
+DONE: Scénario: Tester les investissements
+DONE: Scénario: Improve real estate investment, and add personal situation (with rental)
+DONE: Scénario: Ajouter investissement locatif
+DONE: Scénario: Vérifier valeurs investissement locatif
+DONE: Scénario: Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)
+DONE: Scénario: Ajouter un tableau récapitulatif du scénario (sous forme de pop-up)
 
-TODO: "Ajouter un tableau récapitulatif du scénario (sous forme de pop-up)"
-TODO: "Add possibility to choose which investments to include using checkboxes"
-TODO: "Implémenter la page patrimoine"
-TODO: "Adapter la page scénario pour utiliser les informations utilisateur"
-TODO: "Ajouter des vérifications de cash disponible lors d'un nouvel investissement"
-TODO: "Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux"
-TODO: "Sur le graphique scénario, superposer des flèches horizontales pour indiquer les investissements"
-TODO: "Ajouter une option pour exporter les données en excel"
-TODO: "Ajouter des comptes"
-TODO: "Déployer l'application"
+TODO: Patrimoine: Implémenter la page patrimoine
+TODO: Scénario: Add possibility to choose which investments to include using checkboxes
+TODO: Scénario: Adapter la page scénario pour utiliser les informations utilisateur
+TODO: Scénario: Ajouter des vérifications de cash disponible lors d'un nouvel investissement
+TODO: Scénario: Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux
+TODO: Scénario: Sur le graphique scénario, superposer des flèches horizontales pour indiquer les investissements
+TODO: Scénario: Ajouter des comptes
+TODO: Scénario: Déployer l'application
+TODO: Scénario: Ajouter une option pour exporter les données en excel
+TODO: Scénario: Améliorer la table recap pour avoir plus d'infos
 
 FIXME:
 
