@@ -1,0 +1,51 @@
+.modal-content {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: var(--button-hover-delete-background-color);
+}
+
+.table-container {
+  overflow-x: auto;
+  max-height: 70vh;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th, td {
+  background-color: #ffffff;
+  border-bottom: 1px dashed var(--light-border-color);
+  padding: 8px;
+  text-align: right;
+}
+
+th {
+  background-color: var(--background-color2);
+  border-bottom: 1px solid var(--dark-border-color);
+  color: var(--theme-background-color);
+  position: sticky;
+  top: 0;
+}

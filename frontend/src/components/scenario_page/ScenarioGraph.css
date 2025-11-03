@@ -23,20 +23,23 @@
 
 .filter-container {
   margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.patrimony-filter {
-  width: 200px;
-  padding: 8px;
-  border: 1px solid var(--border-color);
+.view-table-button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: var(--background-color);
+  border: 1px solid var(--light-border-color);
   border-radius: 4px;
-  background: var(--background-color1);
   color: var(--text-color);
+  cursor: pointer;
 }
 
-.patrimony-filter option {
-  padding: 4px;
-  background: var(--background-color1);
+.view-table-button:hover {
+  border-color: var(--theme-border-color-hover);
 }
 
 .graph-container {
