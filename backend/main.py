@@ -18,6 +18,7 @@ from scenario.scenario_management import (
     add_scenario,
     delete_scenario,
     get_scenario_data,
+    get_scenario_data_enriched,
     load_scenarios,
     modify_scenario,
 )
@@ -91,6 +92,14 @@ def api_get_scenario_data():
     scenario_id = request.args.get("scenario_id")
     data = get_scenario_data(scenario_id)
     logger.info(f"Retrieved data for scenario: {scenario_id}")
+    return jsonify(data)
+
+
+@app.route("/api/get_scenario_data_enriched/", methods=["GET"])
+def api_get_scenario_data_enriched():
+    scenario_id = request.args.get("scenario_id")
+    data = get_scenario_data_enriched(scenario_id)
+    logger.info(f"Retrieved enriched data for scenario: {scenario_id}")
     return jsonify(data)
 
 

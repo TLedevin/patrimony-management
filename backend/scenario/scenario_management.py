@@ -56,11 +56,6 @@ def add_scenario(
         (end_year - start_year) * 12 + end_month - start_month
     )
 
-    cash_baseline = [
-        initial_deposit + i * monthly_deposit
-        for i in range(simulation_duration)
-    ]
-
     dates = [
         f"{start_year + (month // 12)}-{(month % 12) + 1:02d}"
         for month in range(simulation_duration)
@@ -74,7 +69,6 @@ def add_scenario(
             "dates": dates,
             "initial_deposit": initial_deposit,
             "monthly_deposit": monthly_deposit,
-            "cash_baseline": cash_baseline,
             "start_year": start_year,
             "start_month": start_month,
             "end_year": end_year,
@@ -107,11 +101,6 @@ def modify_scenario(
             - scenarios[str(scenario_id)]["start_month"]
         )
 
-        cash_baseline = [
-            initial_deposit + i * monthly_deposit
-            for i in range(simulation_duration)
-        ]
-
         dates = [
             f"{scenarios[str(scenario_id)]['start_year'] + (month // 12)}-{(month % 12) + 1:02d}"
             for month in range(simulation_duration)
@@ -121,7 +110,6 @@ def modify_scenario(
         scenarios[str(scenario_id)]["dates"] = dates
         scenarios[str(scenario_id)]["initial_deposit"] = initial_deposit
         scenarios[str(scenario_id)]["monthly_deposit"] = monthly_deposit
-        scenarios[str(scenario_id)]["cash_baseline"] = cash_baseline
         scenarios[str(scenario_id)]["end_year"] = end_year
         scenarios[str(scenario_id)]["end_month"] = end_month
 
@@ -189,14 +177,13 @@ def get_scenario_data(scenario_id: int) -> dict:
 
         if i > 0:
             data["patrimony"]["cash"].append(
-                scenario["cash_baseline"][i]
-                + data["patrimony"]["cash"][-1]
-                - scenario["cash_baseline"][i - 1]
+                +data["patrimony"]["cash"][-1]
+                + scenario["monthly_deposit"]
                 + cash_flow
             )
         else:
             data["patrimony"]["cash"].append(
-                scenario["cash_baseline"][0] + cash_flow
+                scenario["initial_deposit"] + cash_flow
             )
 
         for key in patrimony_keys:
@@ -222,6 +209,72 @@ def get_scenario_data(scenario_id: int) -> dict:
                             "patrimony"
                         ][key][i]
             data["patrimony"][key].append(patrimony)
+
+    return data
+
+
+def get_scenario_data_enriched(scenario_id: int) -> dict:
+    data_path = conf["paths"]["data"]
+
+    with open(data_path + "scenarios/scenarios.json", "r") as f:
+        scenario = json.load(f)[str(scenario_id)]
+
+    data = {}
+
+    data["dates"] = scenario["dates"]
+
+    data["patrimony"] = {}
+    data["patrimony"]["cash"] = []
+    data["patrimony"]["investments"] = {}
+    data["patrimony"]["charges"] = {}
+
+    data["cash_flows"] = {}
+    data["cash_flows"]["investments"] = {}
+    data["cash_flows"]["charges"] = {}
+    data["cash_flows"]["situation"] = {
+        "initial_deposit": [
+            scenario["initial_deposit"] if i == 0 else 0
+            for i in range(len(data["dates"]))
+        ],
+        "monthly_deposit": [
+            scenario["monthly_deposit"] for _ in range(len(data["dates"]))
+        ],
+    }
+
+    for i in range(len(data["dates"])):
+        cash_flow = 0
+        for investment_id in scenario["investments"].keys():
+            cash_flow += scenario["investments"][investment_id]["data"][
+                "cash_flows"
+            ][i]
+        for charge_id in scenario["charges"].keys():
+            cash_flow += scenario["charges"][charge_id]["data"]["cash_flows"][
+                i
+            ]
+
+        if i > 0:
+            data["patrimony"]["cash"].append(
+                +data["patrimony"]["cash"][-1]
+                + scenario["monthly_deposit"]
+                + cash_flow
+            )
+        else:
+            data["patrimony"]["cash"].append(
+                scenario["initial_deposit"] + cash_flow
+            )
+
+    for investment_id in scenario["investments"].keys():
+        data["patrimony"]["investments"][investment_id] = scenario[
+            "investments"
+        ][investment_id]["data"]["patrimony"]
+        data["cash_flows"]["investments"][investment_id] = scenario[
+            "investments"
+        ][investment_id]["data"]["cash_flows"]
+
+    for charge_id in scenario["charges"].keys():
+        data["cash_flows"]["charges"][charge_id] = scenario["charges"][
+            charge_id
+        ]["data"]["cash_flows"]
 
     return data
 

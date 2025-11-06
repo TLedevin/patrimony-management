@@ -5,7 +5,7 @@ import investmentStyles from "../../config/investmentGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
 import ScenarioDataModal from "./ScenarioDataModal";
 
-function ScenarioGraph({ scenarioData }) {
+function ScenarioGraph({ scenarioData, scenarioDataEnriched }) {
   const [selectedTypes, setSelectedTypes] = useState(
     Object.keys(investmentStyles)
   );
@@ -114,7 +114,7 @@ function ScenarioGraph({ scenarioData }) {
           <ScenarioDataModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            scenarioData={scenarioData}
+            scenarioDataEnriched={scenarioDataEnriched}
             selectedTypes={selectedTypes}
             investmentStyles={investmentStyles}
           />

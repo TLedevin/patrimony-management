@@ -38,6 +38,7 @@ function ScenarioPage() {
   const [scenarios, setScenarios] = useState([]);
   const [selectedScenario, setSelectedScenario] = useState("");
   const [scenarioData, setScenarioData] = useState(null);
+  const [scenarioDataEnriched, setScenarioDataEnriched] = useState(null);
   const [showAddScenarioModal, setShowAddScenarioModal] = useState(false);
   const [scenarioParams, setScenarioParams] = useState({});
 
@@ -77,6 +78,20 @@ function ScenarioPage() {
       }
     };
 
+    const fetchScenarioDataEnriched = async () => {
+      if (selectedScenario) {
+        const response = await fetch(
+          `http://localhost:5000/api/get_scenario_data_enriched/?scenario_id=${selectedScenario}`
+        );
+        const data = await response.json();
+        console.log("Fetched scenario data enriched:", data);
+        setScenarioDataEnriched(data);
+      } else {
+        setScenarioDataEnriched(null);
+      }
+    };
+
+    fetchScenarioDataEnriched();
     fetchScenarioData();
   }, [selectedScenario]); // Added dependency array to prevent infinite re-renders
 
@@ -96,7 +111,10 @@ function ScenarioPage() {
           setScenarioParams={setScenarioParams}
         />
         <div className="investments-main-content">
-          <ScenarioGraph scenarioData={scenarioData} />
+          <ScenarioGraph
+            scenarioData={scenarioData}
+            scenarioDataEnriched={scenarioDataEnriched}
+          />
           <div className="lists-container">
             <InvestmentList
               selectedScenario={selectedScenario}

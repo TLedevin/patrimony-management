@@ -59,4 +59,5 @@
 
 .sidebar a:hover {
   background-color: var(--theme-background-color-hover);
+  color: var(--light-text-color-hover);
 }

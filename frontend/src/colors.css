@@ -3,8 +3,8 @@
   --background-color: #e7e6ec;
   --background-color2: #fafafa;
   --background-hover-color: #bfbfbf;
-  --theme-background-color: #282765;
-  --theme-background-color-hover: #333281;
+  --theme-background-color: #19184a;
+  --theme-background-color-hover: rgb(189, 164, 4);
   --theme-background-color-light: #ecedfe;
 
   /* Border colors */
@@ -15,10 +15,11 @@
   /* Text colors */
   --dark-text-color: #333;
   --light-text-color: #bdc3c7;
+  --light-text-color-hover: #ffffff;
 
   /* Button colors */
-  --button-background-color: #28a745;
-  --button-hover-background-color: #218838;
+  --button-background-color: #ceb308;
+  --button-hover-background-color: rgb(189, 164, 4);
   --button-danger-background-color: #dc3545;
   --button-hover-danger-background-color: #c82333;
   --button-cancel-background-color: #6c757d;

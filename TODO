@@ -15,6 +15,7 @@ DONE: Scénario: Vérifier valeurs investissement locatif
 DONE: Scénario: Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)
 DONE: Scénario: Ajouter un tableau récapitulatif du scénario (sous forme de pop-up)
 
+TODO: Scénario: Améliorer la table recap pour avoir plus d'infos
 TODO: Patrimoine: Implémenter la page patrimoine
 TODO: Scénario: Add possibility to choose which investments to include using checkboxes
 TODO: Scénario: Adapter la page scénario pour utiliser les informations utilisateur
@@ -24,7 +25,6 @@ TODO: Scénario: Sur le graphique scénario, superposer des flèches horizontale
 TODO: Main: Ajouter des comptes
 TODO: Main: Déployer l'application
 TODO: Scénario: Ajouter une option pour exporter les données en excel
-TODO: Scénario: Améliorer la table recap pour avoir plus d'infos
 
 FIXME:
 
