@@ -157,6 +157,7 @@ function ScenarioPage() {
             selectedScenario={selectedScenario}
             setScenarios={setScenarios}
             setScenarioData={setScenarioData}
+            setScenarioDataEnriched={setScenarioDataEnriched}
           />
         )}
         {showAddInvestmentModal && (
@@ -174,6 +175,7 @@ function ScenarioPage() {
             setInvestments={setInvestments}
             setSelectedInvestment={setSelectedInvestment}
             setScenarioData={setScenarioData}
+            setScenarioDataEnriched={setScenarioDataEnriched}
           />
         )}
         {showAddChargeModal && (
@@ -191,6 +193,7 @@ function ScenarioPage() {
             setCharges={setCharges}
             setSelectedCharge={setSelectedCharge}
             setScenarioData={setScenarioData}
+            setScenarioDataEnriched={setScenarioDataEnriched}
           />
         )}
       </div>

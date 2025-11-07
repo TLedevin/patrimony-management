@@ -15,6 +15,7 @@ function AddChargeModal({
   setCharges,
   setSelectedCharge,
   setScenarioData,
+  setScenarioDataEnriched,
 }) {
   const handleAddCharge = async () => {
     // Validate required parameters
@@ -95,6 +96,16 @@ function AddChargeModal({
     const data = await scenarioData.json();
     console.log("Fetched scenario data:", data);
     setScenarioData(data);
+
+    const scenarioDataEnriched = await fetch(
+      `http://localhost:5000/api/get_scenario_data_enriched/?scenario_id=${selectedScenario}`
+    );
+    if (!scenarioDataEnriched.ok) {
+      throw new Error(`HTTP error! status: ${scenarioDataEnriched.status}`);
+    }
+    const data_enriched = await scenarioDataEnriched.json();
+    console.log("Fetched scenario data enriched:", data);
+    setScenarioDataEnriched(data_enriched);
 
     // Reset modal state
     setShowAddChargeModal(false);

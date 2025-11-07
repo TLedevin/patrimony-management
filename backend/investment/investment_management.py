@@ -1,4 +1,5 @@
 import json
+import os
 
 from investment.generate_data_investments import (
     generate_real_estate_data,
@@ -48,7 +49,6 @@ def add_investment(
 ) -> int:
     data_path = conf["paths"]["data"]
     investment_id = generate_investment_id(scenario_id)
-    data = generate_investment_data(scenario_id, type, parameters)
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
@@ -57,11 +57,19 @@ def add_investment(
             "name": name,
             "type": type,
             "parameters": parameters,
-            "data": data,
         }
         f.seek(0)
         json.dump(scenarios, f)
         f.truncate()
+
+    data = generate_investment_data(scenario_id, type, parameters)
+
+    with open(
+        f"{data_path}scenarios/{scenario_id}/{investment_id}.json",
+        "w",
+    ) as f:
+        json.dump(data, f)
+
     return investment_id
 
 
@@ -77,18 +85,24 @@ def modify_investment(
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
 
-        data = generate_investment_data(scenario_id, type, parameters)
-
         scenarios[str(scenario_id)]["investments"][str(investment_id)] = {
             "id": investment_id,
             "name": name,
             "type": type,
             "parameters": parameters,
-            "data": data,
         }
 
         f.seek(0)
         json.dump(scenarios, f)
+        f.truncate()
+
+    data = generate_investment_data(scenario_id, type, parameters)
+
+    with open(
+        f"{data_path}scenarios/{scenario_id}/{investment_id}.json", "r+"
+    ) as f:
+        f.seek(0)
+        json.dump(data, f)
         f.truncate()
 
     return investment_id
@@ -103,6 +117,7 @@ def delete_investment(scenario_id: int, investment_id: int):
             f.seek(0)
             json.dump(scenarios, f)
             f.truncate()
-            f.seek(0)
-            json.dump(scenarios, f)
-            f.truncate()
+
+            os.remove(
+                f"{data_path}scenarios/{scenario_id}/{investment_id}.json"
+            )

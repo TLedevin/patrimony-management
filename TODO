@@ -15,6 +15,8 @@ DONE: Scénario: Vérifier valeurs investissement locatif
 DONE: Scénario: Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)
 DONE: Scénario: Ajouter un tableau récapitulatif du scénario (sous forme de pop-up)
 
+TODO: CHECKER FONCTION d'AJOUT de SCENARIO SANS LA CASH BASELINE
+TODO: MODIFIER LA TABLE POUR AFFICHER LE CASH FLOW DU AUX RENTREES D'ARGENT
 TODO: Scénario: Améliorer la table recap pour avoir plus d'infos
 TODO: Patrimoine: Implémenter la page patrimoine
 TODO: Scénario: Add possibility to choose which investments to include using checkboxes

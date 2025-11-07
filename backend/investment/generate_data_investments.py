@@ -32,7 +32,7 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
         - int(parameters["start_month"])
     )
 
-    start_month = (
+    investment_start_month = (
         (int(parameters["start_year"]) - start_year) * 12
         + int(parameters["start_month"])
         - start_month
@@ -43,17 +43,17 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
     patrimony["savings"] = []
 
     for month in range(simulation_duration):
-        if month < start_month:
+        if month < investment_start_month:
             cash_flows.append(0)
             patrimony["savings"].append(0)
 
-        elif month == start_month:
+        elif month == investment_start_month:
             cash_flows.append(-float(parameters["initial_investment"]))
             patrimony["savings"].append(
                 float(parameters["initial_investment"])
             )
 
-        elif month < start_month + investment_duration:
+        elif month < investment_start_month + investment_duration:
             if patrimony["savings"][-1] < 22950 - float(
                 float(parameters["monthly_investment"])
             ):
@@ -62,6 +62,7 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
                     patrimony["savings"].append(
                         patrimony["savings"][-1]
                         * (1 + float(parameters["yearly_interest_rate"]) / 100)
+                        + float(parameters["monthly_investment"])
                     )
                 else:
                     patrimony["savings"].append(
@@ -87,7 +88,7 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
                 else:
                     patrimony["savings"].append(patrimony["savings"][-1])
 
-        elif month == start_month + investment_duration:
+        elif month == investment_start_month + investment_duration:
             cash_flows.append(patrimony["savings"][-1])
             patrimony["savings"].append(0)
 
