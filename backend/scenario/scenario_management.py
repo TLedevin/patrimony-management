@@ -88,7 +88,7 @@ def add_scenario(
             "charges": {},
         }
         f.seek(0)
-        json.dump(scenarios, f)
+        json.dump(scenarios, f, indent=4)
         f.truncate()
 
     os.makedirs(f"{data_path}scenarios/{str(scenario_id)}")
@@ -115,7 +115,7 @@ def modify_scenario(
         scenarios[str(scenario_id)]["end_month"] = end_month
 
         f.seek(0)
-        json.dump(scenarios, f)
+        json.dump(scenarios, f, indent=4)
         f.truncate()
 
         for investment in scenarios[str(scenario_id)]["investments"].values():
@@ -140,79 +140,6 @@ def modify_scenario(
 
 
 def get_scenario_data(scenario_id: int) -> dict:
-    data_path = conf["paths"]["data"]
-
-    with open(data_path + "scenarios/scenarios.json", "r") as f:
-        scenario = json.load(f)[str(scenario_id)]
-
-    data = {}
-    simulation_duration = (
-        (scenario["end_year"] - scenario["start_year"]) * 12
-        + scenario["end_month"]
-        - scenario["start_month"]
-    )
-
-    dates = [
-        f"{scenario['start_year'] + (month // 12)}-{(month % 12) + 1:02d}"
-        for month in range(simulation_duration)
-    ]
-    data["dates"] = dates
-
-    data["patrimony"] = {}
-    data["patrimony"]["cash"] = []
-
-    patrimony_keys = []
-    for investment_id in scenario["investments"]:
-        investment = load_investment(scenario_id, investment_id)
-        for key in investment["patrimony"]:
-            if key not in patrimony_keys:
-                patrimony_keys.append(key)
-
-    for charge_id in scenario["charges"]:
-        charge = load_charge(scenario_id, charge_id)
-        for key in charge["patrimony"]:
-            if key not in patrimony_keys:
-                patrimony_keys.append(key)
-
-    for key in patrimony_keys:
-        data["patrimony"][key] = []
-
-    for i in range(len(data["dates"])):
-        cash_flow = 0
-        for investment_id in scenario["investments"]:
-            investment = load_investment(scenario_id, investment_id)
-            cash_flow += investment["cash_flows"][i]
-        for charge_id in scenario["charges"]:
-            charge = load_charge(scenario_id, charge_id)
-            cash_flow += charge["cash_flows"][i]
-
-        if i > 0:
-            data["patrimony"]["cash"].append(
-                +data["patrimony"]["cash"][-1]
-                + scenario["monthly_deposit"]
-                + cash_flow
-            )
-        else:
-            data["patrimony"]["cash"].append(
-                scenario["initial_deposit"] + cash_flow
-            )
-
-        for key in patrimony_keys:
-            patrimony = 0
-            for investment_id in scenario["investments"]:
-                investment = load_investment(scenario_id, investment_id)
-                if key in investment["patrimony"]:
-                    patrimony += investment["patrimony"][key][i]
-            for charge_id in scenario["charges"]:
-                charge = load_charge(scenario_id, charge_id)
-                if key in charge["patrimony"]:
-                    patrimony += charge["patrimony"][key][i]
-            data["patrimony"][key].append(patrimony)
-
-    return data
-
-
-def get_scenario_data_enriched(scenario_id: int) -> dict:
     data_path = conf["paths"]["data"]
 
     with open(data_path + "scenarios/scenarios.json", "r") as f:
@@ -294,7 +221,7 @@ def delete_scenario(scenario_id: int):
         if str(scenario_id) in scenarios:
             del scenarios[str(scenario_id)]
             f.seek(0)
-            json.dump(scenarios, f)
+            json.dump(scenarios, f, indent=4)
             f.truncate()
 
             shutil.rmtree(f"{data_path}scenarios/{scenario_id}")

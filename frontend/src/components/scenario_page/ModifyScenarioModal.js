@@ -10,7 +10,6 @@ function ModifyScenarioModal({
   setShowModifyScenarioModal,
   setScenarios,
   setScenarioData,
-  setScenarioDataEnriched,
 }) {
   // Initialize form with current scenario values
   useEffect(() => {
@@ -53,14 +52,6 @@ function ModifyScenarioModal({
     const data = await new_scenario_data.json();
     console.log("Fetched scenario data:", data);
     setScenarioData(data);
-
-    // Refresh scenario data enriched
-    const new_scenario_data_enriched = await fetch(
-      `http://localhost:5000/api/get_scenario_data_enriched/?scenario_id=${selectedScenario}`
-    );
-    const data_enriched = await new_scenario_data_enriched.json();
-    console.log("Fetched scenario data enriched:", data_enriched);
-    setScenarioDataEnriched(data_enriched);
 
     // Refresh scenarios list
     const scenariosResponse = await fetch(

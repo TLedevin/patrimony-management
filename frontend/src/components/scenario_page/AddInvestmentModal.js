@@ -15,7 +15,6 @@ function AddInvestmentModal({
   setInvestments,
   setSelectedInvestment,
   setScenarioData,
-  setScenarioDataEnriched,
 }) {
   const handleAddInvestment = async () => {
     // Validate required parameters
@@ -96,16 +95,6 @@ function AddInvestmentModal({
     const data = await scenarioData.json();
     console.log("Fetched scenario data:", data);
     setScenarioData(data);
-
-    const scenarioDataEnriched = await fetch(
-      `http://localhost:5000/api/get_scenario_data_enriched/?scenario_id=${selectedScenario}`
-    );
-    if (!scenarioDataEnriched.ok) {
-      throw new Error(`HTTP error! status: ${scenarioDataEnriched.status}`);
-    }
-    const data_enriched = await scenarioDataEnriched.json();
-    console.log("Fetched scenario data enriched:", data_enriched);
-    setScenarioDataEnriched(data_enriched);
 
     // Reset modal state
     setShowAddInvestmentModal(false);
