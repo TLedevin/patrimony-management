@@ -5,6 +5,7 @@ export const placementTypes = {
   investment: {
     saving_account: {
       label: "Saving Account",
+      icon: "🏦",
       parameters: [
         {
           id: "start_year",
@@ -83,6 +84,7 @@ export const placementTypes = {
     },
     stock_exchange: {
       label: "Stock Exchange",
+      icon: "📈",
       parameters: [
         {
           id: "start_year",
@@ -163,6 +165,7 @@ export const placementTypes = {
     },
     real_estate: {
       label: "Real Estate",
+      icon: "🏠",
       parameters: [
         {
           id: "start_year",
@@ -332,6 +335,7 @@ export const placementTypes = {
     },
     rental_investment: {
       label: "Rental investment",
+      icon: "🏢",
       parameters: [
         {
           id: "start_year",
@@ -522,6 +526,7 @@ export const placementTypes = {
     rental_personal_use: {
       id: "rental_personal_use",
       label: "Rental (PR)",
+      icon: "🏡",
       parameters: [
         {
           id: "start_year",

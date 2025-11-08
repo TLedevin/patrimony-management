@@ -124,16 +124,16 @@ def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
             patrimony["stock_exchange"].append(0)
 
         elif month == start_month:
-            cash_flows.append(-float(parameters["initial_placement"]))
+            cash_flows.append(-float(parameters["initial_investment"]))
             patrimony["stock_exchange"].append(
-                float(parameters["initial_placement"])
+                float(parameters["initial_investment"])
             )
 
         elif month < start_month + placement_duration:
-            cash_flows.append(-float(parameters["monthly_placement"]))
+            cash_flows.append(-float(parameters["monthly_investment"]))
             patrimony["stock_exchange"].append(
                 patrimony["stock_exchange"][-1] * (1 + monthly_rate)
-                + float(parameters["monthly_placement"])
+                + float(parameters["monthly_investment"])
             )
 
         elif month == start_month + placement_duration:
