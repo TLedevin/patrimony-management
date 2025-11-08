@@ -15,19 +15,18 @@ DONE: Scénario: Vérifier valeurs investissement locatif
 DONE: Scénario: Arranger le display des pop-up pour ajouter un investissement (bien ranger les text inputs)
 DONE: Scénario: Ajouter un tableau récapitulatif du scénario (sous forme de pop-up)
 
-TODO: CHECKER FONCTION d'AJOUT de SCENARIO SANS LA CASH BASELINE
-TODO: MODIFIER LA TABLE POUR AFFICHER LE CASH FLOW DU AUX RENTREES D'ARGENT
-TODO: Scénario: Améliorer la table recap pour avoir plus d'infos
+TODO: Gérer le cas d'investissement dont les dates ne correspondent pas aux dates des scénarios
+TODO: Scénario: Améliorer la table recap visuellement
 TODO: Patrimoine: Implémenter la page patrimoine
 TODO: Scénario: Add possibility to choose which investments to include using checkboxes
 TODO: Scénario: Adapter la page scénario pour utiliser les informations utilisateur
 TODO: Scénario: Ajouter des vérifications de cash disponible lors d'un nouvel investissement
-TODO: Scénario: Sur la page scénario, ajouter la possibilité de comparer les scénarios entre eux
+TODO: Dashboard: Sur la page dashboard, ajouter la possibilité de comparer les scénarios entre eux
 TODO: Scénario: Sur le graphique scénario, superposer des flèches horizontales pour indiquer les investissements
 TODO: Main: Ajouter des comptes
 TODO: Main: Déployer l'application
 TODO: Scénario: Ajouter une option pour exporter les données en excel
-
+      
 FIXME:
 
 BUG:
