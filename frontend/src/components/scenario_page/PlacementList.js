@@ -7,7 +7,7 @@ function PlacementList({
   placements,
   setShowAddPlacementModal,
   setScenarios,
-  setplacements,
+  setPlacements,
   setScenarioData,
   placementTypes,
 }) {
@@ -16,6 +16,7 @@ function PlacementList({
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [placementName, setPlacementName] = useState("");
   const [placementType, setPlacementType] = useState("");
+  const [placementSubType, setPlacementSubType] = useState("");
   const [placementParams, setPlacementParams] = useState({});
   const handleDeleteplacement = async (placementId) => {
     if (!selectedScenario) {
@@ -38,7 +39,7 @@ function PlacementList({
         const newScenarios = Object.values(scenariosData);
         setScenarios(newScenarios);
         const scenario = newScenarios.find((s) => s.id === selectedScenario);
-        setplacements(Object.values(scenario.placements));
+        setPlacements(Object.values(scenario.placements));
       } else {
         alert("Failed to delete placement");
       }
@@ -82,6 +83,7 @@ function PlacementList({
                     setSelectedPlacement(placement);
                     setPlacementName(placement.name);
                     setPlacementType(placement.type);
+                    setPlacementSubType(placement.subtype);
                     setPlacementParams(placement.parameters);
                     setShowModifyPlacementModal(true);
                   }}
@@ -89,7 +91,10 @@ function PlacementList({
                   <div className="placement-icon">💰</div>
                   <div className="placement-info">
                     <h3 className="placement-type">
-                      {placementTypes[placement.type]?.label}
+                      {
+                        placementTypes[placement.type]?.[placement.subtype]
+                          ?.label
+                      }
                     </h3>
                     <span className="placement-name">{placement.name}</span>
                   </div>
@@ -127,10 +132,12 @@ function PlacementList({
           placementType={placementType}
           placementTypes={placementTypes}
           setPlacementParams={setPlacementParams}
+          placementSubType={placementSubType}
+          setPlacementSubType={setPlacementSubType}
           setShowModifyPlacementModal={setShowModifyPlacementModal}
           selectedScenario={selectedScenario}
           setScenarios={setScenarios}
-          setplacements={setplacements}
+          setPlacements={setPlacements}
           setScenarioData={setScenarioData}
         />
       )}

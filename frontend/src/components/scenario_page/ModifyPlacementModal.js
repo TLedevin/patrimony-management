@@ -1,23 +1,25 @@
 import "./AddPlacementModal.css";
 
-function ModifyplacementModal({
+function ModifyPlacementModal({
   placement,
-  setplacementType,
+  setPlacementType,
   placementName,
-  setplacementName,
+  setPlacementName,
   placementParams,
   placementType,
   placementTypes,
-  setplacementParams,
-  setShowModifyplacementModal,
+  setPlacementParams,
+  placementSubType,
+  setPlacementSubType,
+  setShowModifyPlacementModal,
   selectedScenario,
   setScenarios,
-  setplacements,
+  setPlacements,
   setScenarioData,
 }) {
-  const handleModifyplacement = async () => {
+  const handleModifyPlacement = async () => {
     // Validate required parameters
-    const currentType = placementTypes[placementType];
+    const currentType = placementTypes[placementType][placementSubType];
     const missingParams = currentType.parameters.filter((param) => {
       if (!param.required) return false;
       const effectiveValue =
@@ -63,6 +65,7 @@ function ModifyplacementModal({
       placement_id: placement.id,
       name: placementName,
       placement_type: placementType,
+      placement_subtype: placementSubType,
       ...placementParams,
     });
 
@@ -84,7 +87,7 @@ function ModifyplacementModal({
     const newScenarios = Object.values(scenariosData);
     setScenarios(newScenarios);
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
-    setplacements(Object.values(scenario.placements));
+    setPlacements(Object.values(scenario.placements));
 
     // Update scenario data
     const scenarioData = await fetch(
@@ -97,25 +100,29 @@ function ModifyplacementModal({
     setScenarioData(data);
 
     // Reset modal state
-    setShowModifyplacementModal(false);
+    setShowModifyPlacementModal(false);
   };
 
   const handleParamChange = (paramId, value) => {
-    setplacementParams((prev) => ({
+    setPlacementParams((prev) => ({
       ...prev,
       [paramId]: value,
     }));
   };
 
-  const handleplacementModalClose = () => {
-    setShowModifyplacementModal(false);
+  const handlePlacementModalClose = () => {
+    setShowModifyPlacementModal(false);
   };
 
   // Grouping logic for all placement types (all must have group property)
   let groupedParams = {};
   let groupOrder = [];
-  if (placementType && placementTypes[placementType]?.parameters) {
-    const params = placementTypes[placementType].parameters;
+  if (
+    placementType &&
+    placementSubType &&
+    placementTypes[placementType]?.[placementSubType]?.parameters
+  ) {
+    const params = placementTypes[placementType][placementSubType].parameters;
     params.forEach((param) => {
       const group = param.group || "other";
       if (!groupedParams[group]) {
@@ -131,24 +138,40 @@ function ModifyplacementModal({
       <div className="modal-content-placement">
         <h3>Modify placement</h3>
         <div className="input-container-placement">
-          <select
-            id="placement-type-select"
-            value={placementType}
-            onChange={(e) => setplacementType(e.target.value)}
-            className="placement-type-dropdown"
-            disabled
-          >
-            <option value="">-- Select an placement type --</option>
-            {Object.entries(placementTypes).map(([value, type]) => (
-              <option key={value} value={value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
+          <div className="placement-type-selectors">
+            <select
+              id="placement-type-select"
+              value={placementType}
+              onChange={(e) => setPlacementType(e.target.value)}
+              className="placement-type-dropdown"
+              disabled
+            >
+              <option value="">-- Select a placement type --</option>
+              <option value="investment">Investment</option>
+              <option value="charges">Charges</option>
+            </select>
+            <select
+              id="placement-subtype-select"
+              value={placementSubType}
+              onChange={(e) => setPlacementSubType(e.target.value)}
+              className="placement-type-dropdown"
+              disabled
+            >
+              <option value="">-- Select a subtype --</option>
+              {placementType &&
+                Object.entries(placementTypes[placementType] || {}).map(
+                  ([value, type]) => (
+                    <option key={value} value={value}>
+                      {type.label}
+                    </option>
+                  )
+                )}
+            </select>
+          </div>
           <input
             type="text"
             value={placementName}
-            onChange={(e) => setplacementName(e.target.value)}
+            onChange={(e) => setPlacementName(e.target.value)}
             placeholder="Enter placement name"
             className="name-input-placement"
           />
@@ -191,10 +214,10 @@ function ModifyplacementModal({
           </div>
         )}
         <div className="modal-buttons">
-          <button onClick={handleModifyplacement} className="btn-confirm">
+          <button onClick={handleModifyPlacement} className="btn-confirm">
             Modify
           </button>
-          <button onClick={handleplacementModalClose} className="btn-cancel">
+          <button onClick={handlePlacementModalClose} className="btn-cancel">
             Cancel
           </button>
         </div>
@@ -203,4 +226,4 @@ function ModifyplacementModal({
   );
 }
 
-export default ModifyplacementModal;
+export default ModifyPlacementModal;

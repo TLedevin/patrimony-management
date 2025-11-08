@@ -86,6 +86,7 @@ def modify_placement(
     placement_id: int,
     name: str,
     type: str,
+    subtype: str,
     parameters: dict,
 ):
     data_path = conf["paths"]["data"]
@@ -97,6 +98,7 @@ def modify_placement(
             "id": placement_id,
             "name": name,
             "type": type,
+            "subtype": subtype,
             "parameters": parameters,
         }
 
@@ -104,7 +106,7 @@ def modify_placement(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-    data = generate_placement_data(scenario_id, type, parameters)
+    data = generate_placement_data(scenario_id, type, subtype, parameters)
 
     with open(
         f"{data_path}scenarios/{scenario_id}/{placement_id}.json", "r+"

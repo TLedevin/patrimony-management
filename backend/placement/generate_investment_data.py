@@ -33,24 +33,26 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
             patrimony["savings"].append(0)
 
         elif month == placement_start_month:
-            cash_flows.append(-float(parameters["initial_placement"]))
-            patrimony["savings"].append(float(parameters["initial_placement"]))
+            cash_flows.append(-float(parameters["initial_investment"]))
+            patrimony["savings"].append(
+                float(parameters["initial_investment"])
+            )
 
         elif month < placement_start_month + placement_duration:
             if patrimony["savings"][-1] < 22950 - float(
-                float(parameters["monthly_placement"])
+                float(parameters["monthly_investment"])
             ):
-                cash_flows.append(-float(parameters["monthly_placement"]))
+                cash_flows.append(-float(parameters["monthly_investment"]))
                 if month % 12 == 1:
                     patrimony["savings"].append(
                         patrimony["savings"][-1]
                         * (1 + float(parameters["yearly_interest_rate"]) / 100)
-                        + float(parameters["monthly_placement"])
+                        + float(parameters["monthly_investment"])
                     )
                 else:
                     patrimony["savings"].append(
                         patrimony["savings"][-1]
-                        + float(parameters["monthly_placement"])
+                        + float(parameters["monthly_investment"])
                     )
             elif patrimony["savings"][-1] < 22950:
                 cash_flows.append(22950 - patrimony["savings"][-1])

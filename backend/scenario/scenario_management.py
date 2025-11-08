@@ -82,6 +82,7 @@ def modify_scenario(
                 placement["id"],
                 placement["name"],
                 placement["type"],
+                placement["subtype"],
                 placement["parameters"],
             )
 
