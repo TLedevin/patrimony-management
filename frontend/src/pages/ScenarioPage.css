@@ -13,7 +13,7 @@
   flex-direction: column;
 }
 
-.investments-main-content {
+.placements-main-content {
   margin-top: 10px;
   height: calc(100vh - 150px);
   display: flex;

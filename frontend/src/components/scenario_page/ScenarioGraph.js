@@ -1,23 +1,23 @@
 import { Line } from "react-chartjs-2";
 import { useState } from "react";
 import "./ScenarioGraph.css";
-import investmentStyles from "../../config/investmentGraphConfig";
+import placementStyles from "../../config/patrimonyGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
 import ScenarioDataModal from "./ScenarioDataModal";
 
 function ScenarioGraph({ scenarioData }) {
   const [selectedTypes, setSelectedTypes] = useState(
-    Object.keys(investmentStyles)
+    Object.keys(placementStyles)
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
-    <div className="investments-graph">
+    <div className="placements-graph">
       {scenarioData && (
         <>
           <div className="graph-header">
             <div className="filter-container">
               <PatrimonyTypeDropdown
-                options={Object.values(investmentStyles)}
+                options={Object.values(placementStyles)}
                 selectedTypes={selectedTypes}
                 onChange={setSelectedTypes}
               />
@@ -30,7 +30,7 @@ function ScenarioGraph({ scenarioData }) {
             </div>
             <div className="total-value">
               Total :{" "}
-              {Object.values(investmentStyles)
+              {Object.values(placementStyles)
                 .filter((style) => selectedTypes.includes(style.key))
                 .reduce((sum, style) => {
                   let value = 0;
@@ -38,10 +38,10 @@ function ScenarioGraph({ scenarioData }) {
                     const values = scenarioData.patrimony?.cash;
                     value = values ? values[values.length - 1] || 0 : 0;
                   } else {
-                    Object.values(scenarioData.patrimony.investments).forEach(
-                      (investment) => {
-                        if (investment[style.key]) {
-                          const values = investment[style.key];
+                    Object.values(scenarioData.patrimony.placements).forEach(
+                      (placement) => {
+                        if (placement[style.key]) {
+                          const values = placement[style.key];
                           value += values[values.length - 1] || 0;
                         }
                       }
@@ -57,19 +57,19 @@ function ScenarioGraph({ scenarioData }) {
             <Line
               data={{
                 labels: scenarioData.dates,
-                datasets: Object.values(investmentStyles)
+                datasets: Object.values(placementStyles)
                   .filter((style) => selectedTypes.includes(style.key))
                   .map((style) => {
                     let data;
                     if (style.key === "cash") {
                       data = scenarioData.patrimony.cash;
                     } else {
-                      // Aggregate all investments of this type
+                      // Aggregate all placements of this type
                       data = Array(scenarioData.dates.length).fill(0);
-                      Object.values(scenarioData.patrimony.investments).forEach(
-                        (investment) => {
-                          if (investment[style.key]) {
-                            investment[style.key].forEach((value, index) => {
+                      Object.values(scenarioData.patrimony.placements).forEach(
+                        (placement) => {
+                          if (placement[style.key]) {
+                            placement[style.key].forEach((value, index) => {
                               data[index] += value;
                             });
                           }
@@ -144,7 +144,7 @@ function ScenarioGraph({ scenarioData }) {
             onClose={() => setIsModalOpen(false)}
             scenarioData={scenarioData}
             selectedTypes={selectedTypes}
-            investmentStyles={investmentStyles}
+            placementStyles={placementStyles}
           />
         </>
       )}

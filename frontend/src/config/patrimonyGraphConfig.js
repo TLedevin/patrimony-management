@@ -1,4 +1,4 @@
-const investmentStyles = {
+const placementStyles = {
   cash: {
     label: "Cash",
     key: "cash",
@@ -57,4 +57,4 @@ const investmentStyles = {
   },
 };
 
-export default investmentStyles;
+export default placementStyles;

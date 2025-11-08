@@ -1,16 +1,13 @@
-.investments-list {
+.placements-list {
   width: 300px;
   background-color: var(--background-color2);
   border-radius: 10px;
-  height: calc(50vh - 80px);
-  min-height: calc(50vh - 80px);
-  max-height: calc(50vh - 80px);
-  margin-bottom: 10px;
+  height: calc(100vh);
   display: flex;
   flex-direction: column;
 }
 
-.investments-header {
+.placements-header {
   height: 50px;
   margin-top: 10px;
   border-bottom: 1px solid var(--light-border-color);
@@ -18,12 +15,12 @@
   border-radius: 10px 10px 0 0;
 }
 
-.investments-content {
+.placements-content {
   flex: 1;
   overflow-y: auto;
 }
 
-.add-investment-btn {
+.add-placement-btn {
   background-color: var(--button-background-color);
   color: var(--button-font-color);
   border: none;
@@ -42,16 +39,16 @@
   margin: 0 auto;
 }
 
-.add-investment-btn:hover {
+.add-placement-btn:hover {
   background-color: var(--button-hover-background-color);
 }
 
-.investments-grid {
+.placements-grid {
   display: flex;
   flex-direction: column;
 }
 
-.investment-card {
+.placement-card {
   background: var(--background-color2);
   border: 1px solid var(--light-border-color);
   border-radius: 8px;
@@ -66,12 +63,12 @@
   position: relative;
 }
 
-.investment-card:hover {
+.placement-card:hover {
   box-shadow: 0 0px 8px var(--box-shadow-color);
   border-color: var(--theme-border-color-hover);
 }
 
-.investment-card::after {
+.placement-card::after {
   content: '✏️';
   position: absolute;
   top: 10px;
@@ -81,11 +78,11 @@
   transition: opacity 0.2s ease;
 }
 
-.investment-card:hover::after {
+.placement-card:hover::after {
   opacity: 0.7;
 }
 
-.investment-icon {
+.placement-icon {
   background: var(--background-color);
   border-radius: 50%;
   margin-left: 10px;
@@ -98,14 +95,14 @@
   flex-shrink: 0;
 }
 
-.investment-info {
+.placement-info {
   display: flex;
   flex-direction: column;
   margin-left: 15px;
   flex-grow: 1;
 }
 
-.delete-investment-btn {
+.delete-placement-btn {
   background-color: var(--button-cancel-background-color);
   color: var(--button-font-color);
   margin-right: 10px;
@@ -122,24 +119,24 @@
   transition: background-color 0.3s ease;
 }
 
-.delete-investment-btn:hover {
+.delete-placement-btn:hover {
   background-color: var(--button-hover-delete-background-color);
 }
 
-.investment-type {
+.placement-type {
   font-size: 16px;
   font-weight: 500;
   color: var(--dark-text-color);
   margin: 0;
 }
 
-.investment-name {
+.placement-name {
   font-size: 12px;
   color: var(--dark-text-color);
   margin-top: 3px;
 }
 
-.no-investments-message {
+.no-placements-message {
   text-align: center;
   color: var(--dark-text-color);
   margin-top: 20px;

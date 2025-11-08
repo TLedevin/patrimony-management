@@ -34,41 +34,41 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
                 <tr>
                   <th rowSpan="2">Date</th>
                   <th rowSpan="2">Cash</th>
-                  {Object.keys(scenarioData.patrimony.investments).map(
-                    (investmentId) => {
+                  {Object.keys(scenarioData.patrimony.placements).map(
+                    (placementId) => {
                       const patrimonyTypes = Object.keys(
-                        scenarioData.patrimony.investments[investmentId]
+                        scenarioData.patrimony.placements[placementId]
                       ).filter((key) =>
                         Array.isArray(
-                          scenarioData.patrimony.investments[investmentId][key]
+                          scenarioData.patrimony.placements[placementId][key]
                         )
                       );
                       return (
                         <th
-                          key={investmentId}
+                          key={placementId}
                           colSpan={patrimonyTypes.length + 1}
                         >
-                          Investment {investmentId}
+                          placement {placementId}
                         </th>
                       );
                     }
                   )}
                 </tr>
                 <tr>
-                  {Object.keys(scenarioData.patrimony.investments).map(
-                    (investmentId) => {
+                  {Object.keys(scenarioData.patrimony.placements).map(
+                    (placementId) => {
                       const patrimonyTypes = Object.keys(
-                        scenarioData.patrimony.investments[investmentId]
+                        scenarioData.patrimony.placements[placementId]
                       ).filter((key) =>
                         Array.isArray(
-                          scenarioData.patrimony.investments[investmentId][key]
+                          scenarioData.patrimony.placements[placementId][key]
                         )
                       );
                       return (
-                        <React.Fragment key={`header-${investmentId}`}>
-                          <th key={`${investmentId}-cashflow`}>Cash Flow</th>
+                        <React.Fragment key={`header-${placementId}`}>
+                          <th key={`${placementId}-cashflow`}>Cash Flow</th>
                           {patrimonyTypes.map((type) => (
-                            <th key={`${investmentId}-${type}`}>
+                            <th key={`${placementId}-${type}`}>
                               {type
                                 .split("_")
                                 .map(
@@ -97,34 +97,32 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
                       )}{" "}
                       €
                     </td>
-                    {Object.keys(scenarioData.patrimony.investments).map(
-                      (investmentId) => {
+                    {Object.keys(scenarioData.patrimony.placements).map(
+                      (placementId) => {
                         const patrimonyTypes = Object.keys(
-                          scenarioData.patrimony.investments[investmentId]
+                          scenarioData.patrimony.placements[placementId]
                         ).filter((key) =>
                           Array.isArray(
-                            scenarioData.patrimony.investments[investmentId][
-                              key
-                            ]
+                            scenarioData.patrimony.placements[placementId][key]
                           )
                         );
                         return (
-                          <React.Fragment key={`row-${investmentId}`}>
-                            <td key={`${investmentId}-cashflow`}>
+                          <React.Fragment key={`row-${placementId}`}>
+                            <td key={`${placementId}-cashflow`}>
                               {(
-                                scenarioData.cash_flows.investments[
-                                  investmentId
-                                ][index] || 0
+                                scenarioData.cash_flows.placements[placementId][
+                                  index
+                                ] || 0
                               ).toLocaleString("fr-FR", {
                                 maximumFractionDigits: 0,
                               })}{" "}
                               €
                             </td>
                             {patrimonyTypes.map((type) => (
-                              <td key={`${investmentId}-${type}`}>
+                              <td key={`${placementId}-${type}`}>
                                 {(
-                                  scenarioData.patrimony.investments[
-                                    investmentId
+                                  scenarioData.patrimony.placements[
+                                    placementId
                                   ][type][index] || 0
                                 ).toLocaleString("fr-FR", {
                                   maximumFractionDigits: 0,

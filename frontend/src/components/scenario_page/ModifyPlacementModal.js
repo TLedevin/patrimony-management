@@ -1,28 +1,30 @@
-import "./AddInvestmentModal.css";
+import "./AddPlacementModal.css";
 
-function ModifyInvestmentModal({
-  investment,
-  setInvestmentType,
-  investmentName,
-  setInvestmentName,
-  investmentParams,
-  investmentType,
-  investmentTypes,
-  setInvestmentParams,
-  setShowModifyInvestmentModal,
+function ModifyPlacementModal({
+  placement,
+  setPlacementType,
+  placementName,
+  setPlacementName,
+  placementParams,
+  placementType,
+  placementTypes,
+  setPlacementParams,
+  placementSubType,
+  setPlacementSubType,
+  setShowModifyPlacementModal,
   selectedScenario,
   setScenarios,
-  setInvestments,
+  setPlacements,
   setScenarioData,
 }) {
-  const handleModifyInvestment = async () => {
+  const handleModifyPlacement = async () => {
     // Validate required parameters
-    const currentType = investmentTypes[investmentType];
+    const currentType = placementTypes[placementType][placementSubType];
     const missingParams = currentType.parameters.filter((param) => {
       if (!param.required) return false;
       const effectiveValue =
-        investmentParams[param.id] !== undefined
-          ? investmentParams[param.id]
+        placementParams[param.id] !== undefined
+          ? placementParams[param.id]
           : param.default;
       // Treat undefined or empty string as missing. 0 is valid.
       return effectiveValue === undefined || effectiveValue === "";
@@ -32,12 +34,12 @@ function ModifyInvestmentModal({
     const hasEndYear = currentType.parameters.some((p) => p.id === "end_year");
     if (hasEndYear) {
       const endYear =
-        investmentParams.end_year !== undefined
-          ? investmentParams.end_year
+        placementParams.end_year !== undefined
+          ? placementParams.end_year
           : currentType.parameters.find((p) => p.id === "end_year")?.default;
       const startYear =
-        investmentParams.start_year !== undefined
-          ? investmentParams.start_year
+        placementParams.start_year !== undefined
+          ? placementParams.start_year
           : currentType.parameters.find((p) => p.id === "start_year")?.default;
       if (
         endYear !== undefined &&
@@ -60,23 +62,24 @@ function ModifyInvestmentModal({
 
     const queryParams = new URLSearchParams({
       scenario_id: selectedScenario,
-      investment_id: investment.id,
-      name: investmentName,
-      investment_type: investmentType,
-      ...investmentParams,
+      placement_id: placement.id,
+      name: placementName,
+      placement_type: placementType,
+      placement_subtype: placementSubType,
+      ...placementParams,
     });
 
     const response = await fetch(
-      `http://localhost:5000/api/modify_investment/?${queryParams.toString()}`,
+      `http://localhost:5000/api/modify_placement/?${queryParams.toString()}`,
       { method: "GET" }
     );
 
     if (!response.ok) {
-      alert("Failed to modify investment");
+      alert("Failed to modify placement");
       return;
     }
 
-    // Refresh investments list
+    // Refresh placements list
     const scenariosResponse = await fetch(
       "http://localhost:5000/api/load_scenarios/"
     );
@@ -84,7 +87,7 @@ function ModifyInvestmentModal({
     const newScenarios = Object.values(scenariosData);
     setScenarios(newScenarios);
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
-    setInvestments(Object.values(scenario.investments));
+    setPlacements(Object.values(scenario.placements));
 
     // Update scenario data
     const scenarioData = await fetch(
@@ -97,25 +100,29 @@ function ModifyInvestmentModal({
     setScenarioData(data);
 
     // Reset modal state
-    setShowModifyInvestmentModal(false);
+    setShowModifyPlacementModal(false);
   };
 
   const handleParamChange = (paramId, value) => {
-    setInvestmentParams((prev) => ({
+    setPlacementParams((prev) => ({
       ...prev,
       [paramId]: value,
     }));
   };
 
-  const handleInvestmentModalClose = () => {
-    setShowModifyInvestmentModal(false);
+  const handlePlacementModalClose = () => {
+    setShowModifyPlacementModal(false);
   };
 
-  // Grouping logic for all investment types (all must have group property)
+  // Grouping logic for all placement types (all must have group property)
   let groupedParams = {};
   let groupOrder = [];
-  if (investmentType && investmentTypes[investmentType]?.parameters) {
-    const params = investmentTypes[investmentType].parameters;
+  if (
+    placementType &&
+    placementSubType &&
+    placementTypes[placementType]?.[placementSubType]?.parameters
+  ) {
+    const params = placementTypes[placementType][placementSubType].parameters;
     params.forEach((param) => {
       const group = param.group || "other";
       if (!groupedParams[group]) {
@@ -127,47 +134,63 @@ function ModifyInvestmentModal({
   }
 
   return (
-    <div className="modal-overlay-investment">
-      <div className="modal-content-investment">
-        <h3>Modify Investment</h3>
-        <div className="input-container-investment">
-          <select
-            id="investment-type-select"
-            value={investmentType}
-            onChange={(e) => setInvestmentType(e.target.value)}
-            className="investment-type-dropdown"
-            disabled
-          >
-            <option value="">-- Select an investment type --</option>
-            {Object.entries(investmentTypes).map(([value, type]) => (
-              <option key={value} value={value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
+    <div className="modal-overlay-placement">
+      <div className="modal-content-placement">
+        <h3>Modify placement</h3>
+        <div className="input-container-placement">
+          <div className="placement-type-selectors">
+            <select
+              id="placement-type-select"
+              value={placementType}
+              onChange={(e) => setPlacementType(e.target.value)}
+              className="placement-type-dropdown"
+              disabled
+            >
+              <option value="">-- Select a placement type --</option>
+              <option value="investment">Investment</option>
+              <option value="charges">Charges</option>
+            </select>
+            <select
+              id="placement-subtype-select"
+              value={placementSubType}
+              onChange={(e) => setPlacementSubType(e.target.value)}
+              className="placement-type-dropdown"
+              disabled
+            >
+              <option value="">-- Select a subtype --</option>
+              {placementType &&
+                Object.entries(placementTypes[placementType] || {}).map(
+                  ([value, type]) => (
+                    <option key={value} value={value}>
+                      {type.label}
+                    </option>
+                  )
+                )}
+            </select>
+          </div>
           <input
             type="text"
-            value={investmentName}
-            onChange={(e) => setInvestmentName(e.target.value)}
-            placeholder="Enter investment name"
-            className="name-input-investment"
+            value={placementName}
+            onChange={(e) => setPlacementName(e.target.value)}
+            placeholder="Enter placement name"
+            className="name-input-placement"
           />
         </div>
-        <hr className="dropdown-separator-investment" />
-        {investmentType && (
-          <div className="investment-parameters-columns">
+        <hr className="dropdown-separator-placement" />
+        {placementType && (
+          <div className="placement-parameters-columns">
             {groupOrder.map((group) => (
-              <div key={group} className="investment-parameter-column">
-                <h4 className="investment-parameter-group-title">
+              <div key={group} className="placement-parameter-column">
+                <h4 className="placement-parameter-group-title">
                   {group.charAt(0).toUpperCase() + group.slice(1)}
                 </h4>
                 {groupedParams[group].map((param) => (
-                  <div key={param.id} className="investment-parameter">
+                  <div key={param.id} className="placement-parameter">
                     <label htmlFor={param.id}>{param.label}</label>
                     <input
                       id={param.id}
                       type={param.type}
-                      value={investmentParams[param.id] ?? param.default ?? ""}
+                      value={placementParams[param.id] ?? param.default ?? ""}
                       onChange={(e) =>
                         handleParamChange(
                           param.id,
@@ -182,7 +205,7 @@ function ModifyInvestmentModal({
                       max={param.max}
                       step={param.step}
                       required={param.required}
-                      className="investment-parameter-input"
+                      className="placement-parameter-input"
                     />
                   </div>
                 ))}
@@ -191,10 +214,10 @@ function ModifyInvestmentModal({
           </div>
         )}
         <div className="modal-buttons">
-          <button onClick={handleModifyInvestment} className="btn-confirm">
+          <button onClick={handleModifyPlacement} className="btn-confirm">
             Modify
           </button>
-          <button onClick={handleInvestmentModalClose} className="btn-cancel">
+          <button onClick={handlePlacementModalClose} className="btn-cancel">
             Cancel
           </button>
         </div>
@@ -203,4 +226,4 @@ function ModifyInvestmentModal({
   );
 }
 
-export default ModifyInvestmentModal;
+export default ModifyPlacementModal;

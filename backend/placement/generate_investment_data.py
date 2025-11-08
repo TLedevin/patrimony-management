@@ -1,20 +1,5 @@
-import json
-
 import numpy as np
-from settings import conf
-
-
-def load_scenario_data(scenario_id: int) -> dict:
-    data_path = conf["paths"]["data"]
-    with open(data_path + "scenarios/scenarios.json", "r") as f:
-        scenario = json.load(f)[str(scenario_id)]
-
-    end_year = int(scenario["end_year"])
-    start_year = int(scenario["start_year"])
-    end_month = int(scenario["end_month"])
-    start_month = int(scenario["start_month"])
-
-    return end_year, start_year, end_month, start_month
+from placement.placement_read import load_scenario_data
 
 
 def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
@@ -26,13 +11,13 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
         (end_year - start_year) * 12 + end_month - start_month
     )
 
-    investment_duration = (
+    placement_duration = (
         (int(parameters["end_year"]) - int(parameters["start_year"])) * 12
         + int(parameters["end_month"])
         - int(parameters["start_month"])
     )
 
-    investment_start_month = (
+    placement_start_month = (
         (int(parameters["start_year"]) - start_year) * 12
         + int(parameters["start_month"])
         - start_month
@@ -43,17 +28,17 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
     patrimony["savings"] = []
 
     for month in range(simulation_duration):
-        if month < investment_start_month:
+        if month < placement_start_month:
             cash_flows.append(0)
             patrimony["savings"].append(0)
 
-        elif month == investment_start_month:
+        elif month == placement_start_month:
             cash_flows.append(-float(parameters["initial_investment"]))
             patrimony["savings"].append(
                 float(parameters["initial_investment"])
             )
 
-        elif month < investment_start_month + investment_duration:
+        elif month < placement_start_month + placement_duration:
             if patrimony["savings"][-1] < 22950 - float(
                 float(parameters["monthly_investment"])
             ):
@@ -88,7 +73,7 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
                 else:
                     patrimony["savings"].append(patrimony["savings"][-1])
 
-        elif month == investment_start_month + investment_duration:
+        elif month == placement_start_month + placement_duration:
             cash_flows.append(patrimony["savings"][-1])
             patrimony["savings"].append(0)
 
@@ -117,7 +102,7 @@ def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
         (end_year - start_year) * 12 + end_month - start_month
     )
 
-    investment_duration = (
+    placement_duration = (
         (int(parameters["end_year"]) - int(parameters["start_year"])) * 12
         + int(parameters["end_month"])
         - int(parameters["start_month"])
@@ -139,19 +124,19 @@ def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
             patrimony["stock_exchange"].append(0)
 
         elif month == start_month:
-            cash_flows.append(-float(parameters["initial_investment"]))
+            cash_flows.append(-float(parameters["initial_placement"]))
             patrimony["stock_exchange"].append(
-                float(parameters["initial_investment"])
+                float(parameters["initial_placement"])
             )
 
-        elif month < start_month + investment_duration:
-            cash_flows.append(-float(parameters["monthly_investment"]))
+        elif month < start_month + placement_duration:
+            cash_flows.append(-float(parameters["monthly_placement"]))
             patrimony["stock_exchange"].append(
                 patrimony["stock_exchange"][-1] * (1 + monthly_rate)
-                + float(parameters["monthly_investment"])
+                + float(parameters["monthly_placement"])
             )
 
-        elif month == start_month + investment_duration:
+        elif month == start_month + placement_duration:
             cash_flows.append(patrimony["stock_exchange"][-1])
             patrimony["stock_exchange"].append(0)
 
@@ -176,7 +161,7 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
         (end_year - start_year) * 12 + end_month - start_month
     )
 
-    investment_duration = (
+    placement_duration = (
         (parameters["end_year"] - parameters["start_year"]) * 12
         + parameters["end_month"]
         - parameters["start_month"]
@@ -223,7 +208,7 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
             )
             patrimony["debt"].append(-parameters["loan_amount"])
 
-        elif month < start_month + investment_duration:
+        elif month < start_month + placement_duration:
             patrimony["real_estate"].append(
                 patrimony["real_estate"][-1] * (1 + monthly_index)
             )
@@ -255,7 +240,7 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
                 )
             )
 
-        elif month == start_month + investment_duration:
+        elif month == start_month + placement_duration:
             patrimony["real_estate"].append(0)
             patrimony["debt"].append(0)
             cash_flows.append(
@@ -276,9 +261,7 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
     return {"cash_flows": cash_flows, "patrimony": patrimony}
 
 
-def generate_rental_investment_data(
-    scenario_id: int, parameters: dict
-) -> dict:
+def generate_rental_placement_data(scenario_id: int, parameters: dict) -> dict:
     for key in parameters.keys():
         try:
             parameters[key] = float(parameters[key])
@@ -292,7 +275,7 @@ def generate_rental_investment_data(
         (end_year - start_year) * 12 + end_month - start_month
     )
 
-    investment_duration = (
+    placement_duration = (
         (parameters["end_year"] - parameters["start_year"]) * 12
         + parameters["end_month"]
         - parameters["start_month"]
@@ -342,7 +325,7 @@ def generate_rental_investment_data(
             )
             patrimony["debt"].append(-parameters["loan_amount"])
 
-        elif month < start_month + investment_duration:
+        elif month < start_month + placement_duration:
             patrimony["real_estate"].append(
                 patrimony["real_estate"][-1] * (1 + monthly_index)
             )
@@ -377,7 +360,7 @@ def generate_rental_investment_data(
                 )
             )
 
-        elif month == start_month + investment_duration:
+        elif month == start_month + placement_duration:
             patrimony["real_estate"].append(0)
             patrimony["debt"].append(0)
             cash_flows.append(

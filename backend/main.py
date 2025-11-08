@@ -1,18 +1,12 @@
 import logging
 
-from charge.charge_management import (
-    add_charge,
-    delete_charge,
-    generate_charge_data,
-    modify_charge,
-)
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from investment.investment_management import (
-    add_investment,
-    delete_investment,
-    generate_investment_data,
-    modify_investment,
+from placement.placement_management import (
+    add_placement,
+    delete_placement,
+    generate_placement_data,
+    modify_placement,
 )
 from scenario.scenario_management import (
     add_scenario,
@@ -103,108 +97,67 @@ def api_delete_scenarios():
     return jsonify(scenarios)
 
 
-@app.route("/api/add_investment/", methods=["GET"])
-def api_add_investment():
+@app.route("/api/add_placement/", methods=["GET"])
+def api_add_placement():
     params = request.args.to_dict()
     # Extract required parameters
     scenario_id = params.pop("scenario_id", None)
     name = params.pop("name", None)
-    investment_type = params.pop("investment_type", None)
-    # All remaining parameters are investment parameters
-    result = add_investment(scenario_id, name, investment_type, params)
-    logger.info(f"Added investment: {name} to scenario {scenario_id}")
+    placement_type = params.pop("placement_type", None)
+    placement_subtype = params.pop("placement_subtype", None)
+    # All remaining parameters are placement parameters
+    result = add_placement(
+        scenario_id, name, placement_type, placement_subtype, params
+    )
+    logger.info(f"Added placement: {name} to scenario {scenario_id}")
     return jsonify(result)
 
 
-@app.route("/api/modify_investment/", methods=["GET"])
-def api_modify_investment():
+@app.route("/api/modify_placement/", methods=["GET"])
+def api_modify_placement():
     params = request.args.to_dict()
     # Extract required parameters
     scenario_id = params.pop("scenario_id", None)
-    investment_id = params.pop("investment_id", None)
+    placement_id = params.pop("placement_id", None)
     name = params.pop("name", None)
-    investment_type = params.pop("investment_type", None)
-    # All remaining parameters are investment parameters
-    result = modify_investment(
-        scenario_id, investment_id, name, investment_type, params
+    placement_type = params.pop("placement_type", None)
+    placement_subtype = params.pop("placement_subtype", None)
+    # All remaining parameters are placement parameters
+    result = modify_placement(
+        scenario_id,
+        placement_id,
+        name,
+        placement_type,
+        placement_subtype,
+        params,
     )
     logger.info(
-        f"Modified investment: {investment_id} in scenario {scenario_id}"
+        f"Modified placement: {placement_id} in scenario {scenario_id}"
     )
     return jsonify(result)
 
 
 @app.route(
-    "/api/delete_investment/<string:scenario_id>/<string:investment_id>",
+    "/api/delete_placement/<string:scenario_id>/<string:placement_id>",
     methods=["GET"],
 )
-def api_delete_investment(scenario_id, investment_id):
-    delete_investment(scenario_id, investment_id)
+def api_delete_placement(scenario_id, placement_id):
+    delete_placement(scenario_id, placement_id)
     logger.info(
-        f"Deleted investment: {investment_id} from scenario {scenario_id}"
+        f"Deleted placement: {placement_id} from scenario {scenario_id}"
     )
     return jsonify({"status": "success"})
 
 
 @app.route(
-    "/api/generate_investment_data/<string:scenario_id>",
+    "/api/generate_placement_data/<string:scenario_id>",
     methods=["POST"],
 )
-def api_generate_investment_data(scenario_id):
+def api_generate_placement_data(scenario_id):
     parameters = request.json
-    result = generate_investment_data(scenario_id, parameters)
+    result = generate_placement_data(scenario_id, parameters)
     logger.info(
-        f"Generated investment data: {parameters} for scenario {scenario_id}"
-    )
-    return jsonify(result)
-
-
-@app.route("/api/add_charge/", methods=["GET"])
-def api_add_charge():
-    params = request.args.to_dict()
-    # Extract required parameters
-    scenario_id = params.pop("scenario_id", None)
-    name = params.pop("name", None)
-    charge_type = params.pop("charge_type", None)
-    # All remaining parameters are charge parameters
-    result = add_charge(scenario_id, name, charge_type, params)
-    logger.info(f"Added charge: {name} to scenario {scenario_id}")
-    return jsonify(result)
-
-
-@app.route("/api/modify_charge/", methods=["GET"])
-def api_modify_charge():
-    params = request.args.to_dict()
-    # Extract required parameters
-    scenario_id = params.pop("scenario_id", None)
-    charge_id = params.pop("charge_id", None)
-    name = params.pop("name", None)
-    charge_type = params.pop("charge_type", None)
-    # All remaining parameters are charge parameters
-    result = modify_charge(scenario_id, charge_id, name, charge_type, params)
-    logger.info(f"Modified charge: {charge_id} in scenario {scenario_id}")
-    return jsonify(result)
-
-
-@app.route(
-    "/api/delete_charge/<string:scenario_id>/<string:charge_id>",
-    methods=["GET"],
-)
-def api_delete_charge(scenario_id, charge_id):
-    delete_charge(scenario_id, charge_id)
-    logger.info(f"Deleted charge: {charge_id} from scenario {scenario_id}")
-    return jsonify({"status": "success"})
-
-
-@app.route(
-    "/api/generate_charge_data/<string:scenario_id>",
-    methods=["POST"],
-)
-def api_generate_charge_data(scenario_id):
-    parameters = request.json
-    result = generate_charge_data(scenario_id, parameters)
-    logger.info(
-        f"Generated charge data: {parameters} for scenario {scenario_id}"
+        f"Generated placement data: {parameters} for scenario {scenario_id}"
     )
     return jsonify(result)
 

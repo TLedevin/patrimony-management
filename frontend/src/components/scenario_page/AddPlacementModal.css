@@ -1,5 +1,5 @@
 /* Display groups in columns */
-.modal-overlay-investment {
+.modal-overlay-placement {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,21 +12,21 @@
   z-index: 1000;
 }
 
-.modal-content-investment {
+.modal-content-placement {
   background-color: var(--theme-background-color-light);
   border-radius: 8px;
   min-width: 400px;
   padding: 20px
 }
 
-.investment-parameters-columns {
+.placement-parameters-columns {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
 }
 
-.investment-parameter-column {
+.placement-parameter-column {
   display: flex;
   flex-direction: column;
   min-width: 200px;
@@ -40,57 +40,64 @@
   padding-right: 20px;
 }
 
-.investment-parameter-group-title {
+.placement-parameter-group-title {
   font-size: 1.08rem;
   font-weight: bold;
   margin-bottom: 10px;
   color: var(--theme-background-color);
 }
 
-.investment-parameter {
+.placement-parameter {
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
 }
 
-.investment-parameter label {
+.placement-parameter label {
   font-size: 0.97rem;
   margin-bottom: 3px;
 }
 
-.input-container-investment {
+.input-container-placement {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.placement-type-selectors {
+  display: flex;
+  gap: 10px;
   align-items: center;
 }
 
-.investment-type-dropdown {
+.placement-type-dropdown {
   height: 35px;
   min-width: 200px;
-  margin-bottom: 10px;
   border: 1px solid var(--light-border-color);
   border-radius: 6px;
   font-size: 14px;
   background-color: var(--background-color2);
   cursor: pointer;
+  flex: 1;
 }
 
-.name-input-investment {
-  width: calc(100% - 40px);
-  margin-left: 20px;
+.name-input-placement {
+  width: 100%;
   height: 35px;
   border: 1px solid var(--light-border-color);
   border-radius: 4px;
   font-size: 14px;
-  margin-bottom: 10px;
   box-sizing: border-box;
+  padding: 0 10px;
 }
 
-.dropdown-separator-investment {
+.dropdown-separator-placement {
   width: 100%;
   margin-bottom: 20px;
 }
 
-.investment-parameter-input {
+.placement-parameter-input {
   margin-left: 20px;
   height: 25px;
   border: 1px solid var(--light-border-color);
