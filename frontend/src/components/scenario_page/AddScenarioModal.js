@@ -6,8 +6,7 @@ function AddScenarioModal({
   setScenarioParams,
   setShowAddScenarioModal,
   setScenarios,
-  setInvestments,
-  setCharges,
+  setPlacements,
   setSelectedScenario,
 }) {
   const handleAddScenario = async () => {
@@ -34,8 +33,7 @@ function AddScenarioModal({
     );
     const scenariosData = await scenariosResponse.json();
     setScenarios(Object.values(scenariosData));
-    setInvestments([]);
-    setCharges([]);
+    setPlacements([]);
 
     // Reset modal state
     setShowAddScenarioModal(false);

@@ -2,14 +2,13 @@ import json
 import os
 import shutil
 
-from charge.charge_management import modify_charge
-from investment.investment_management import modify_investment
-from scenario.scenario_read import load_charge, load_investment, load_scenarios
+from placement.placement_management import modify_placement
+from scenario.scenario_read import load_placement, load_scenarios
 from settings import conf
 
 
 def generate_scenario_id():
-    scenarios = load_scenarios
+    scenarios = load_scenarios()
     if scenarios:
         existing_id = [int(i) for i in scenarios.keys()]
         id_range = range(1, max(existing_id) + 1)
@@ -44,8 +43,7 @@ def add_scenario(
             "start_month": start_month,
             "end_year": end_year,
             "end_month": end_month,
-            "investments": {},
-            "charges": {},
+            "placements": {},
         }
         f.seek(0)
         json.dump(scenarios, f, indent=4)
@@ -78,22 +76,13 @@ def modify_scenario(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-        for investment in scenarios[str(scenario_id)]["investments"].values():
-            modify_investment(
+        for placement in scenarios[str(scenario_id)]["placements"].values():
+            modify_placement(
                 scenario_id,
-                investment["id"],
-                investment["name"],
-                investment["type"],
-                investment["parameters"],
-            )
-
-        for charge in scenarios[str(scenario_id)]["charges"].values():
-            modify_charge(
-                scenario_id,
-                charge["id"],
-                charge["name"],
-                charge["type"],
-                charge["parameters"],
+                placement["id"],
+                placement["name"],
+                placement["type"],
+                placement["parameters"],
             )
 
     return scenario_id
@@ -119,12 +108,10 @@ def get_scenario_data(scenario_id: int) -> dict:
 
     data["patrimony"] = {}
     data["patrimony"]["cash"] = []
-    data["patrimony"]["investments"] = {}
-    data["patrimony"]["charges"] = {}
+    data["patrimony"]["placements"] = {}
 
     data["cash_flows"] = {}
-    data["cash_flows"]["investments"] = {}
-    data["cash_flows"]["charges"] = {}
+    data["cash_flows"]["placements"] = {}
     data["cash_flows"]["situation"] = {
         "initial_deposit": [
             scenario["initial_deposit"] if i == 0 else 0
@@ -137,12 +124,9 @@ def get_scenario_data(scenario_id: int) -> dict:
 
     for i in range(len(data["dates"])):
         cash_flow = 0
-        for investment_id in scenario["investments"].keys():
-            investment = load_investment(scenario_id, investment_id)
-            cash_flow += investment["cash_flows"][i]
-        for charge_id in scenario["charges"].keys():
-            charge = load_charge(scenario_id, charge_id)
-            cash_flow += charge["cash_flows"][i]
+        for placement_id in scenario["placements"].keys():
+            placement = load_placement(scenario_id, placement_id)
+            cash_flow += placement["cash_flows"][i]
 
         if i > 0:
             data["patrimony"]["cash"].append(
@@ -155,18 +139,12 @@ def get_scenario_data(scenario_id: int) -> dict:
                 scenario["initial_deposit"] + cash_flow
             )
 
-    for investment_id in scenario["investments"].keys():
-        investment = load_investment(scenario_id, investment_id)
-        data["patrimony"]["investments"][investment_id] = investment[
-            "patrimony"
-        ]
-        data["cash_flows"]["investments"][investment_id] = investment[
+    for placement_id in scenario["placements"].keys():
+        placement = load_placement(scenario_id, placement_id)
+        data["patrimony"]["placements"][placement_id] = placement["patrimony"]
+        data["cash_flows"]["placements"][placement_id] = placement[
             "cash_flows"
         ]
-
-    for charge_id in scenario["charges"].keys():
-        charge = load_charge(scenario_id, charge_id)
-        data["cash_flows"]["charges"][charge_id] = charge["cash_flows"]
 
     return data
 

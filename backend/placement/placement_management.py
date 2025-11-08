@@ -1,22 +1,23 @@
 import json
 import os
 
-from investment.generate_data_investments import (
+from placement.generate_charge_data import generate_personal_use_rental_data
+from placement.generate_investment_data import (
     generate_real_estate_data,
-    generate_rental_investment_data,
+    generate_rental_placement_data,
     generate_saving_account_data,
     generate_stock_exchange_data,
 )
 from settings import conf
 
 
-def generate_investment_id(scenario_id: int):
+def generate_placement_id(scenario_id: int):
     data_path = conf["paths"]["data"]
     with open(data_path + "scenarios/scenarios.json", "r") as f:
         scenarios = json.load(f)
     if scenarios:
         existing_id = [
-            int(i) for i in scenarios[str(scenario_id)]["investments"].keys()
+            int(i) for i in scenarios[str(scenario_id)]["placements"].keys()
         ]
         if len(existing_id) > 0:
 
@@ -28,54 +29,57 @@ def generate_investment_id(scenario_id: int):
     return 1
 
 
-def generate_investment_data(
+def generate_placement_data(
     scenario_id: int, type: str, parameters: dict
 ) -> dict:
-    mapping_investment_types = {
+    mapping_placement_types = {
         "saving_account": generate_saving_account_data,
         "stock_exchange": generate_stock_exchange_data,
         "real_estate": generate_real_estate_data,
-        "rental_investment": generate_rental_investment_data,
+        "rental_placement": generate_rental_placement_data,
+        "rental_personal_use": generate_personal_use_rental_data,
     }
 
-    return mapping_investment_types[type](scenario_id, parameters)
+    return mapping_placement_types[type](scenario_id, parameters)
 
 
-def add_investment(
+def add_placement(
     scenario_id: int,
     name: str,
     type: str,
+    subtype: str,
     parameters: dict,
 ) -> int:
     data_path = conf["paths"]["data"]
-    investment_id = generate_investment_id(scenario_id)
+    placement_id = generate_placement_id(scenario_id)
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        scenarios[str(scenario_id)]["investments"][investment_id] = {
-            "id": investment_id,
+        scenarios[str(scenario_id)]["placements"][placement_id] = {
+            "id": placement_id,
             "name": name,
             "type": type,
+            "subtype": subtype,
             "parameters": parameters,
         }
         f.seek(0)
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-    data = generate_investment_data(scenario_id, type, parameters)
+    data = generate_placement_data(scenario_id, subtype, parameters)
 
     with open(
-        f"{data_path}scenarios/{scenario_id}/{investment_id}.json",
+        f"{data_path}scenarios/{scenario_id}/{placement_id}.json",
         "w",
     ) as f:
         json.dump(data, f, indent=4)
 
-    return investment_id
+    return placement_id
 
 
-def modify_investment(
+def modify_placement(
     scenario_id: int,
-    investment_id: int,
+    placement_id: int,
     name: str,
     type: str,
     parameters: dict,
@@ -85,8 +89,8 @@ def modify_investment(
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
 
-        scenarios[str(scenario_id)]["investments"][str(investment_id)] = {
-            "id": investment_id,
+        scenarios[str(scenario_id)]["placements"][str(placement_id)] = {
+            "id": placement_id,
             "name": name,
             "type": type,
             "parameters": parameters,
@@ -96,28 +100,28 @@ def modify_investment(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-    data = generate_investment_data(scenario_id, type, parameters)
+    data = generate_placement_data(scenario_id, type, parameters)
 
     with open(
-        f"{data_path}scenarios/{scenario_id}/{investment_id}.json", "r+"
+        f"{data_path}scenarios/{scenario_id}/{placement_id}.json", "r+"
     ) as f:
         f.seek(0)
         json.dump(data, f, indent=4)
         f.truncate()
 
-    return investment_id
+    return placement_id
 
 
-def delete_investment(scenario_id: int, investment_id: int):
+def delete_placement(scenario_id: int, placement_id: int):
     data_path = conf["paths"]["data"]
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        if str(investment_id) in scenarios[scenario_id]["investments"]:
-            del scenarios[scenario_id]["investments"][str(investment_id)]
+        if str(placement_id) in scenarios[scenario_id]["placements"]:
+            del scenarios[scenario_id]["placements"][str(placement_id)]
             f.seek(0)
             json.dump(scenarios, f, indent=4)
             f.truncate()
 
             os.remove(
-                f"{data_path}scenarios/{scenario_id}/{investment_id}.json"
+                f"{data_path}scenarios/{scenario_id}/{placement_id}.json"
             )

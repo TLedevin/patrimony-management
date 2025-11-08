@@ -7,8 +7,7 @@ function ScenarioHeader({
   setShowAddScenarioModal,
   setSelectedScenario,
   setScenarios,
-  setInvestments,
-  setCharges,
+  setPlacements,
   setShowModifyScenarioModal,
   setScenarioParams,
 }) {
@@ -18,14 +17,12 @@ function ScenarioHeader({
     setSelectedScenario(scenarioId);
     console.log("Selected scenario:", scenarioId);
 
-    // Fetch investments for the selected scenario
+    // Fetch placements for the selected scenario
     if (scenarioId) {
       const scenario = scenarios.find((s) => s.id === scenarioId);
-      setInvestments(Object.values(scenario.investments));
-      setCharges(Object.values(scenario.charges));
+      setPlacements(Object.values(scenario.placements));
     } else {
-      setInvestments([]);
-      setCharges([]);
+      setPlacements([]);
     }
   };
 

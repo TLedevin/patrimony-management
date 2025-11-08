@@ -23,21 +23,11 @@ def load_scenarios():
     return scenarios
 
 
-def load_investment(scenario_id: int, investment_id: int):
+def load_placement(scenario_id: int, placement_id: int):
     data_path = conf["paths"]["data"]
     with open(
-        f"{data_path}scenarios/{scenario_id}/{investment_id}.json",
+        f"{data_path}scenarios/{scenario_id}/{placement_id}.json",
         "r",
     ) as f:
-        investment = json.load(f)
-    return investment
-
-
-def load_charge(scenario_id: int, charge_id: int):
-    data_path = conf["paths"]["data"]
-    with open(
-        f"{data_path}scenarios/charges/{scenario_id}/{charge_id}.json",
-        "r",
-    ) as f:
-        charge = json.load(f)
-    return charge
+        placement = json.load(f)
+    return placement
