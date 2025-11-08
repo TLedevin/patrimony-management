@@ -61,6 +61,27 @@
   cursor: pointer;
   margin-top: 10px;
   position: relative;
+  overflow: hidden;
+}
+
+.placement-card.investment::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #4CAF50;
+}
+
+.placement-card.charges::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #f44336;
 }
 
 .placement-card:hover {

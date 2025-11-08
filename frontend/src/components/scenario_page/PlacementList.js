@@ -78,7 +78,7 @@ function PlacementList({
               {placements.map((placement) => (
                 <div
                   key={placement.id}
-                  className="placement-card"
+                  className={`placement-card ${placement.type}`}
                   onClick={() => {
                     setSelectedPlacement(placement);
                     setPlacementName(placement.name);
@@ -88,7 +88,10 @@ function PlacementList({
                     setShowModifyPlacementModal(true);
                   }}
                 >
-                  <div className="placement-icon">💰</div>
+                  <div className="placement-icon">
+                    {placementTypes[placement.type]?.[placement.subtype]
+                      ?.icon || "💰"}
+                  </div>
                   <div className="placement-info">
                     <h3 className="placement-type">
                       {
