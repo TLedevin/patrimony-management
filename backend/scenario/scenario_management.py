@@ -4,52 +4,12 @@ import shutil
 
 from charge.charge_management import modify_charge
 from investment.investment_management import modify_investment
+from scenario.scenario_read import load_charge, load_investment, load_scenarios
 from settings import conf
 
 
-def initialize_scenarios_files():
-    data_path = conf["paths"]["data"]
-
-    if not os.path.exists(data_path + "scenarios/"):
-        os.makedirs(data_path + "scenarios/")
-
-    if not os.path.exists(data_path + "scenarios/scenarios.json"):
-        with open(data_path + "scenarios/scenarios.json", "w") as f:
-            json.dump({}, f)
-
-
-def load_scenarios():
-    initialize_scenarios_files()
-    data_path = conf["paths"]["data"]
-    with open(data_path + "scenarios/scenarios.json", "r") as f:
-        scenarios = json.load(f)
-    return scenarios
-
-
-def load_investment(scenario_id: int, investment_id: int):
-    data_path = conf["paths"]["data"]
-    with open(
-        f"{data_path}scenarios/{scenario_id}/{investment_id}.json",
-        "r",
-    ) as f:
-        investment = json.load(f)
-    return investment
-
-
-def load_charge(scenario_id: int, charge_id: int):
-    data_path = conf["paths"]["data"]
-    with open(
-        f"{data_path}scenarios/charges/{scenario_id}/{charge_id}.json",
-        "r",
-    ) as f:
-        charge = json.load(f)
-    return charge
-
-
 def generate_scenario_id():
-    data_path = conf["paths"]["data"]
-    with open(data_path + "scenarios/scenarios.json", "r") as f:
-        scenarios = json.load(f)
+    scenarios = load_scenarios
     if scenarios:
         existing_id = [int(i) for i in scenarios.keys()]
         id_range = range(1, max(existing_id) + 1)
@@ -140,10 +100,7 @@ def modify_scenario(
 
 
 def get_scenario_data(scenario_id: int) -> dict:
-    data_path = conf["paths"]["data"]
-
-    with open(data_path + "scenarios/scenarios.json", "r") as f:
-        scenario = json.load(f)[str(scenario_id)]
+    scenario = load_scenarios().get(str(scenario_id))
 
     data = {}
 
@@ -208,7 +165,7 @@ def get_scenario_data(scenario_id: int) -> dict:
         ]
 
     for charge_id in scenario["charges"].keys():
-        charge = load_investment(scenario_id, charge_id)
+        charge = load_charge(scenario_id, charge_id)
         data["cash_flows"]["charges"][charge_id] = charge["cash_flows"]
 
     return data
