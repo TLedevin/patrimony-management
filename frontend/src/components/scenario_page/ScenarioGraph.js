@@ -5,7 +5,7 @@ import investmentStyles from "../../config/investmentGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
 import ScenarioDataModal from "./ScenarioDataModal";
 
-function ScenarioGraph({ scenarioData, scenarioDataEnriched }) {
+function ScenarioGraph({ scenarioData }) {
   const [selectedTypes, setSelectedTypes] = useState(
     Object.keys(investmentStyles)
   );
@@ -33,11 +33,21 @@ function ScenarioGraph({ scenarioData, scenarioDataEnriched }) {
               {Object.values(investmentStyles)
                 .filter((style) => selectedTypes.includes(style.key))
                 .reduce((sum, style) => {
-                  const values = scenarioData.patrimony?.[style.key];
-                  if (!values || !Array.isArray(values)) {
-                    return sum;
+                  let value = 0;
+                  if (style.key === "cash") {
+                    const values = scenarioData.patrimony?.cash;
+                    value = values ? values[values.length - 1] || 0 : 0;
+                  } else {
+                    Object.values(scenarioData.patrimony.investments).forEach(
+                      (investment) => {
+                        if (investment[style.key]) {
+                          const values = investment[style.key];
+                          value += values[values.length - 1] || 0;
+                        }
+                      }
+                    );
                   }
-                  return sum + (values[values.length - 1] || 0);
+                  return sum + value;
                 }, 0)
                 .toLocaleString("fr-FR", { maximumFractionDigits: 0 })}{" "}
               €
@@ -49,10 +59,28 @@ function ScenarioGraph({ scenarioData, scenarioDataEnriched }) {
                 labels: scenarioData.dates,
                 datasets: Object.values(investmentStyles)
                   .filter((style) => selectedTypes.includes(style.key))
-                  .map((style) => ({
-                    ...style,
-                    data: scenarioData.patrimony[style.key],
-                  })),
+                  .map((style) => {
+                    let data;
+                    if (style.key === "cash") {
+                      data = scenarioData.patrimony.cash;
+                    } else {
+                      // Aggregate all investments of this type
+                      data = Array(scenarioData.dates.length).fill(0);
+                      Object.values(scenarioData.patrimony.investments).forEach(
+                        (investment) => {
+                          if (investment[style.key]) {
+                            investment[style.key].forEach((value, index) => {
+                              data[index] += value;
+                            });
+                          }
+                        }
+                      );
+                    }
+                    return {
+                      ...style,
+                      data: data,
+                    };
+                  }),
               }}
               options={{
                 responsive: true,
@@ -114,7 +142,7 @@ function ScenarioGraph({ scenarioData, scenarioDataEnriched }) {
           <ScenarioDataModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            scenarioDataEnriched={scenarioDataEnriched}
+            scenarioData={scenarioData}
             selectedTypes={selectedTypes}
             investmentStyles={investmentStyles}
           />

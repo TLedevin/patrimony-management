@@ -1,27 +1,21 @@
 import React from "react";
 import "./ScenarioDataModal.css";
 
-function scenarioDataEnrichedModal({
-  isOpen,
-  onClose,
-  scenarioDataEnriched,
-  selectedTypes,
-}) {
+function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
   if (
     !isOpen ||
-    !scenarioDataEnriched ||
-    !scenarioDataEnriched.dates ||
-    !scenarioDataEnriched.patrimony
+    !scenarioData ||
+    !scenarioData.dates ||
+    !scenarioData.patrimony
   )
     return null;
 
   // Validate that all selected types have corresponding data
   const validTypes = selectedTypes.filter(
     (type) =>
-      scenarioDataEnriched.patrimony[type] &&
-      Array.isArray(scenarioDataEnriched.patrimony[type]) &&
-      scenarioDataEnriched.dates.length ===
-        scenarioDataEnriched.patrimony[type].length
+      scenarioData.patrimony[type] &&
+      Array.isArray(scenarioData.patrimony[type]) &&
+      scenarioData.dates.length === scenarioData.patrimony[type].length
   );
 
   return (
@@ -40,15 +34,13 @@ function scenarioDataEnrichedModal({
                 <tr>
                   <th rowSpan="2">Date</th>
                   <th rowSpan="2">Cash</th>
-                  {Object.keys(scenarioDataEnriched.patrimony.investments).map(
+                  {Object.keys(scenarioData.patrimony.investments).map(
                     (investmentId) => {
                       const patrimonyTypes = Object.keys(
-                        scenarioDataEnriched.patrimony.investments[investmentId]
+                        scenarioData.patrimony.investments[investmentId]
                       ).filter((key) =>
                         Array.isArray(
-                          scenarioDataEnriched.patrimony.investments[
-                            investmentId
-                          ][key]
+                          scenarioData.patrimony.investments[investmentId][key]
                         )
                       );
                       return (
@@ -63,15 +55,13 @@ function scenarioDataEnrichedModal({
                   )}
                 </tr>
                 <tr>
-                  {Object.keys(scenarioDataEnriched.patrimony.investments).map(
+                  {Object.keys(scenarioData.patrimony.investments).map(
                     (investmentId) => {
                       const patrimonyTypes = Object.keys(
-                        scenarioDataEnriched.patrimony.investments[investmentId]
+                        scenarioData.patrimony.investments[investmentId]
                       ).filter((key) =>
                         Array.isArray(
-                          scenarioDataEnriched.patrimony.investments[
-                            investmentId
-                          ][key]
+                          scenarioData.patrimony.investments[investmentId][key]
                         )
                       );
                       return (
@@ -95,56 +85,57 @@ function scenarioDataEnrichedModal({
                 </tr>
               </thead>
               <tbody>
-                {scenarioDataEnriched.dates.map((date, index) => (
+                {scenarioData.dates.map((date, index) => (
                   <tr key={date}>
                     <td>{date}</td>
                     <td>
-                      {(
-                        scenarioDataEnriched.patrimony.cash[index] || 0
-                      ).toLocaleString("fr-FR", {
-                        maximumFractionDigits: 0,
-                      })}{" "}
+                      {(scenarioData.patrimony.cash[index] || 0).toLocaleString(
+                        "fr-FR",
+                        {
+                          maximumFractionDigits: 0,
+                        }
+                      )}{" "}
                       €
                     </td>
-                    {Object.keys(
-                      scenarioDataEnriched.patrimony.investments
-                    ).map((investmentId) => {
-                      const patrimonyTypes = Object.keys(
-                        scenarioDataEnriched.patrimony.investments[investmentId]
-                      ).filter((key) =>
-                        Array.isArray(
-                          scenarioDataEnriched.patrimony.investments[
-                            investmentId
-                          ][key]
-                        )
-                      );
-                      return (
-                        <React.Fragment key={`row-${investmentId}`}>
-                          <td key={`${investmentId}-cashflow`}>
-                            {(
-                              scenarioDataEnriched.cash_flows.investments[
-                                investmentId
-                              ][index] || 0
-                            ).toLocaleString("fr-FR", {
-                              maximumFractionDigits: 0,
-                            })}{" "}
-                            €
-                          </td>
-                          {patrimonyTypes.map((type) => (
-                            <td key={`${investmentId}-${type}`}>
+                    {Object.keys(scenarioData.patrimony.investments).map(
+                      (investmentId) => {
+                        const patrimonyTypes = Object.keys(
+                          scenarioData.patrimony.investments[investmentId]
+                        ).filter((key) =>
+                          Array.isArray(
+                            scenarioData.patrimony.investments[investmentId][
+                              key
+                            ]
+                          )
+                        );
+                        return (
+                          <React.Fragment key={`row-${investmentId}`}>
+                            <td key={`${investmentId}-cashflow`}>
                               {(
-                                scenarioDataEnriched.patrimony.investments[
+                                scenarioData.cash_flows.investments[
                                   investmentId
-                                ][type][index] || 0
+                                ][index] || 0
                               ).toLocaleString("fr-FR", {
                                 maximumFractionDigits: 0,
                               })}{" "}
                               €
                             </td>
-                          ))}
-                        </React.Fragment>
-                      );
-                    })}
+                            {patrimonyTypes.map((type) => (
+                              <td key={`${investmentId}-${type}`}>
+                                {(
+                                  scenarioData.patrimony.investments[
+                                    investmentId
+                                  ][type][index] || 0
+                                ).toLocaleString("fr-FR", {
+                                  maximumFractionDigits: 0,
+                                })}{" "}
+                                €
+                              </td>
+                            ))}
+                          </React.Fragment>
+                        );
+                      }
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -156,4 +147,4 @@ function scenarioDataEnrichedModal({
   );
 }
 
-export default scenarioDataEnrichedModal;
+export default scenarioDataModal;

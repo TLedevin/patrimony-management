@@ -59,7 +59,7 @@ def add_investment(
             "parameters": parameters,
         }
         f.seek(0)
-        json.dump(scenarios, f)
+        json.dump(scenarios, f, indent=4)
         f.truncate()
 
     data = generate_investment_data(scenario_id, type, parameters)
@@ -68,7 +68,7 @@ def add_investment(
         f"{data_path}scenarios/{scenario_id}/{investment_id}.json",
         "w",
     ) as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
     return investment_id
 
@@ -93,7 +93,7 @@ def modify_investment(
         }
 
         f.seek(0)
-        json.dump(scenarios, f)
+        json.dump(scenarios, f, indent=4)
         f.truncate()
 
     data = generate_investment_data(scenario_id, type, parameters)
@@ -102,7 +102,7 @@ def modify_investment(
         f"{data_path}scenarios/{scenario_id}/{investment_id}.json", "r+"
     ) as f:
         f.seek(0)
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
         f.truncate()
 
     return investment_id
@@ -115,7 +115,7 @@ def delete_investment(scenario_id: int, investment_id: int):
         if str(investment_id) in scenarios[scenario_id]["investments"]:
             del scenarios[scenario_id]["investments"][str(investment_id)]
             f.seek(0)
-            json.dump(scenarios, f)
+            json.dump(scenarios, f, indent=4)
             f.truncate()
 
             os.remove(

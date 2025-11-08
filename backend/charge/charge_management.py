@@ -52,7 +52,7 @@ def add_charge(
             "data": data,
         }
         f.seek(0)
-        json.dump(scenarios, f)
+        json.dump(scenarios, f, indent=4)
         f.truncate()
     return charge_id
 
@@ -80,7 +80,7 @@ def modify_charge(
         }
 
         f.seek(0)
-        json.dump(scenarios, f)
+        json.dump(scenarios, f, indent=4)
         f.truncate()
 
     return charge_id
@@ -93,8 +93,5 @@ def delete_charge(scenario_id: int, charge_id: int):
         if str(charge_id) in scenarios[scenario_id]["charges"]:
             del scenarios[scenario_id]["charges"][str(charge_id)]
             f.seek(0)
-            json.dump(scenarios, f)
-            f.truncate()
-            f.seek(0)
-            json.dump(scenarios, f)
+            json.dump(scenarios, f, indent=4)
             f.truncate()
