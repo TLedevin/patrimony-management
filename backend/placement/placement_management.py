@@ -30,17 +30,21 @@ def generate_placement_id(scenario_id: int):
 
 
 def generate_placement_data(
-    scenario_id: int, type: str, parameters: dict
+    scenario_id: int, type: str, subtype: str, parameters: dict
 ) -> dict:
     mapping_placement_types = {
-        "saving_account": generate_saving_account_data,
-        "stock_exchange": generate_stock_exchange_data,
-        "real_estate": generate_real_estate_data,
-        "rental_placement": generate_rental_placement_data,
-        "rental_personal_use": generate_personal_use_rental_data,
+        "investment": {
+            "saving_account": generate_saving_account_data,
+            "stock_exchange": generate_stock_exchange_data,
+            "real_estate": generate_real_estate_data,
+            "rental_investment": generate_rental_placement_data,
+        },
+        "charges": {
+            "rental_personal_use": generate_personal_use_rental_data,
+        },
     }
-
-    return mapping_placement_types[type](scenario_id, parameters)
+    print("####", type, subtype)
+    return mapping_placement_types[type][subtype](scenario_id, parameters)
 
 
 def add_placement(
@@ -66,7 +70,7 @@ def add_placement(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-    data = generate_placement_data(scenario_id, subtype, parameters)
+    data = generate_placement_data(scenario_id, type, subtype, parameters)
 
     with open(
         f"{data_path}scenarios/{scenario_id}/{placement_id}.json",

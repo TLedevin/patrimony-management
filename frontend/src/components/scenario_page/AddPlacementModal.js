@@ -77,7 +77,8 @@ function AddPlacementModal({
     const queryParams = new URLSearchParams({
       scenario_id: selectedScenario,
       name: newPlacementName,
-      placement_type: `${placementType}/${placementSubType}`,
+      placement_type: placementType,
+      placement_subtype: placementSubType,
       ...placementParams,
     });
 
