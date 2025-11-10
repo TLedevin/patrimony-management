@@ -16,6 +16,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="separator-line"></div>
         <div className="menu">
           <Link
+            to="/dashboard"
+            className={location.pathname === "/dashboard" ? "active" : ""}
+          >
+            Dashboard
+          </Link>
+          <Link
             to="/patrimony"
             className={location.pathname === "/patrimony" ? "active" : ""}
           >

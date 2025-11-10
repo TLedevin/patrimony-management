@@ -33,7 +33,6 @@
   width: 100%;
 }
 
-
 .menu {
   margin-top: 10px;
   display: flex;
@@ -59,5 +58,10 @@
 
 .sidebar a:hover {
   background-color: var(--theme-background-color-hover);
+  color: var(--light-text-color-hover);
+}
+
+.menu a.active {
+  background-color: var(--theme-background-color-active);
   color: var(--light-text-color-hover);
 }

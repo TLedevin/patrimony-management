@@ -2,6 +2,7 @@ import "./App.css";
 import Sidebar from "./components/sidebar";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import DashboardPage from "./pages/DashboardPage";
 import PatrimonyPage from "./pages/PatrimonyPage";
 import ScenarioPage from "./pages/ScenarioPage";
 
@@ -19,6 +20,7 @@ function App() {
         >
           <div className="routes">
             <Routes>
+              <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/patrimony" element={<PatrimonyPage />} />
               <Route path="/scenario" element={<ScenarioPage />} />
               <Route path="/" element={<PatrimonyPage />} />

@@ -5,6 +5,7 @@
   --background-hover-color: #bfbfbf;
   --theme-background-color: #19184a;
   --theme-background-color-hover: rgb(189, 164, 4);
+  --theme-background-color-active: rgba(189, 164, 4, 0.546);
   --theme-background-color-light: #ecedfe;
 
   /* Border colors */
