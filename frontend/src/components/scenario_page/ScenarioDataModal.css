@@ -7,7 +7,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 2;
   margin-bottom: 20px;
+
 }
 
 .modal-header h2 {
@@ -47,5 +49,16 @@ th {
   border-bottom: 1px solid var(--dark-border-color);
   color: var(--theme-background-color);
   position: sticky;
+}
+
+/* First header row sticky at top */
+thead tr:first-child th {
   top: 0;
+  z-index: 2;
+}
+
+/* Second header row sticky below first */
+thead tr:nth-child(2) th {
+  top: 38px; /* Adjust to match first row height */
+  z-index: 1;
 }
