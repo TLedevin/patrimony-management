@@ -18,8 +18,6 @@ def build_scenario_data(scenario_id: int) -> dict:
         - scenario["start_month"]
     )
 
-    print(scenario["end_year"], scenario["start_year"])
-
     dates = [
         f"{scenario['start_year'] + (month // 12)}-{(month % 12) + 1:02d}"
         for month in range(simulation_duration)
