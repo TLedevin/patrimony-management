@@ -2,19 +2,16 @@ import logging
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from placement.placement_management import (
-    add_placement,
-    delete_placement,
-    generate_placement_data,
-    modify_placement,
-)
 from scenario.scenario_management import (
+    add_placement,
     add_scenario,
+    delete_placement,
     delete_scenario,
-    get_scenario_data,
     load_scenarios,
+    modify_placement,
     modify_scenario,
 )
+from scenario.scenario_read import load_scenario_data
 
 # Create Flask app
 app = Flask(__name__)
@@ -83,7 +80,7 @@ def api_load_scenarios():
 @app.route("/api/get_scenario_data/", methods=["GET"])
 def api_get_scenario_data():
     scenario_id = request.args.get("scenario_id")
-    data = get_scenario_data(scenario_id)
+    data = load_scenario_data(scenario_id)
     logger.info(f"Retrieved data for scenario: {scenario_id}")
     return jsonify(data)
 
@@ -147,19 +144,6 @@ def api_delete_placement(scenario_id, placement_id):
         f"Deleted placement: {placement_id} from scenario {scenario_id}"
     )
     return jsonify({"status": "success"})
-
-
-@app.route(
-    "/api/generate_placement_data/<string:scenario_id>",
-    methods=["POST"],
-)
-def api_generate_placement_data(scenario_id):
-    parameters = request.json
-    result = generate_placement_data(scenario_id, parameters)
-    logger.info(
-        f"Generated placement data: {parameters} for scenario {scenario_id}"
-    )
-    return jsonify(result)
 
 
 if __name__ == "__main__":

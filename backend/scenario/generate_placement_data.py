@@ -1,7 +1,63 @@
 import numpy as np
-from placement.placement_read import load_scenario_dates
+from scenario.scenario_read import load_scenario_dates
 
 
+def generate_placement_data(
+    scenario_id: int, type: str, subtype: str, parameters: dict
+) -> dict:
+    mapping_placement_types = {
+        "investment": {
+            "saving_account": generate_saving_account_data,
+            "stock_exchange": generate_stock_exchange_data,
+            "real_estate": generate_real_estate_data,
+            "rental_investment": generate_rental_placement_data,
+        },
+        "charges": {
+            "rental_personal_use": generate_personal_use_rental_data,
+        },
+    }
+
+    return mapping_placement_types[type][subtype](scenario_id, parameters)
+
+
+# Charges
+def generate_personal_use_rental_data(scenario_id: int, parameters: dict):
+    end_year, start_year, end_month, start_month = load_scenario_dates(
+        scenario_id
+    )
+
+    simulation_duration = (
+        (end_year - start_year) * 12 + end_month - start_month
+    )
+
+    investment_duration = (
+        (int(parameters["end_year"]) - int(parameters["start_year"])) * 12
+        + int(parameters["end_month"])
+        - int(parameters["start_month"])
+    )
+
+    start_month = (
+        (int(parameters["start_year"]) - start_year) * 12
+        + int(parameters["start_month"])
+        - start_month
+    )
+
+    cash_flows = []
+
+    for month in range(simulation_duration):
+        if month < start_month:
+            cash_flows.append(0)
+
+        elif month <= start_month + investment_duration:
+            cash_flows.append(-float(parameters["rent_including_charges"]))
+
+        else:
+            cash_flows.append(0)
+
+    return {"cash_flows": cash_flows, "patrimony": {}}
+
+
+# Investments
 def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
     end_year, start_year, end_month, start_month = load_scenario_dates(
         scenario_id
@@ -378,4 +434,6 @@ def generate_rental_placement_data(scenario_id: int, parameters: dict) -> dict:
         patrimony["real_estate"][i] + patrimony["debt"][i]
         for i in range(len(patrimony["real_estate"]))
     ]
+    return {"cash_flows": cash_flows, "patrimony": patrimony}
+    return {"cash_flows": cash_flows, "patrimony": patrimony}
     return {"cash_flows": cash_flows, "patrimony": patrimony}
