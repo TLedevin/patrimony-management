@@ -33,7 +33,7 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
               <thead>
                 <tr>
                   <th rowSpan="2">Date</th>
-                  <th rowSpan="2">Cash</th>
+                  <th rowSpan="2">Initial & Monthly Cash Deposit</th>
                   {Object.keys(scenarioData.patrimony.placements).map(
                     (placementId) => {
                       const patrimonyTypes = Object.keys(
@@ -53,6 +53,7 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
                       );
                     }
                   )}
+                  <th rowSpan="2">Cash</th>
                 </tr>
                 <tr>
                   {Object.keys(scenarioData.patrimony.placements).map(
@@ -89,12 +90,16 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
                   <tr key={date}>
                     <td>{date}</td>
                     <td>
-                      {(scenarioData.patrimony.cash[index] || 0).toLocaleString(
-                        "fr-FR",
-                        {
-                          maximumFractionDigits: 0,
-                        }
-                      )}{" "}
+                      {(
+                        (scenarioData.cash_flows.situation.initial_deposit[
+                          index
+                        ] || 0) +
+                        (scenarioData.cash_flows.situation.monthly_deposit[
+                          index
+                        ] || 0)
+                      ).toLocaleString("fr-FR", {
+                        maximumFractionDigits: 0,
+                      })}{" "}
                       €
                     </td>
                     {Object.keys(scenarioData.patrimony.placements).map(
@@ -134,6 +139,15 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
                         );
                       }
                     )}
+                    <td>
+                      {(scenarioData.patrimony.cash[index] || 0).toLocaleString(
+                        "fr-FR",
+                        {
+                          maximumFractionDigits: 0,
+                        }
+                      )}{" "}
+                      €
+                    </td>
                   </tr>
                 ))}
               </tbody>
