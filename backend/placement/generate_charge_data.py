@@ -1,8 +1,8 @@
-from placement.placement_read import load_scenario_data
+from placement.placement_read import load_scenario_dates
 
 
 def generate_personal_use_rental_data(scenario_id: int, parameters: dict):
-    end_year, start_year, end_month, start_month = load_scenario_data(
+    end_year, start_year, end_month, start_month = load_scenario_dates(
         scenario_id
     )
 

@@ -1,9 +1,9 @@
 import numpy as np
-from placement.placement_read import load_scenario_data
+from placement.placement_read import load_scenario_dates
 
 
 def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
-    end_year, start_year, end_month, start_month = load_scenario_data(
+    end_year, start_year, end_month, start_month = load_scenario_dates(
         scenario_id
     )
 
@@ -85,7 +85,7 @@ def generate_saving_account_data(scenario_id: int, parameters: dict) -> dict:
 
 
 def generate_stock_exchange_data(scenario_id: int, parameters: dict) -> dict:
-    end_year, start_year, end_month, start_month = load_scenario_data(
+    end_year, start_year, end_month, start_month = load_scenario_dates(
         scenario_id
     )
 
@@ -153,7 +153,7 @@ def generate_real_estate_data(scenario_id: int, parameters: dict) -> dict:
             parameters[key] = float(parameters[key])
         except (ValueError, TypeError):
             pass
-    end_year, start_year, end_month, start_month = load_scenario_data(
+    end_year, start_year, end_month, start_month = load_scenario_dates(
         scenario_id
     )
 
@@ -267,7 +267,7 @@ def generate_rental_placement_data(scenario_id: int, parameters: dict) -> dict:
             parameters[key] = float(parameters[key])
         except (ValueError, TypeError):
             pass
-    end_year, start_year, end_month, start_month = load_scenario_data(
+    end_year, start_year, end_month, start_month = load_scenario_dates(
         scenario_id
     )
 

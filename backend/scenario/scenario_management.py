@@ -146,7 +146,6 @@ def get_scenario_data(scenario_id: int) -> dict:
         data["cash_flows"]["placements"][placement_id] = placement[
             "cash_flows"
         ]
-
     return data
 
 
