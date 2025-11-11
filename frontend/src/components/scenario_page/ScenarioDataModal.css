@@ -1,51 +1,112 @@
-.modal-content {
-  padding: 20px;
-  border-radius: 8px;
+.table-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.modal-header {
+.table-content {
+  border-radius: 8px;
+  max-width: 95vw;
+  max-height: 90vh;
+  width: 95vw;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
 }
 
-.modal-header h2 {
+.table-header h2 {
   margin: 0;
+  font-size: 24px;
+  color: #333;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 32px;
   cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
 }
 
 .close-button:hover {
-  color: var(--button-hover-delete-background-color);
+  color: #000;
+}
+
+.table-body {
+  padding: 20px;
+  flex: 1;
+  min-height: 0;
 }
 
 .table-container {
   overflow-x: auto;
-  max-height: 70vh;
+  max-height: calc(90vh - 100px);
 }
 
 table {
-  border-collapse: separate;
-  border-spacing: 0;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: max-content;
 }
 
-th, td {
-  background-color: #ffffff;
-  border-bottom: 1px dashed var(--light-border-color);
-  padding: 8px;
-  text-align: right;
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #f5f5f5;
+  z-index: 10;
 }
 
 th {
-  background-color: var(--background-color2);
-  border-bottom: 1px solid var(--dark-border-color);
-  color: var(--theme-background-color);
-  position: sticky;
-  top: 0;
+  padding: 12px 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px 8px;
+  text-align: right;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+td:first-child {
+  text-align: center;
+  font-weight: 500;
 }

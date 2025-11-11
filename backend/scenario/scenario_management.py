@@ -148,16 +148,15 @@ def modify_scenario(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-        for placement in scenarios[str(scenario_id)]["placements"].values():
-            modify_placement(
-                scenario_id,
-                placement["id"],
-                placement["name"],
-                placement["type"],
-                placement["subtype"],
-                placement["parameters"],
-            )
-
+    for placement in scenarios[str(scenario_id)]["placements"].values():
+        modify_placement(
+            scenario_id,
+            placement["id"],
+            placement["name"],
+            placement["type"],
+            placement["subtype"],
+            placement["parameters"],
+        )
     build_scenario_data(scenario_id)
 
     return scenario_id
@@ -263,8 +262,6 @@ def modify_placement(
         f.seek(0)
         json.dump(data, f, indent=4)
         f.truncate()
-
-    build_scenario_data(scenario_id)
 
     return placement_id
 
