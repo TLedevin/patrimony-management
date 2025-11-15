@@ -1,6 +1,7 @@
 import json
 import os
 
+import pandas as pd
 from settings import conf
 
 
@@ -38,19 +39,8 @@ def load_scenario_dates(scenario_id: int) -> dict:
 
 def load_scenario_data(scenario_id: int):
     data_path = conf["paths"]["data"]
-    with open(
-        f"{data_path}scenarios/{scenario_id}/scenario_data.json",
-        "r",
-    ) as f:
-        scenario_data = json.load(f)
-    return scenario_data
-
-
-def load_placement(scenario_id: int, placement_id: int):
-    data_path = conf["paths"]["data"]
-    with open(
-        f"{data_path}scenarios/{scenario_id}/{placement_id}.json",
-        "r",
-    ) as f:
-        placement = json.load(f)
-    return placement
+    df = pd.read_csv(
+        f"{data_path}scenarios/{scenario_id}/scenario_data.csv",
+    )
+    df.fillna(0, inplace=True)
+    return df

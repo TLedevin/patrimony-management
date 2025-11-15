@@ -1,5 +1,5 @@
 import { Line } from "react-chartjs-2";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import "./ScenarioGraph.css";
 import placementStyles from "../../config/patrimonyGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
@@ -10,6 +10,44 @@ function ScenarioGraph({ scenarioData }) {
     Object.keys(placementStyles)
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Preprocess the flat scenarioData to extract dates and build type-value arrays
+  const { dates, typeDataMap } = useMemo(() => {
+    if (!scenarioData || !Array.isArray(scenarioData))
+      return { dates: [], typeDataMap: {} };
+
+    // Extract unique sorted dates
+    const dates = Array.from(
+      new Set(scenarioData.map((row) => row.date))
+    ).sort();
+
+    // Build a map: { type: [values per date index] }
+    const typeDataMap = {};
+    Object.keys(placementStyles).forEach((type) => {
+      typeDataMap[type] = Array(dates.length).fill(0);
+    });
+
+    scenarioData.forEach((row) => {
+      const dateIdx = dates.indexOf(row.date);
+      if (dateIdx !== -1 && typeDataMap[row.type] !== undefined) {
+        typeDataMap[row.type][dateIdx] = row.value;
+      }
+    });
+
+    return { dates, typeDataMap };
+  }, [scenarioData]);
+
+  // Compute total for selected types on the last date
+  const totalValue = useMemo(() => {
+    if (!dates.length) return 0;
+    return Object.values(placementStyles)
+      .filter((style) => selectedTypes.includes(style.key))
+      .reduce((sum, style) => {
+        const arr = typeDataMap[style.key] || [];
+        return sum + (arr[arr.length - 1] || 0);
+      }, 0);
+  }, [dates, typeDataMap, selectedTypes]);
+
   return (
     <div className="placements-graph">
       {scenarioData && (
@@ -30,57 +68,20 @@ function ScenarioGraph({ scenarioData }) {
             </div>
             <div className="total-value">
               Total :{" "}
-              {Object.values(placementStyles)
-                .filter((style) => selectedTypes.includes(style.key))
-                .reduce((sum, style) => {
-                  let value = 0;
-                  if (style.key === "cash") {
-                    const values = scenarioData.patrimony?.cash;
-                    value = values ? values[values.length - 1] || 0 : 0;
-                  } else {
-                    Object.values(scenarioData.patrimony.placements).forEach(
-                      (placement) => {
-                        if (placement[style.key]) {
-                          const values = placement[style.key];
-                          value += values[values.length - 1] || 0;
-                        }
-                      }
-                    );
-                  }
-                  return sum + value;
-                }, 0)
-                .toLocaleString("fr-FR", { maximumFractionDigits: 0 })}{" "}
+              {totalValue.toLocaleString("fr-FR", { maximumFractionDigits: 0 })}{" "}
               €
             </div>
           </div>
           <div className="graph-container">
             <Line
               data={{
-                labels: scenarioData.dates,
+                labels: dates,
                 datasets: Object.values(placementStyles)
                   .filter((style) => selectedTypes.includes(style.key))
-                  .map((style) => {
-                    let data;
-                    if (style.key === "cash") {
-                      data = scenarioData.patrimony.cash;
-                    } else {
-                      // Aggregate all placements of this type
-                      data = Array(scenarioData.dates.length).fill(0);
-                      Object.values(scenarioData.patrimony.placements).forEach(
-                        (placement) => {
-                          if (placement[style.key]) {
-                            placement[style.key].forEach((value, index) => {
-                              data[index] += value;
-                            });
-                          }
-                        }
-                      );
-                    }
-                    return {
-                      ...style,
-                      data: data,
-                    };
-                  }),
+                  .map((style) => ({
+                    ...style,
+                    data: typeDataMap[style.key] || Array(dates.length).fill(0),
+                  })),
               }}
               options={{
                 responsive: true,
@@ -129,10 +130,10 @@ function ScenarioGraph({ scenarioData }) {
                     stacked: true,
                     grid: { display: false },
                     ticks: {
-                      maxTicksLimit: 10, // Limits the number of ticks displayed
-                      autoSkip: true, // Automatically skips labels to prevent overlap
-                      maxRotation: 0, // Keeps labels horizontal (0 degrees)
-                      minRotation: 0, // Prevents rotation
+                      maxTicksLimit: 10,
+                      autoSkip: true,
+                      maxRotation: 0,
+                      minRotation: 0,
                     },
                   },
                 },
