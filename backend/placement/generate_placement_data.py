@@ -261,6 +261,9 @@ def generate_rental_placement_data(params: dict) -> dict:
                 + real_estate[-2] * (1 + monthly_index)
             )
 
+    df["real_estate"] = real_estate
+    df["debt"] = debt
+    df["cash_flow"] = cash_flow
     df["net_real_estate"] = df["real_estate"] + df["debt"]
 
     return df

@@ -21,6 +21,7 @@ def build_scenario_data(scenario_id: int) -> None:
             placement = load_placement_data(scenario_id, placement_id).drop(
                 columns=["year", "month"]
             )
+            # print(placement)
             placement_melted = placement.melt(
                 id_vars=["date"],
                 var_name="type",
