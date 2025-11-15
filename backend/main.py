@@ -2,13 +2,15 @@ import logging
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from scenario.scenario_management import (
+from placement.placement_management import (
     add_placement,
-    add_scenario,
     delete_placement,
+    modify_placement,
+)
+from scenario.scenario_management import (
+    add_scenario,
     delete_scenario,
     load_scenarios,
-    modify_placement,
     modify_scenario,
 )
 from scenario.scenario_read import load_scenario_data
@@ -80,7 +82,8 @@ def api_load_scenarios():
 @app.route("/api/get_scenario_data/", methods=["GET"])
 def api_get_scenario_data():
     scenario_id = request.args.get("scenario_id")
-    data = load_scenario_data(scenario_id)
+    data = load_scenario_data(scenario_id).to_dict(orient="records")
+
     logger.info(f"Retrieved data for scenario: {scenario_id}")
     return jsonify(data)
 
