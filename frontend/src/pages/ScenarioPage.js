@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import Header from "./../components/header.js";
 import ScenarioHeader from "../components/scenario_page/ScenarioHeader.js";
 import ScenarioGraph from "../components/scenario_page/ScenarioGraph.js";
-import PlacementList from "../components/scenario_page/PlacementList.js";
+import FinancialFlowList from "../components/scenario_page/FinancialFlowList.js";
 import AddScenarioModal from "../components/scenario_page/AddScenarioModal.js";
 import ModifyScenarioModal from "../components/scenario_page/ModifyScenarioModal.js";
-import AddPlacementModal from "../components/scenario_page/AddPlacementModal.js";
+import AddFinancialFlowModal from "../components/scenario_page/AddFinancialFlowModal.js";
 import "./ScenarioPage.css";
-import { placementTypes } from "../config/placementTypes.js";
+import { financialFlowTypes } from "../config/financialFlowTypes.js";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -38,13 +38,14 @@ function ScenarioPage() {
   const [showAddScenarioModal, setShowAddScenarioModal] = useState(false);
   const [scenarioParams, setScenarioParams] = useState({});
 
-  const [placements, setPlacements] = useState([]);
-  const [showAddPlacementModal, setShowAddPlacementModal] = useState(false);
+  const [financialFlows, setFinancialFlows] = useState([]);
+  const [showAddFinancialFlowModal, setShowAddFinancialFlowModal] =
+    useState(false);
   const [showModifyScenarioModal, setShowModifyScenarioModal] = useState(false);
-  const [newPlacementName, setNewPlacementName] = useState("");
-  const [placementType, setPlacementType] = useState("");
-  const [placementSubType, setPlacementSubType] = useState("");
-  const [placementParams, setPlacementParams] = useState({});
+  const [newFinancialFlowName, setNewFinancialFlowName] = useState("");
+  const [financialFlowType, setFinancialFlowType] = useState("");
+  const [financialFlowSubType, setFinancialFlowSubType] = useState("");
+  const [financialFlowParams, setFinancialFlowParams] = useState({});
 
   // Fetch scenarios on component mount
   useEffect(() => {
@@ -80,21 +81,21 @@ function ScenarioPage() {
           setShowAddScenarioModal={setShowAddScenarioModal}
           setSelectedScenario={setSelectedScenario}
           setScenarios={setScenarios}
-          setPlacements={setPlacements}
+          setFinancialFlows={setFinancialFlows}
           setShowModifyScenarioModal={setShowModifyScenarioModal}
           setScenarioParams={setScenarioParams}
         />
-        <div className="placements-main-content">
+        <div className="financial-flows-main-content">
           <ScenarioGraph scenarioData={scenarioData} />
           <div className="lists-container">
-            <PlacementList
+            <FinancialFlowList
               selectedScenario={selectedScenario}
-              placements={placements}
-              setShowAddPlacementModal={setShowAddPlacementModal}
+              financialFlows={financialFlows}
+              setShowAddFinancialFlowModal={setShowAddFinancialFlowModal}
               setScenarios={setScenarios}
-              setPlacements={setPlacements}
+              setFinancialFlows={setFinancialFlows}
               setScenarioData={setScenarioData}
-              placementTypes={placementTypes}
+              financialFlowTypes={financialFlowTypes}
             />
           </div>
         </div>
@@ -105,7 +106,7 @@ function ScenarioPage() {
             setScenarioParams={setScenarioParams}
             setShowAddScenarioModal={setShowAddScenarioModal}
             setScenarios={setScenarios}
-            setPlacements={setPlacements}
+            setFinancialFlows={setFinancialFlows}
             setSelectedScenario={setSelectedScenario}
           />
         )}
@@ -120,21 +121,21 @@ function ScenarioPage() {
             setScenarioData={setScenarioData}
           />
         )}
-        {showAddPlacementModal && (
-          <AddPlacementModal
-            setPlacementType={setPlacementType}
-            newPlacementName={newPlacementName}
-            setNewPlacementName={setNewPlacementName}
-            placementParams={placementParams}
-            placementType={placementType}
-            placementTypes={placementTypes}
-            setPlacementParams={setPlacementParams}
-            setPlacementSubType={setPlacementSubType}
-            placementSubType={placementSubType}
-            setShowAddPlacementModal={setShowAddPlacementModal}
+        {showAddFinancialFlowModal && (
+          <AddFinancialFlowModal
+            setFinancialFlowType={setFinancialFlowType}
+            newFinancialFlowName={newFinancialFlowName}
+            setNewFinancialFlowName={setNewFinancialFlowName}
+            financialFlowParams={financialFlowParams}
+            financialFlowType={financialFlowType}
+            financialFlowTypes={financialFlowTypes}
+            setFinancialFlowParams={setFinancialFlowParams}
+            setFinancialFlowSubType={setFinancialFlowSubType}
+            financialFlowSubType={financialFlowSubType}
+            setShowAddFinancialFlowModal={setShowAddFinancialFlowModal}
             selectedScenario={selectedScenario}
             setScenarios={setScenarios}
-            setPlacements={setPlacements}
+            setFinancialFlows={setFinancialFlows}
             setScenarioData={setScenarioData}
           />
         )}

@@ -1,7 +1,7 @@
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 
-export const placementTypes = {
+export const financialFlowTypes = {
   investment: {
     saving_account: {
       label: "Saving Account",

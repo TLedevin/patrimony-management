@@ -3,7 +3,7 @@ import os
 import shutil
 
 import pandas as pd
-from placement.placement_read import load_placement_data
+from financial_flow.financial_flow_read import load_financial_flow_data
 from scenario.scenario_read import load_scenarios
 from settings import conf
 from utils.main import clean_params, get_dates_from_parameters
@@ -14,31 +14,31 @@ def build_scenario_data(scenario_id: int) -> None:
     df = get_dates_from_parameters(scenario)[["date"]].copy()
     params = clean_params(scenario)
 
-    # Process placements if available
-    if scenario.get("placements"):
-        placement_dfs = []
-        for placement_id in scenario["placements"]:
-            placement = load_placement_data(scenario_id, placement_id).drop(
-                columns=["year", "month"]
-            )
-            # print(placement)
-            placement_melted = placement.melt(
+    # Process financial_flows if available
+    if scenario.get("financial_flows"):
+        financial_flow_dfs = []
+        for financial_flow_id in scenario["financial_flows"]:
+            financial_flow = load_financial_flow_data(
+                scenario_id, financial_flow_id
+            ).drop(columns=["year", "month"])
+            # print(financial_flow)
+            financial_flow_melted = financial_flow.melt(
                 id_vars=["date"],
                 var_name="type",
                 value_name="value",
             )
-            placement_dfs.append(placement_melted)
+            financial_flow_dfs.append(financial_flow_melted)
 
-        # Combine all placements efficiently
-        placements = pd.concat(placement_dfs, ignore_index=True)
-        placements = (
-            placements.groupby(["date", "type"], as_index=False)
+        # Combine all financial_flows efficiently
+        financial_flows = pd.concat(financial_flow_dfs, ignore_index=True)
+        financial_flows = (
+            financial_flows.groupby(["date", "type"], as_index=False)
             .agg({"value": "sum"})
             .pivot(index="date", columns="type", values="value")
             .reset_index()
         )
 
-        df = df.merge(placements, on="date", how="left").fillna(0)
+        df = df.merge(financial_flows, on="date", how="left").fillna(0)
 
     # Ensure 'cash_flow' column exists for calculation
     if "cash_flow" not in df.columns:
@@ -104,7 +104,7 @@ def add_scenario(
             "start_month": start_month,
             "end_year": end_year,
             "end_month": end_month,
-            "placements": {},
+            "financial_flows": {},
         }
         f.seek(0)
         json.dump(scenarios, f, indent=4)

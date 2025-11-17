@@ -1,18 +1,21 @@
 import json
 import os
 
-from placement.generate_placement_data import generate_placement_data
+from financial_flow.generate_financial_flow_data import (
+    generate_financial_flow_data,
+)
 from scenario.scenario_management import build_scenario_data
 from settings import conf
 
 
-def generate_placement_id(scenario_id: int):
+def generate_financial_flow_id(scenario_id: int):
     data_path = conf["paths"]["data"]
     with open(data_path + "scenarios/scenarios.json", "r") as f:
         scenarios = json.load(f)
     if scenarios:
         existing_id = [
-            int(i) for i in scenarios[str(scenario_id)]["placements"].keys()
+            int(i)
+            for i in scenarios[str(scenario_id)]["financial_flows"].keys()
         ]
         if len(existing_id) > 0:
 
@@ -24,7 +27,7 @@ def generate_placement_id(scenario_id: int):
     return 1
 
 
-def add_placement(
+def add_financial_flow(
     scenario_id: int,
     name: str,
     type: str,
@@ -32,12 +35,12 @@ def add_placement(
     parameters: dict,
 ) -> int:
     data_path = conf["paths"]["data"]
-    placement_id = generate_placement_id(scenario_id)
+    financial_flow_id = generate_financial_flow_id(scenario_id)
 
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        scenarios[str(scenario_id)]["placements"][placement_id] = {
-            "id": placement_id,
+        scenarios[str(scenario_id)]["financial_flows"][financial_flow_id] = {
+            "id": financial_flow_id,
             "name": name,
             "type": type,
             "subtype": subtype,
@@ -47,19 +50,20 @@ def add_placement(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-    df = generate_placement_data(type, subtype, parameters)
+    df = generate_financial_flow_data(type, subtype, parameters)
     df.to_csv(
-        f"{data_path}scenarios/{scenario_id}/{placement_id}.csv", index=False
+        f"{data_path}scenarios/{scenario_id}/{financial_flow_id}.csv",
+        index=False,
     )
 
     build_scenario_data(scenario_id)
 
-    return placement_id
+    return financial_flow_id
 
 
-def modify_placement(
+def modify_financial_flow(
     scenario_id: int,
-    placement_id: int,
+    financial_flow_id: int,
     name: str,
     type: str,
     subtype: str,
@@ -70,8 +74,10 @@ def modify_placement(
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
 
-        scenarios[str(scenario_id)]["placements"][str(placement_id)] = {
-            "id": placement_id,
+        scenarios[str(scenario_id)]["financial_flows"][
+            str(financial_flow_id)
+        ] = {
+            "id": financial_flow_id,
             "name": name,
             "type": type,
             "subtype": subtype,
@@ -82,24 +88,28 @@ def modify_placement(
         json.dump(scenarios, f, indent=4)
         f.truncate()
 
-    df = generate_placement_data(type, subtype, parameters)
-    df.to_csv(f"{data_path}scenarios/{scenario_id}/{placement_id}.csv")
+    df = generate_financial_flow_data(type, subtype, parameters)
+    df.to_csv(f"{data_path}scenarios/{scenario_id}/{financial_flow_id}.csv")
 
     build_scenario_data(scenario_id)
 
-    return placement_id
+    return financial_flow_id
 
 
-def delete_placement(scenario_id: int, placement_id: int):
+def delete_financial_flow(scenario_id: int, financial_flow_id: int):
     data_path = conf["paths"]["data"]
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
-        if str(placement_id) in scenarios[scenario_id]["placements"]:
-            del scenarios[scenario_id]["placements"][str(placement_id)]
+        if str(financial_flow_id) in scenarios[scenario_id]["financial_flows"]:
+            del scenarios[scenario_id]["financial_flows"][
+                str(financial_flow_id)
+            ]
             f.seek(0)
             json.dump(scenarios, f, indent=4)
             f.truncate()
 
-            os.remove(f"{data_path}scenarios/{scenario_id}/{placement_id}.csv")
+            os.remove(
+                f"{data_path}scenarios/{scenario_id}/{financial_flow_id}.csv"
+            )
 
     build_scenario_data(scenario_id)

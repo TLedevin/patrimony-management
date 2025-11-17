@@ -1,12 +1,12 @@
 import logging
 
+from financial_flow.financial_flow_management import (
+    add_financial_flow,
+    delete_financial_flow,
+    modify_financial_flow,
+)
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from placement.placement_management import (
-    add_placement,
-    delete_placement,
-    modify_placement,
-)
 from scenario.scenario_management import (
     add_scenario,
     delete_scenario,
@@ -97,54 +97,54 @@ def api_delete_scenarios():
     return jsonify(scenarios)
 
 
-@app.route("/api/add_placement/", methods=["GET"])
-def api_add_placement():
+@app.route("/api/add_financial_flow/", methods=["GET"])
+def api_add_financial_flow():
     params = request.args.to_dict()
     # Extract required parameters
     scenario_id = params.pop("scenario_id", None)
     name = params.pop("name", None)
-    placement_type = params.pop("placement_type", None)
-    placement_subtype = params.pop("placement_subtype", None)
-    # All remaining parameters are placement parameters
-    result = add_placement(
-        scenario_id, name, placement_type, placement_subtype, params
+    financial_flow_type = params.pop("financial_flow_type", None)
+    financial_flow_subtype = params.pop("financial_flow_subtype", None)
+    # All remaining parameters are financial_flow parameters
+    result = add_financial_flow(
+        scenario_id, name, financial_flow_type, financial_flow_subtype, params
     )
-    logger.info(f"Added placement: {name} to scenario {scenario_id}")
+    logger.info(f"Added financial_flow: {name} to scenario {scenario_id}")
     return jsonify(result)
 
 
-@app.route("/api/modify_placement/", methods=["GET"])
-def api_modify_placement():
+@app.route("/api/modify_financial_flow/", methods=["GET"])
+def api_modify_financial_flow():
     params = request.args.to_dict()
     # Extract required parameters
     scenario_id = params.pop("scenario_id", None)
-    placement_id = params.pop("placement_id", None)
+    financial_flow_id = params.pop("financial_flow_id", None)
     name = params.pop("name", None)
-    placement_type = params.pop("placement_type", None)
-    placement_subtype = params.pop("placement_subtype", None)
-    # All remaining parameters are placement parameters
-    result = modify_placement(
+    financial_flow_type = params.pop("financial_flow_type", None)
+    financial_flow_subtype = params.pop("financial_flow_subtype", None)
+    # All remaining parameters are financial_flow parameters
+    result = modify_financial_flow(
         scenario_id,
-        placement_id,
+        financial_flow_id,
         name,
-        placement_type,
-        placement_subtype,
+        financial_flow_type,
+        financial_flow_subtype,
         params,
     )
     logger.info(
-        f"Modified placement: {placement_id} in scenario {scenario_id}"
+        f"Modified financial_flow: {financial_flow_id} in scenario {scenario_id}"
     )
     return jsonify(result)
 
 
 @app.route(
-    "/api/delete_placement/<string:scenario_id>/<string:placement_id>",
+    "/api/delete_financial_flow/<string:scenario_id>/<string:financial_flow_id>",
     methods=["GET"],
 )
-def api_delete_placement(scenario_id, placement_id):
-    delete_placement(scenario_id, placement_id)
+def api_delete_financial_flow(scenario_id, financial_flow_id):
+    delete_financial_flow(scenario_id, financial_flow_id)
     logger.info(
-        f"Deleted placement: {placement_id} from scenario {scenario_id}"
+        f"Deleted financial_flow: {financial_flow_id} from scenario {scenario_id}"
     )
     return jsonify({"status": "success"})
 

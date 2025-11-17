@@ -1,43 +1,44 @@
 import { useEffect } from "react";
-import "./AddPlacementModal.css";
+import "./AddFinancialFlowModal.css";
 
-function AddPlacementModal({
-  setPlacementType,
-  newPlacementName,
-  setNewPlacementName,
-  placementParams,
-  placementType,
-  placementTypes,
-  setPlacementParams,
-  setPlacementSubType,
-  placementSubType,
-  setShowAddPlacementModal,
+function AddFinancialFlowModal({
+  setFinancialFlowType,
+  newFinancialFlowName,
+  setNewFinancialFlowName,
+  financialFlowParams,
+  financialFlowType,
+  financialFlowTypes,
+  setFinancialFlowParams,
+  setFinancialFlowSubType,
+  financialFlowSubType,
+  setShowAddFinancialFlowModal,
   selectedScenario,
   setScenarios,
-  setPlacements,
+  setFinancialFlows,
   setScenarioData,
 }) {
-  const handleAddPlacement = async () => {
+  const handleAddFinancialFlow = async () => {
     // Validate type selection
-    if (!placementType) {
-      alert("Please select a placement type");
+    if (!financialFlowType) {
+      alert("Please select a financial flow type");
       return;
     }
 
-    if (!placementSubType) {
-      alert("Please select a placement subtype");
+    if (!financialFlowSubType) {
+      alert("Please select a financial flow subtype");
       return;
     }
 
     // Get the current subtype configuration
-    const currentType = placementTypes[placementType][placementSubType];
+    const currentType =
+      financialFlowTypes[financialFlowType][financialFlowSubType];
 
     // Validate required parameters
     const missingParams = currentType.parameters.filter((param) => {
       if (!param.required) return false;
       const effectiveValue =
-        placementParams[param.id] !== undefined
-          ? placementParams[param.id]
+        financialFlowParams[param.id] !== undefined
+          ? financialFlowParams[param.id]
           : param.default;
       // Treat undefined or empty string as missing. 0 is valid.
       return effectiveValue === undefined || effectiveValue === "";
@@ -47,12 +48,12 @@ function AddPlacementModal({
     const hasEndYear = currentType.parameters.some((p) => p.id === "end_year");
     if (hasEndYear) {
       const endYear =
-        placementParams.end_year !== undefined
-          ? placementParams.end_year
+        financialFlowParams.end_year !== undefined
+          ? financialFlowParams.end_year
           : currentType.parameters.find((p) => p.id === "end_year")?.default;
       const startYear =
-        placementParams.start_year !== undefined
-          ? placementParams.start_year
+        financialFlowParams.start_year !== undefined
+          ? financialFlowParams.start_year
           : currentType.parameters.find((p) => p.id === "start_year")?.default;
       if (
         endYear !== undefined &&
@@ -75,21 +76,21 @@ function AddPlacementModal({
 
     const queryParams = new URLSearchParams({
       scenario_id: selectedScenario,
-      name: newPlacementName,
-      placement_type: placementType,
-      placement_subtype: placementSubType,
-      ...placementParams,
+      name: newFinancialFlowName,
+      financial_flow_type: financialFlowType,
+      financial_flow_subtype: financialFlowSubType,
+      ...financialFlowParams,
     });
 
     const response = await fetch(
-      `http://localhost:5000/api/add_placement?${queryParams.toString()}`,
+      `http://localhost:5000/api/add_financial_flow?${queryParams.toString()}`,
       { method: "GET" }
     );
 
     const result = await response.json();
-    console.log("placement added:", result);
+    console.log("financial flow added:", result);
 
-    // Refresh placements list
+    // Refresh financial flows list
     const scenariosResponse = await fetch(
       "http://localhost:5000/api/load_scenarios/"
     );
@@ -99,7 +100,7 @@ function AddPlacementModal({
     setScenarios(newScenarios);
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
     console.log("New scenario:", scenario);
-    setPlacements(Object.values(scenario.placements));
+    setFinancialFlows(Object.values(scenario.financial_flows));
 
     const scenarioData = await fetch(
       `http://localhost:5000/api/get_scenario_data/?scenario_id=${selectedScenario}`
@@ -112,52 +113,54 @@ function AddPlacementModal({
     setScenarioData(data);
 
     // Reset modal state
-    setShowAddPlacementModal(false);
-    setNewPlacementName("");
-    setPlacementType("");
+    setShowAddFinancialFlowModal(false);
+    setNewFinancialFlowName("");
+    setFinancialFlowType("");
   };
 
   const handleParamChange = (paramId, value) => {
-    setPlacementParams((prev) => ({
+    setFinancialFlowParams((prev) => ({
       ...prev,
       [paramId]: value,
     }));
   };
 
-  // When placementType changes, initialize placementParams with defaults so the
+  // When financialFlowType changes, initialize financialFlowParams with defaults so the
   // UI shows defaults and validation treats them as present.
   useEffect(() => {
-    if (placementType && placementSubType) {
+    if (financialFlowType && financialFlowSubType) {
       const paramsInit = {};
       const paramsConfig =
-        placementTypes[placementType][placementSubType]?.parameters || [];
+        financialFlowTypes[financialFlowType][financialFlowSubType]
+          ?.parameters || [];
       paramsConfig.forEach((p) => {
         // Use default if provided, otherwise empty string so inputs are controlled
         paramsInit[p.id] = p.default !== undefined ? p.default : "";
       });
-      setPlacementParams(paramsInit);
+      setFinancialFlowParams(paramsInit);
     } else {
-      setPlacementParams({});
+      setFinancialFlowParams({});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [placementType, placementSubType]);
+  }, [financialFlowType, financialFlowSubType]);
 
-  const handleplacementModalClose = () => {
-    setShowAddPlacementModal(false);
-    setNewPlacementName("");
-    setPlacementParams({});
-    setPlacementType("");
+  const handleFinancialFlowModalClose = () => {
+    setShowAddFinancialFlowModal(false);
+    setNewFinancialFlowName("");
+    setFinancialFlowParams({});
+    setFinancialFlowType("");
   };
 
-  // Grouping logic for all placement types (all must have group property)
+  // Grouping logic for all financial flow types (all must have group property)
   let groupedParams = {};
   let groupOrder = [];
   if (
-    placementType &&
-    placementSubType &&
-    placementTypes[placementType]?.[placementSubType]?.parameters
+    financialFlowType &&
+    financialFlowSubType &&
+    financialFlowTypes[financialFlowType]?.[financialFlowSubType]?.parameters
   ) {
-    const params = placementTypes[placementType][placementSubType].parameters;
+    const params =
+      financialFlowTypes[financialFlowType][financialFlowSubType].parameters;
     params.forEach((param) => {
       const group = param.group || "other";
       if (!groupedParams[group]) {
@@ -169,67 +172,69 @@ function AddPlacementModal({
   }
 
   return (
-    <div className="modal-overlay-placement">
-      <div className="modal-content-placement">
-        <h3>Add New placement</h3>
-        <div className="input-container-placement">
-          <div className="placement-type-selectors">
+    <div className="modal-overlay-financial-flow">
+      <div className="modal-content-financial-flow">
+        <h3>Add New financial flow</h3>
+        <div className="input-container-financial-flow">
+          <div className="financial-flow-type-selectors">
             <select
-              id="placement-type-select"
+              id="financial-flow-type-select"
               onChange={(e) => {
-                setPlacementType(e.target.value);
-                setPlacementSubType(""); // Reset subtype when main type changes
-                setPlacementParams({}); // Reset params when main type changes
+                setFinancialFlowType(e.target.value);
+                setFinancialFlowSubType(""); // Reset subtype when main type changes
+                setFinancialFlowParams({}); // Reset params when main type changes
               }}
-              className="placement-type-dropdown"
+              className="financial-flow-type-dropdown"
               autoFocus
-              value={placementType}
+              value={financialFlowType}
             >
-              <option value="">-- Select a placement type --</option>
+              <option value="">-- Select a financial flow type --</option>
               <option value="investment">Investment</option>
               <option value="charges">Charges</option>
             </select>
-            {placementType && (
+            {financialFlowType && (
               <select
-                id="placement-subtype-select"
-                onChange={(e) => setPlacementSubType(e.target.value)}
-                className="placement-type-dropdown"
-                value={placementSubType}
+                id="financial-flow-subtype-select"
+                onChange={(e) => setFinancialFlowSubType(e.target.value)}
+                className="financial-flow-type-dropdown"
+                value={financialFlowSubType}
               >
                 <option value="">-- Select a subtype --</option>
-                {Object.entries(placementTypes[placementType] || {}).map(
-                  ([value, type]) => (
-                    <option key={value} value={value}>
-                      {type.label}
-                    </option>
-                  )
-                )}
+                {Object.entries(
+                  financialFlowTypes[financialFlowType] || {}
+                ).map(([value, type]) => (
+                  <option key={value} value={value}>
+                    {type.label}
+                  </option>
+                ))}
               </select>
             )}
           </div>
           <input
             type="text"
-            value={newPlacementName}
-            onChange={(e) => setNewPlacementName(e.target.value)}
-            placeholder="Enter placement name"
-            className="name-input-placement"
+            value={newFinancialFlowName}
+            onChange={(e) => setNewFinancialFlowName(e.target.value)}
+            placeholder="Enter financial flow name"
+            className="name-input-financial-flow"
           />
         </div>
-        <hr className="dropdown-separator-placement" />
-        {placementType && (
-          <div className="placement-parameters-columns">
+        <hr className="dropdown-separator-financial-flow" />
+        {financialFlowType && (
+          <div className="financial-flow-parameters-columns">
             {groupOrder.map((group) => (
-              <div key={group} className="placement-parameter-column">
-                <h4 className="placement-parameter-group-title">
+              <div key={group} className="financial-flow-parameter-column">
+                <h4 className="financial-flow-parameter-group-title">
                   {group.charAt(0).toUpperCase() + group.slice(1)}
                 </h4>
                 {groupedParams[group].map((param) => (
-                  <div key={param.id} className="placement-parameter">
+                  <div key={param.id} className="financial-flow-parameter">
                     <label htmlFor={param.id}>{param.label}</label>
                     <input
                       id={param.id}
                       type={param.type}
-                      value={placementParams[param.id] ?? param.default ?? ""}
+                      value={
+                        financialFlowParams[param.id] ?? param.default ?? ""
+                      }
                       onChange={(e) =>
                         handleParamChange(
                           param.id,
@@ -244,7 +249,7 @@ function AddPlacementModal({
                       max={param.max}
                       step={param.step}
                       required={param.required}
-                      className="placement-parameter-input"
+                      className="financial-flow-parameter-input"
                     />
                   </div>
                 ))}
@@ -253,10 +258,13 @@ function AddPlacementModal({
           </div>
         )}
         <div className="modal-buttons">
-          <button onClick={handleAddPlacement} className="btn-confirm">
+          <button onClick={handleAddFinancialFlow} className="btn-confirm">
             Add
           </button>
-          <button onClick={handleplacementModalClose} className="btn-cancel">
+          <button
+            onClick={handleFinancialFlowModalClose}
+            className="btn-cancel"
+          >
             Cancel
           </button>
         </div>
@@ -265,4 +273,4 @@ function AddPlacementModal({
   );
 }
 
-export default AddPlacementModal;
+export default AddFinancialFlowModal;
