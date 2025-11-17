@@ -2,33 +2,6 @@ import numpy as np
 from utils.main import clean_params, get_dates_from_parameters
 
 
-def generate_financial_flow_data(
-    type: str, subtype: str, params: dict
-) -> dict:
-    mapping_financial_flow_types = {
-        "investment": {
-            "saving_account": generate_saving_account_data,
-            "stock_exchange": generate_stock_exchange_data,
-            "real_estate": generate_real_estate_data,
-            "rental_investment": generate_rental_financial_flow_data,
-        },
-        "charges": {
-            "rental_personal_use": generate_personal_use_rental_data,
-        },
-    }
-
-    return mapping_financial_flow_types[type][subtype](params)
-
-
-# Charges
-def generate_personal_use_rental_data(params: dict):
-    df = get_dates_from_parameters(params)
-    df["cash_flow"] = -float(params["rent_including_charges"])
-
-    return df
-
-
-# Investments
 def generate_saving_account_data(params: dict) -> dict:
     df = get_dates_from_parameters(params)
     params = clean_params(params)

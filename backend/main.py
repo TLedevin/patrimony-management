@@ -122,6 +122,7 @@ def api_modify_financial_flow():
     name = params.pop("name", None)
     financial_flow_type = params.pop("financial_flow_type", None)
     financial_flow_subtype = params.pop("financial_flow_subtype", None)
+    print("########################", financial_flow_id)
     # All remaining parameters are financial_flow parameters
     result = modify_financial_flow(
         scenario_id,

@@ -63,10 +63,10 @@ function ModifyFinancialFlowModal({
 
     const queryParams = new URLSearchParams({
       scenario_id: selectedScenario,
-      financialFlow_id: financialFlow.id,
+      financial_flow_id: financialFlow.id,
       name: financialFlowName,
-      financialFlow_type: financialFlowType,
-      financialFlow_subtype: financialFlowSubType,
+      financial_flow_type: financialFlowType,
+      financial_flow_subtype: financialFlowSubType,
       ...financialFlowParams,
     });
 
@@ -88,7 +88,7 @@ function ModifyFinancialFlowModal({
     const newScenarios = Object.values(scenariosData);
     setScenarios(newScenarios);
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
-    setFinancialFlows(Object.values(scenario.financialFlows));
+    setFinancialFlows(Object.values(scenario.financial_flows));
 
     // Update scenario data
     const scenarioData = await fetch(

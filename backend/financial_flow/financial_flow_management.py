@@ -90,7 +90,7 @@ def modify_financial_flow(
 
     df = generate_financial_flow_data(type, subtype, parameters)
     df.to_csv(f"{data_path}scenarios/{scenario_id}/{financial_flow_id}.csv")
-
+    print("########################---", financial_flow_id)
     build_scenario_data(scenario_id)
 
     return financial_flow_id

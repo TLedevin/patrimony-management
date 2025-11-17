@@ -189,6 +189,7 @@ function AddFinancialFlowModal({
               value={financialFlowType}
             >
               <option value="">-- Select a financial flow type --</option>
+              <option value="cash_inflow">Income</option>
               <option value="investment">Investment</option>
               <option value="charges">Charges</option>
             </select>
