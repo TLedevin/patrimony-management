@@ -10,14 +10,6 @@ function scenarioDataModal({ isOpen, onClose, scenarioData, selectedTypes }) {
   )
     return null;
 
-  // Validate that all selected types have corresponding data
-  const validTypes = selectedTypes.filter(
-    (type) =>
-      scenarioData.patrimony[type] &&
-      Array.isArray(scenarioData.patrimony[type]) &&
-      scenarioData.dates.length === scenarioData.patrimony[type].length
-  );
-
   // Collect all unique patrimony types across all placements
   const allPatrimonyTypes = new Set();
   Object.keys(scenarioData.patrimony.placements).forEach((placementId) => {

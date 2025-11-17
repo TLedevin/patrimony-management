@@ -1,7 +1,7 @@
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 
-export default [
+const scenarioParams = [
   {
     id: "initial_deposit",
     label: "Initial Deposit (€)",
@@ -53,3 +53,5 @@ export default [
     className: "scenario-parameter-input",
   },
 ];
+
+export default scenarioParams;

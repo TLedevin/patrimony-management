@@ -15,7 +15,6 @@ function AddPlacementModal({
   selectedScenario,
   setScenarios,
   setPlacements,
-  setSelectedPlacement,
   setScenarioData,
 }) {
   const handleAddPlacement = async () => {
@@ -115,7 +114,6 @@ function AddPlacementModal({
     // Reset modal state
     setShowAddPlacementModal(false);
     setNewPlacementName("");
-    setSelectedPlacement(result);
     setPlacementType("");
   };
 

@@ -39,7 +39,6 @@ function ScenarioPage() {
   const [scenarioParams, setScenarioParams] = useState({});
 
   const [placements, setPlacements] = useState([]);
-  const [selectedPlacement, setSelectedPlacement] = useState("");
   const [showAddPlacementModal, setShowAddPlacementModal] = useState(false);
   const [showModifyScenarioModal, setShowModifyScenarioModal] = useState(false);
   const [newPlacementName, setNewPlacementName] = useState("");
@@ -136,7 +135,6 @@ function ScenarioPage() {
             selectedScenario={selectedScenario}
             setScenarios={setScenarios}
             setPlacements={setPlacements}
-            setSelectedPlacement={setSelectedPlacement}
             setScenarioData={setScenarioData}
           />
         )}
