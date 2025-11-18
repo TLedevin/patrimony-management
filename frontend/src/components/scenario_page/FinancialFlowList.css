@@ -64,7 +64,7 @@
   overflow: hidden;
 }
 
-.financial-flow-card.investment::before {
+.financial-flow-card.cash_inflow::before {
   content: '';
   position: absolute;
   left: 0;
@@ -72,6 +72,16 @@
   bottom: 0;
   width: 4px;
   background-color: #4CAF50;
+}
+
+.financial-flow-card.investment::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #afa54c;
 }
 
 .financial-flow-card.charges::before {

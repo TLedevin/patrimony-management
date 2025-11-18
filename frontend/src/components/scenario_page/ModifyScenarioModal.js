@@ -17,8 +17,6 @@ function ModifyScenarioModal({
     if (currentScenario) {
       setScenarioParams({
         name: currentScenario.name,
-        initial_deposit: currentScenario.initial_deposit,
-        monthly_deposit: currentScenario.monthly_deposit,
         start_year: currentScenario.start_year,
         start_month: currentScenario.start_month,
         end_year: currentScenario.end_year,

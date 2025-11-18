@@ -20,7 +20,7 @@ def generate_saving_account_data(params: dict) -> dict:
                 cash_flow.append(-params["monthly_investment"])
                 if row["month"] % 12 == 1:
                     savings.append(
-                        savings[-1] * (1 + yearly_interest_rate)
+                        savings[-1] * yearly_interest_rate
                         + params["monthly_investment"]
                     )
                 else:
@@ -29,13 +29,13 @@ def generate_saving_account_data(params: dict) -> dict:
             elif savings[-1] < 22950:
                 cash_flow.append(22950 - savings[-1])
                 if row["month"] % 12 == 1:
-                    savings.append(22950 * (1 + yearly_interest_rate))
+                    savings.append(22950 * yearly_interest_rate)
                 else:
                     savings.append(22950)
             else:
                 cash_flow.append(0)
                 if row["month"] % 12 == 1:
-                    savings.append(savings[-1] * (1 + yearly_interest_rate))
+                    savings.append(savings[-1] * yearly_interest_rate)
 
                 else:
                     savings.append(savings[-1])

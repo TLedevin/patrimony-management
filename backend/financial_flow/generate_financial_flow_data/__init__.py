@@ -1,4 +1,4 @@
-from .cash_inflow import generate_income_data
+from .cash_inflow import generate_income_data, generate_one_off_income
 from .charges import generate_personal_use_rental_data
 from .investments import (
     generate_real_estate_data,
@@ -23,6 +23,7 @@ def generate_financial_flow_data(
         },
         "cash_inflow": {
             "income": generate_income_data,
+            "one_off_income": generate_one_off_income,
         },
     }
     print(type, subtype, params)

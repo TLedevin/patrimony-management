@@ -9,12 +9,12 @@ def get_dates_from_parameters(params: dict) -> pd.DataFrame:
 
     duration = (end_y - start_y) * 12 + end_m - start_m
     dates = [
-        f"{start_y + (start_m + m) // 12}-{((start_m + m) % 12) + 1:02d}"
+        f"{start_y + (start_m + m - 1) // 12}-{(start_m + m - 1) % 12 + 1:02d}"
         for m in range(duration)
     ]
-    years = [start_y + (start_m + m) // 12 for m in range(duration)]
-    months = [((start_m + m) % 12) + 1 for m in range(duration)]
 
+    years = [start_y + (start_m + m - 1) // 12 for m in range(duration)]
+    months = [(start_m + m - 1) % 12 + 1 for m in range(duration)]
     return pd.DataFrame({"date": dates, "year": years, "month": months})
 
 

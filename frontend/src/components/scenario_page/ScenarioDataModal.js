@@ -163,19 +163,6 @@ function scenarioDataModal({ isOpen, onClose, scenarioData }) {
                 {scenarioData.dates.map((date, index) => (
                   <tr key={date}>
                     <td>{date}</td>
-                    <td>
-                      {(
-                        (scenarioData.cash_flows.situation.initial_deposit[
-                          index
-                        ] || 0) +
-                        (scenarioData.cash_flows.situation.monthly_deposit[
-                          index
-                        ] || 0)
-                      ).toLocaleString("fr-FR", {
-                        maximumFractionDigits: 0,
-                      })}{" "}
-                      €
-                    </td>
                     {Object.keys(scenarioData.patrimony.financial_flows).map(
                       (financialFlowId) => {
                         const patrimonyTypes = Object.keys(

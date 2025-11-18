@@ -594,7 +594,7 @@ export const financialFlowTypes = {
       parameters: [
         {
           id: "start_year",
-          label: "Purchase Year",
+          label: "Start Year",
           type: "number",
           required: true,
           min: currentYear,
@@ -603,7 +603,7 @@ export const financialFlowTypes = {
         },
         {
           id: "start_month",
-          label: "Purchase Month",
+          label: "Start Month",
           type: "number",
           required: true,
           min: 1,
@@ -613,7 +613,7 @@ export const financialFlowTypes = {
         },
         {
           id: "end_year",
-          label: "Year of sale",
+          label: "End Year",
           type: "number",
           required: true,
           min: currentYear,
@@ -622,7 +622,7 @@ export const financialFlowTypes = {
         },
         {
           id: "end_month",
-          label: "Month of sale",
+          label: "End Month",
           type: "number",
           required: true,
           min: 1,
@@ -633,6 +633,41 @@ export const financialFlowTypes = {
         {
           id: "income",
           label: "Monthly Income",
+          type: "number",
+          required: true,
+          min: 0,
+          step: 10,
+          group: "income",
+        },
+      ],
+    },
+    one_off_income: {
+      id: "one_off_income",
+      label: "One Off Income",
+      icon: "💸",
+      parameters: [
+        {
+          id: "year",
+          label: "Year",
+          type: "number",
+          required: true,
+          min: currentYear,
+          step: 1,
+          group: "dates",
+        },
+        {
+          id: "month",
+          label: "Month",
+          type: "number",
+          required: true,
+          min: 1,
+          max: 12,
+          step: 1,
+          group: "dates",
+        },
+        {
+          id: "value",
+          label: "Value",
           type: "number",
           required: true,
           min: 0,

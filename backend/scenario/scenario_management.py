@@ -6,13 +6,12 @@ import pandas as pd
 from financial_flow.financial_flow_read import load_financial_flow_data
 from scenario.scenario_read import load_scenarios
 from settings import conf
-from utils.main import clean_params, get_dates_from_parameters
+from utils.main import get_dates_from_parameters
 
 
 def build_scenario_data(scenario_id: int) -> None:
     scenario = load_scenarios().get(str(scenario_id))
     df = get_dates_from_parameters(scenario)[["date"]].copy()
-    params = clean_params(scenario)
 
     # Process financial_flows if available
     if scenario.get("financial_flows"):
@@ -42,14 +41,13 @@ def build_scenario_data(scenario_id: int) -> None:
 
     # Ensure 'cash_flow' column exists for calculation
     if "cash_flow" not in df.columns:
-        df["cash_flow"] = 0.0
+        df["cash_flow"] = 0
 
     # Vectorized cash calculation
-    cash = [params["initial_deposit"] + df.loc[0, "cash_flow"]]
+    cash = [df.loc[0, "cash_flow"]]
     for i in range(1, len(df)):
-        cash.append(
-            cash[-1] + df.loc[i, "cash_flow"] + params["monthly_deposit"]
-        )
+        cash.append(cash[-1] + df.loc[i, "cash_flow"])
+
     df["cash"] = cash
 
     # Prepare final DataFrame for output
@@ -82,8 +80,6 @@ def generate_scenario_id():
 
 def add_scenario(
     name: str,
-    initial_deposit: float,
-    monthly_deposit: float,
     start_year: int = None,
     start_month: int = None,
     end_year: int = None,
@@ -98,8 +94,6 @@ def add_scenario(
         scenarios[scenario_id] = {
             "id": scenario_id,
             "name": name,
-            "initial_deposit": initial_deposit,
-            "monthly_deposit": monthly_deposit,
             "start_year": start_year,
             "start_month": start_month,
             "end_year": end_year,
@@ -120,8 +114,6 @@ def add_scenario(
 def modify_scenario(
     scenario_id: int,
     name: str,
-    initial_deposit: float,
-    monthly_deposit: float,
     end_year: int = None,
     end_month: int = None,
 ):
@@ -130,8 +122,6 @@ def modify_scenario(
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
         scenarios[str(scenario_id)]["name"] = name
-        scenarios[str(scenario_id)]["initial_deposit"] = initial_deposit
-        scenarios[str(scenario_id)]["monthly_deposit"] = monthly_deposit
         scenarios[str(scenario_id)]["end_year"] = end_year
         scenarios[str(scenario_id)]["end_month"] = end_month
 
