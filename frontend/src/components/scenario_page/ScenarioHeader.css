@@ -5,7 +5,6 @@
   margin-top: 10px;
   margin-left: 10px;
   width: calc(100% - 20px);
-  /* border: 1px solid var(--dark-border-color); */
   border-radius: 10px;
   display: flex;
   align-items: center;
