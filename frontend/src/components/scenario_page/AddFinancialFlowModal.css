@@ -1,5 +1,5 @@
 /* Display groups in columns */
-.modal-overlay-placement {
+.modal-overlay-financial-flow {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,21 +12,21 @@
   z-index: 1000;
 }
 
-.modal-content-placement {
+.modal-content-financial-flow {
   background-color: var(--theme-background-color-light);
   border-radius: 8px;
   min-width: 400px;
   padding: 20px
 }
 
-.placement-parameters-columns {
+.financial-flow-parameters-columns {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
 }
 
-.placement-parameter-column {
+.financial-flow-parameter-column {
   display: flex;
   flex-direction: column;
   min-width: 200px;
@@ -40,38 +40,38 @@
   padding-right: 20px;
 }
 
-.placement-parameter-group-title {
+.financial-flow-parameter-group-title {
   font-size: 1.08rem;
   font-weight: bold;
   margin-bottom: 10px;
   color: var(--theme-background-color);
 }
 
-.placement-parameter {
+.financial-flow-parameter {
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
 }
 
-.placement-parameter label {
+.financial-flow-parameter label {
   font-size: 0.97rem;
   margin-bottom: 3px;
 }
 
-.input-container-placement {
+.input-container-financial-flow {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 15px;
 }
 
-.placement-type-selectors {
+.financial-flow-type-selectors {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.placement-type-dropdown {
+.financial-flow-type-dropdown {
   height: 35px;
   min-width: 200px;
   border: 1px solid var(--light-border-color);
@@ -82,7 +82,7 @@
   flex: 1;
 }
 
-.name-input-placement {
+.name-input-financial-flow {
   width: 100%;
   height: 35px;
   border: 1px solid var(--light-border-color);
@@ -92,12 +92,12 @@
   padding: 0 10px;
 }
 
-.dropdown-separator-placement {
+.dropdown-separator-financial-flow {
   width: 100%;
   margin-bottom: 20px;
 }
 
-.placement-parameter-input {
+.financial-flow-parameter-input {
   margin-left: 20px;
   height: 25px;
   border: 1px solid var(--light-border-color);

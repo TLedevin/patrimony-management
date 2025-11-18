@@ -7,7 +7,7 @@ function ScenarioHeader({
   setShowAddScenarioModal,
   setSelectedScenario,
   setScenarios,
-  setPlacements,
+  setFinancialFlows,
   setShowModifyScenarioModal,
   setScenarioParams,
 }) {
@@ -17,12 +17,12 @@ function ScenarioHeader({
     setSelectedScenario(scenarioId);
     console.log("Selected scenario:", scenarioId);
 
-    // Fetch placements for the selected scenario
+    // Fetch financial flows for the selected scenario
     if (scenarioId) {
       const scenario = scenarios.find((s) => s.id === scenarioId);
-      setPlacements(Object.values(scenario.placements));
+      setFinancialFlows(Object.values(scenario.financial_flows));
     } else {
-      setPlacements([]);
+      setFinancialFlows([]);
     }
   };
 

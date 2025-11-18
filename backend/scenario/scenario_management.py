@@ -3,53 +3,51 @@ import os
 import shutil
 
 import pandas as pd
-from placement.placement_read import load_placement_data
+from financial_flow.financial_flow_read import load_financial_flow_data
 from scenario.scenario_read import load_scenarios
 from settings import conf
-from utils.main import clean_params, get_dates_from_parameters
+from utils.main import get_dates_from_parameters
 
 
 def build_scenario_data(scenario_id: int) -> None:
     scenario = load_scenarios().get(str(scenario_id))
     df = get_dates_from_parameters(scenario)[["date"]].copy()
-    params = clean_params(scenario)
 
-    # Process placements if available
-    if scenario.get("placements"):
-        placement_dfs = []
-        for placement_id in scenario["placements"]:
-            placement = load_placement_data(scenario_id, placement_id).drop(
-                columns=["year", "month"]
-            )
-            # print(placement)
-            placement_melted = placement.melt(
+    # Process financial_flows if available
+    if scenario.get("financial_flows"):
+        financial_flow_dfs = []
+        for financial_flow_id in scenario["financial_flows"]:
+            financial_flow = load_financial_flow_data(
+                scenario_id, financial_flow_id
+            ).drop(columns=["year", "month"])
+            # print(financial_flow)
+            financial_flow_melted = financial_flow.melt(
                 id_vars=["date"],
                 var_name="type",
                 value_name="value",
             )
-            placement_dfs.append(placement_melted)
+            financial_flow_dfs.append(financial_flow_melted)
 
-        # Combine all placements efficiently
-        placements = pd.concat(placement_dfs, ignore_index=True)
-        placements = (
-            placements.groupby(["date", "type"], as_index=False)
+        # Combine all financial_flows efficiently
+        financial_flows = pd.concat(financial_flow_dfs, ignore_index=True)
+        financial_flows = (
+            financial_flows.groupby(["date", "type"], as_index=False)
             .agg({"value": "sum"})
             .pivot(index="date", columns="type", values="value")
             .reset_index()
         )
 
-        df = df.merge(placements, on="date", how="left").fillna(0)
+        df = df.merge(financial_flows, on="date", how="left").fillna(0)
 
     # Ensure 'cash_flow' column exists for calculation
     if "cash_flow" not in df.columns:
-        df["cash_flow"] = 0.0
+        df["cash_flow"] = 0
 
     # Vectorized cash calculation
-    cash = [params["initial_deposit"] + df.loc[0, "cash_flow"]]
+    cash = [df.loc[0, "cash_flow"]]
     for i in range(1, len(df)):
-        cash.append(
-            cash[-1] + df.loc[i, "cash_flow"] + params["monthly_deposit"]
-        )
+        cash.append(cash[-1] + df.loc[i, "cash_flow"])
+
     df["cash"] = cash
 
     # Prepare final DataFrame for output
@@ -82,8 +80,6 @@ def generate_scenario_id():
 
 def add_scenario(
     name: str,
-    initial_deposit: float,
-    monthly_deposit: float,
     start_year: int = None,
     start_month: int = None,
     end_year: int = None,
@@ -98,13 +94,11 @@ def add_scenario(
         scenarios[scenario_id] = {
             "id": scenario_id,
             "name": name,
-            "initial_deposit": initial_deposit,
-            "monthly_deposit": monthly_deposit,
             "start_year": start_year,
             "start_month": start_month,
             "end_year": end_year,
             "end_month": end_month,
-            "placements": {},
+            "financial_flows": {},
         }
         f.seek(0)
         json.dump(scenarios, f, indent=4)
@@ -120,8 +114,6 @@ def add_scenario(
 def modify_scenario(
     scenario_id: int,
     name: str,
-    initial_deposit: float,
-    monthly_deposit: float,
     end_year: int = None,
     end_month: int = None,
 ):
@@ -130,8 +122,6 @@ def modify_scenario(
     with open(data_path + "scenarios/scenarios.json", "r+") as f:
         scenarios = json.load(f)
         scenarios[str(scenario_id)]["name"] = name
-        scenarios[str(scenario_id)]["initial_deposit"] = initial_deposit
-        scenarios[str(scenario_id)]["monthly_deposit"] = monthly_deposit
         scenarios[str(scenario_id)]["end_year"] = end_year
         scenarios[str(scenario_id)]["end_month"] = end_month
 

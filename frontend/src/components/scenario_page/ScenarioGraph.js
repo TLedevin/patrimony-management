@@ -1,13 +1,13 @@
 import { Line } from "react-chartjs-2";
 import { useState, useMemo } from "react";
 import "./ScenarioGraph.css";
-import placementStyles from "../../config/patrimonyGraphConfig";
+import financialFlowStyles from "../../config/patrimonyGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
 import ScenarioDataModal from "./ScenarioDataModal";
 
 function ScenarioGraph({ scenarioData }) {
   const [selectedTypes, setSelectedTypes] = useState(
-    Object.keys(placementStyles)
+    Object.keys(financialFlowStyles)
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,7 +23,7 @@ function ScenarioGraph({ scenarioData }) {
 
     // Build a map: { type: [values per date index] }
     const typeDataMap = {};
-    Object.keys(placementStyles).forEach((type) => {
+    Object.keys(financialFlowStyles).forEach((type) => {
       typeDataMap[type] = Array(dates.length).fill(0);
     });
 
@@ -40,7 +40,7 @@ function ScenarioGraph({ scenarioData }) {
   // Compute total for selected types on the last date
   const totalValue = useMemo(() => {
     if (!dates.length) return 0;
-    return Object.values(placementStyles)
+    return Object.values(financialFlowStyles)
       .filter((style) => selectedTypes.includes(style.key))
       .reduce((sum, style) => {
         const arr = typeDataMap[style.key] || [];
@@ -49,13 +49,13 @@ function ScenarioGraph({ scenarioData }) {
   }, [dates, typeDataMap, selectedTypes]);
 
   return (
-    <div className="placements-graph">
+    <div className="financial-flows-graph">
       {scenarioData && (
         <>
           <div className="graph-header">
             <div className="filter-container">
               <PatrimonyTypeDropdown
-                options={Object.values(placementStyles)}
+                options={Object.values(financialFlowStyles)}
                 selectedTypes={selectedTypes}
                 onChange={setSelectedTypes}
               />
@@ -76,7 +76,7 @@ function ScenarioGraph({ scenarioData }) {
             <Line
               data={{
                 labels: dates,
-                datasets: Object.values(placementStyles)
+                datasets: Object.values(financialFlowStyles)
                   .filter((style) => selectedTypes.includes(style.key))
                   .map((style) => ({
                     ...style,
@@ -144,8 +144,6 @@ function ScenarioGraph({ scenarioData }) {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             scenarioData={scenarioData}
-            selectedTypes={selectedTypes}
-            placementStyles={placementStyles}
           />
         </>
       )}

@@ -3,22 +3,6 @@ const currentYear = currentDate.getFullYear();
 
 const scenarioParams = [
   {
-    id: "initial_deposit",
-    label: "Initial Deposit (€)",
-    type: "number",
-    min: 0,
-    step: 1000,
-    className: "scenario-parameter-input",
-  },
-  {
-    id: "monthly_deposit",
-    label: "Monthly Deposit (€)",
-    type: "number",
-    min: 0,
-    step: 100,
-    className: "scenario-parameter-input",
-  },
-  {
     id: "start_year",
     label: "Start Year",
     type: "number",

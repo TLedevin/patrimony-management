@@ -2,31 +2,6 @@ import numpy as np
 from utils.main import clean_params, get_dates_from_parameters
 
 
-def generate_placement_data(type: str, subtype: str, params: dict) -> dict:
-    mapping_placement_types = {
-        "investment": {
-            "saving_account": generate_saving_account_data,
-            "stock_exchange": generate_stock_exchange_data,
-            "real_estate": generate_real_estate_data,
-            "rental_investment": generate_rental_placement_data,
-        },
-        "charges": {
-            "rental_personal_use": generate_personal_use_rental_data,
-        },
-    }
-
-    return mapping_placement_types[type][subtype](params)
-
-
-# Charges
-def generate_personal_use_rental_data(params: dict):
-    df = get_dates_from_parameters(params)
-    df["cash_flow"] = -float(params["rent_including_charges"])
-
-    return df
-
-
-# Investments
 def generate_saving_account_data(params: dict) -> dict:
     df = get_dates_from_parameters(params)
     params = clean_params(params)
@@ -45,7 +20,7 @@ def generate_saving_account_data(params: dict) -> dict:
                 cash_flow.append(-params["monthly_investment"])
                 if row["month"] % 12 == 1:
                     savings.append(
-                        savings[-1] * (1 + yearly_interest_rate)
+                        savings[-1] * yearly_interest_rate
                         + params["monthly_investment"]
                     )
                 else:
@@ -54,13 +29,13 @@ def generate_saving_account_data(params: dict) -> dict:
             elif savings[-1] < 22950:
                 cash_flow.append(22950 - savings[-1])
                 if row["month"] % 12 == 1:
-                    savings.append(22950 * (1 + yearly_interest_rate))
+                    savings.append(22950 * yearly_interest_rate)
                 else:
                     savings.append(22950)
             else:
                 cash_flow.append(0)
                 if row["month"] % 12 == 1:
-                    savings.append(savings[-1] * (1 + yearly_interest_rate))
+                    savings.append(savings[-1] * yearly_interest_rate)
 
                 else:
                     savings.append(savings[-1])
@@ -184,7 +159,7 @@ def generate_real_estate_data(params: dict) -> dict:
     return df
 
 
-def generate_rental_placement_data(params: dict) -> dict:
+def generate_rental_financial_flow_data(params: dict) -> dict:
     df = get_dates_from_parameters(params)
     params = clean_params(params)
 

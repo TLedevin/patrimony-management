@@ -1,30 +1,31 @@
-import "./AddPlacementModal.css";
+import "./AddFinancialFlowModal.css";
 
-function ModifyPlacementModal({
-  placement,
-  setPlacementType,
-  placementName,
-  setPlacementName,
-  placementParams,
-  placementType,
-  placementTypes,
-  setPlacementParams,
-  placementSubType,
-  setPlacementSubType,
-  setShowModifyPlacementModal,
+function ModifyFinancialFlowModal({
+  financialFlow,
+  setFinancialFlowType,
+  financialFlowName,
+  setFinancialFlowName,
+  financialFlowParams,
+  financialFlowType,
+  financialFlowTypes,
+  setFinancialFlowParams,
+  financialFlowSubType,
+  setFinancialFlowSubType,
+  setShowModifyFinancialFlowModal,
   selectedScenario,
   setScenarios,
-  setPlacements,
+  setFinancialFlows,
   setScenarioData,
 }) {
-  const handleModifyPlacement = async () => {
+  const handleModifyFinancialFlow = async () => {
     // Validate required parameters
-    const currentType = placementTypes[placementType][placementSubType];
+    const currentType =
+      financialFlowTypes[financialFlowType][financialFlowSubType];
     const missingParams = currentType.parameters.filter((param) => {
       if (!param.required) return false;
       const effectiveValue =
-        placementParams[param.id] !== undefined
-          ? placementParams[param.id]
+        financialFlowParams[param.id] !== undefined
+          ? financialFlowParams[param.id]
           : param.default;
       // Treat undefined or empty string as missing. 0 is valid.
       return effectiveValue === undefined || effectiveValue === "";
@@ -34,12 +35,12 @@ function ModifyPlacementModal({
     const hasEndYear = currentType.parameters.some((p) => p.id === "end_year");
     if (hasEndYear) {
       const endYear =
-        placementParams.end_year !== undefined
-          ? placementParams.end_year
+        financialFlowParams.end_year !== undefined
+          ? financialFlowParams.end_year
           : currentType.parameters.find((p) => p.id === "end_year")?.default;
       const startYear =
-        placementParams.start_year !== undefined
-          ? placementParams.start_year
+        financialFlowParams.start_year !== undefined
+          ? financialFlowParams.start_year
           : currentType.parameters.find((p) => p.id === "start_year")?.default;
       if (
         endYear !== undefined &&
@@ -62,24 +63,24 @@ function ModifyPlacementModal({
 
     const queryParams = new URLSearchParams({
       scenario_id: selectedScenario,
-      placement_id: placement.id,
-      name: placementName,
-      placement_type: placementType,
-      placement_subtype: placementSubType,
-      ...placementParams,
+      financial_flow_id: financialFlow.id,
+      name: financialFlowName,
+      financial_flow_type: financialFlowType,
+      financial_flow_subtype: financialFlowSubType,
+      ...financialFlowParams,
     });
 
     const response = await fetch(
-      `http://localhost:5000/api/modify_placement/?${queryParams.toString()}`,
+      `http://localhost:5000/api/modify_financial_flow/?${queryParams.toString()}`,
       { method: "GET" }
     );
 
     if (!response.ok) {
-      alert("Failed to modify placement");
+      alert("Failed to modify financial flow");
       return;
     }
 
-    // Refresh placements list
+    // Refresh financial flows list
     const scenariosResponse = await fetch(
       "http://localhost:5000/api/load_scenarios/"
     );
@@ -87,7 +88,7 @@ function ModifyPlacementModal({
     const newScenarios = Object.values(scenariosData);
     setScenarios(newScenarios);
     const scenario = newScenarios.find((s) => s.id === selectedScenario);
-    setPlacements(Object.values(scenario.placements));
+    setFinancialFlows(Object.values(scenario.financial_flows));
 
     // Update scenario data
     const scenarioData = await fetch(
@@ -100,29 +101,30 @@ function ModifyPlacementModal({
     setScenarioData(data);
 
     // Reset modal state
-    setShowModifyPlacementModal(false);
+    setShowModifyFinancialFlowModal(false);
   };
 
   const handleParamChange = (paramId, value) => {
-    setPlacementParams((prev) => ({
+    setFinancialFlowParams((prev) => ({
       ...prev,
       [paramId]: value,
     }));
   };
 
-  const handlePlacementModalClose = () => {
-    setShowModifyPlacementModal(false);
+  const handleFinancialFlowModalClose = () => {
+    setShowModifyFinancialFlowModal(false);
   };
 
-  // Grouping logic for all placement types (all must have group property)
+  // Grouping logic for all financial flow types (all must have group property)
   let groupedParams = {};
   let groupOrder = [];
   if (
-    placementType &&
-    placementSubType &&
-    placementTypes[placementType]?.[placementSubType]?.parameters
+    financialFlowType &&
+    financialFlowSubType &&
+    financialFlowTypes[financialFlowType]?.[financialFlowSubType]?.parameters
   ) {
-    const params = placementTypes[placementType][placementSubType].parameters;
+    const params =
+      financialFlowTypes[financialFlowType][financialFlowSubType].parameters;
     params.forEach((param) => {
       const group = param.group || "other";
       if (!groupedParams[group]) {
@@ -134,32 +136,32 @@ function ModifyPlacementModal({
   }
 
   return (
-    <div className="modal-overlay-placement">
-      <div className="modal-content-placement">
-        <h3>Modify placement</h3>
-        <div className="input-container-placement">
-          <div className="placement-type-selectors">
+    <div className="modal-overlay-financial-flow">
+      <div className="modal-content-financial-flow">
+        <h3>Modify financial flow</h3>
+        <div className="input-container-financial-flow">
+          <div className="financial-flow-type-selectors">
             <select
-              id="placement-type-select"
-              value={placementType}
-              onChange={(e) => setPlacementType(e.target.value)}
-              className="placement-type-dropdown"
+              id="financial-flow-type-select"
+              value={financialFlowType}
+              onChange={(e) => setFinancialFlowType(e.target.value)}
+              className="financial-flow-type-dropdown"
               disabled
             >
-              <option value="">-- Select a placement type --</option>
+              <option value="">-- Select a financial flow type --</option>
               <option value="investment">Investment</option>
               <option value="charges">Charges</option>
             </select>
             <select
-              id="placement-subtype-select"
-              value={placementSubType}
-              onChange={(e) => setPlacementSubType(e.target.value)}
-              className="placement-type-dropdown"
+              id="financial-flow-subtype-select"
+              value={financialFlowSubType}
+              onChange={(e) => setFinancialFlowSubType(e.target.value)}
+              className="financial-flow-type-dropdown"
               disabled
             >
               <option value="">-- Select a subtype --</option>
-              {placementType &&
-                Object.entries(placementTypes[placementType] || {}).map(
+              {financialFlowType &&
+                Object.entries(financialFlowTypes[financialFlowType] || {}).map(
                   ([value, type]) => (
                     <option key={value} value={value}>
                       {type.label}
@@ -170,27 +172,29 @@ function ModifyPlacementModal({
           </div>
           <input
             type="text"
-            value={placementName}
-            onChange={(e) => setPlacementName(e.target.value)}
-            placeholder="Enter placement name"
-            className="name-input-placement"
+            value={financialFlowName}
+            onChange={(e) => setFinancialFlowName(e.target.value)}
+            placeholder="Enter financial flow name"
+            className="name-input-financial-flow"
           />
         </div>
-        <hr className="dropdown-separator-placement" />
-        {placementType && (
-          <div className="placement-parameters-columns">
+        <hr className="dropdown-separator-financial-flow" />
+        {financialFlowType && (
+          <div className="financial-flow-parameters-columns">
             {groupOrder.map((group) => (
-              <div key={group} className="placement-parameter-column">
-                <h4 className="placement-parameter-group-title">
+              <div key={group} className="financial-flow-parameter-column">
+                <h4 className="financial-flow-parameter-group-title">
                   {group.charAt(0).toUpperCase() + group.slice(1)}
                 </h4>
                 {groupedParams[group].map((param) => (
-                  <div key={param.id} className="placement-parameter">
+                  <div key={param.id} className="financial-flow-parameter">
                     <label htmlFor={param.id}>{param.label}</label>
                     <input
                       id={param.id}
                       type={param.type}
-                      value={placementParams[param.id] ?? param.default ?? ""}
+                      value={
+                        financialFlowParams[param.id] ?? param.default ?? ""
+                      }
                       onChange={(e) =>
                         handleParamChange(
                           param.id,
@@ -205,7 +209,7 @@ function ModifyPlacementModal({
                       max={param.max}
                       step={param.step}
                       required={param.required}
-                      className="placement-parameter-input"
+                      className="financial-flow-parameter-input"
                     />
                   </div>
                 ))}
@@ -214,10 +218,13 @@ function ModifyPlacementModal({
           </div>
         )}
         <div className="modal-buttons">
-          <button onClick={handleModifyPlacement} className="btn-confirm">
+          <button onClick={handleModifyFinancialFlow} className="btn-confirm">
             Modify
           </button>
-          <button onClick={handlePlacementModalClose} className="btn-cancel">
+          <button
+            onClick={handleFinancialFlowModalClose}
+            className="btn-cancel"
+          >
             Cancel
           </button>
         </div>
@@ -226,4 +233,4 @@ function ModifyPlacementModal({
   );
 }
 
-export default ModifyPlacementModal;
+export default ModifyFinancialFlowModal;
