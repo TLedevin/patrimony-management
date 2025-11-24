@@ -3,7 +3,6 @@ import { useState, useMemo } from "react";
 import "./ScenarioGraph.css";
 import financialFlowStyles from "../../config/patrimonyGraphConfig";
 import PatrimonyTypeDropdown from "./PatrimonyTypeDropdown";
-import ScenarioDataModal from "./ScenarioDataModal";
 
 function ScenarioGraph({ scenarioData }) {
   const [selectedTypes, setSelectedTypes] = useState(
@@ -59,12 +58,6 @@ function ScenarioGraph({ scenarioData }) {
                 selectedTypes={selectedTypes}
                 onChange={setSelectedTypes}
               />
-              <button
-                className="view-table-button"
-                onClick={() => setIsModalOpen(true)}
-              >
-                View Table
-              </button>
             </div>
             <div className="total-value">
               Total :{" "}
@@ -140,11 +133,6 @@ function ScenarioGraph({ scenarioData }) {
               }}
             />
           </div>
-          <ScenarioDataModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            scenarioData={scenarioData}
-          />
         </>
       )}
     </div>
