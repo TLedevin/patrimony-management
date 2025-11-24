@@ -17,12 +17,17 @@ DONE: Scénario: Ajouter un tableau récapitulatif du scénario (sous forme de p
 DONE: Scénario: Avoir des dates d'investissement indépendantes des dates du scénario. Penser à retirer les modify_placement dans la fonction modify_scenario après coup.
 DONE: Scénario: revoir la gestion du scénario. Les paramètres d'entrée doivent uniquement être start_year (& month) et end_year (& month). Ensuite on rentre les rentrées de cash, les sorties (dépenses), et les investissements. Les investissements doivent avoir lieu après la date de début du scénario (les investissement précédents sont pris en compte dans le patrimoine renseigné).
 
-TODO: Ajouter la possibilité de renseigner un patrimoine de départ (cash, immo, livrets, etc.) lors de l'initialisation du scénario.
+TODO: Patrimoine: créer la page patrimoine
+      - Patrimoine à date (grahique camembert): l'utilisateur peut renseigner son patrimoine actuel (cash, immo, livrets, actions, etc.)
+      - Facultatif: augmentation du patrimoine dans le temps (graphique ligne). Pour cela, possibilité de renseigner l'historique de l'évolution du patrimoine.
+      - Facultatif: salaire et dépenses mensuels (graphique barres)
+TODO: Scénario: Ajouter la possibilité de renseigner un patrimoine de départ plus large (cash, immo, livrets, etc.) lors de l'initialisation du scénario (et pas seulement du cash).
+TODO: Scénario: Adapter la page scénario pour pouvoir utiliser les informations utilisateur (patrimoine de départ, salaire, dépenses, etc.)
+
 TODO: Scénario: Add possibility to choose which investments to include using checkboxes
-TODO: Scénario: Adapter la page scénario pour utiliser les informations utilisateur
 TODO: Scénario: Ajouter des vérifications de cash disponible lors d'un nouvel investissement
 TODO: Scénario: Sur le graphique scénario, superposer des flèches horizontales pour indiquer les investissements
-TODO: Scénario: Ajouter une option pour exporter les données en excel (faire une fonction backend propre qui construit le tableau final, pusi utiliser cette fonction à la fois pour la table affichée dans l'outil, et dans le bouton d'export excel)
+TODO: Scénario: Ajouter une option pour exporter les données en excel (faire une fonction backend propre qui construit le tableau final, puis utiliser cette fonction à la fois pour la table affichée dans l'outil, et dans le bouton d'export excel)
 TODO: Dashboard: Sur la page dashboard, ajouter la possibilité de comparer les scénarios entre eux
 TODO: Main: Améliorer le visuel du site (utiliser Lovable?)
 TODO: Main: Ajouter des comptes
